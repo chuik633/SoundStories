@@ -84,4 +84,3 @@ def getCaptionData(name, bin_size = 100):
     with open(f"./tmp/{name}/captions.json", 'w', encoding='utf-8') as json_file:
         json.dump(bins, json_file, indent=4)
 
-getCaptionData("princessSmall", 80.0379506)

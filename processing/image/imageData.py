@@ -68,14 +68,9 @@ def get_main_colors(imgPath,  color_similarity_threshold = 100):
 
 
 
-# c1 = get_main_colors('./tmp/PrincessMononoke/images/3.png', 100)
 
-# print("----Color unique---")
-# print(len(c1))
-# print(c1)
 
-def getImageData(name):
-    moviePath = './tmp/'+name+"/"
+def getImageData(moviePath, name):
     imgDir = moviePath + 'images/'
     img_files = [f for f in listdir(imgDir)]
     file_colors = []

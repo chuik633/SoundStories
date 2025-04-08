@@ -1,12 +1,17 @@
 
+import sys
+import os
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+
 import subprocess
 import json
 import shutil
-import os
 
-from audioData import getAudioData
-from imageData import getImageData
-from captionsData import getCaptionData
+
+from audio.audioData import getAudioData
+from image.imageData import getImageData
+from captions.captionsData import getCaptionData
+from settings.settings import pathConfig
 
 """
 inputting a movie file, it then:
@@ -25,14 +30,15 @@ def clearDirectories(mainDir):
             print('deleted dir', dir_name)
 
 def getData(name, numSamples = 20, youtubeLink = False, captions = False):
-    mainDir = f"./tmp/{name}/"
-    clearDirectories(mainDir)
-    os.makedirs(mainDir, exist_ok=True)
+    dataDir = pathConfig["dataPath"]+f"{name}/"
+    print(dataDir)
+    clearDirectories(dataDir)
+    os.makedirs(dataDir, exist_ok=True)
 
     #1. if its a youtube link, it downloads it to a video
     if youtubeLink != False:
         try:
-            command = ['yt-dlp', '-f', 'mp4', '-o', mainDir + "video.mp4", youtubeLink]
+            command = ['yt-dlp', '-f', 'mp4', '-o', dataDir + "video.mp4", youtubeLink]
             result = subprocess.run(command, capture_output=True, text=True, check=True)
 
             command1 = ["yt-dlp","--skip-download","--write-auto-sub", "--sub-lang", "en","--sub-format", "ass","-o", mainDir + "captions.ass",youtubeLink]
@@ -45,7 +51,7 @@ def getData(name, numSamples = 20, youtubeLink = False, captions = False):
 
     #2. splits the video in n_samples videos, and corresponding audio files and images
     
-    command = ['node', 'processVideo.js', str(name), str(numSamples)]
+    command = ['node', './processing/processVideo.js',dataDir, str(numSamples)]
     print(command)
     try:
         result = subprocess.run(command, capture_output=True, text=True, check=True)
@@ -56,7 +62,7 @@ def getData(name, numSamples = 20, youtubeLink = False, captions = False):
     
     #get the info of the video
     videoInfo = None
-    with open(mainDir+"videoInfo.json", 'r') as file:
+    with open(dataDir+"videoInfo.json", 'r') as file:
         videoInfo = json.load(file)
     if(videoInfo == None):
         print("Error getting video info:", e.stderr)
@@ -65,10 +71,10 @@ def getData(name, numSamples = 20, youtubeLink = False, captions = False):
     
 
     #3. gets the color information for each scene imageSceneData.json
-    getImageData(name)
+    getImageData(dataDir,name)
 
     #4. gets the audio data for each scene and saves it in audioSceneData.json
-    getAudioData(name)
+    getAudioData(dataDir,name)
 
     #5. saves captions if there are them
     if captions:
@@ -76,7 +82,7 @@ def getData(name, numSamples = 20, youtubeLink = False, captions = False):
 
 # getData('compilation', youtubeLink = "https://www.youtube.com/watch?v=xBasQG_6p40", numSamples = 50)
 # testlink = "https://www.youtube.com/watch?v=T51QSG9VN8w&t=5s"
-getData('Everything', numSamples = 50, captions = False)
+getData('Everything', numSamples = 5, captions = False)
 # command1 = ["yt-dlp","--skip-download","--write-auto-sub", "--sub-lang", "en","--sub-format", "ass","-o", "captions.ass",testlink]
 # result1 = subprocess.run(command1, capture_output=True, text=True, check=True)
 # print(result1.stdout)

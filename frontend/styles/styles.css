@@ -11,7 +11,7 @@ body {
 
 @font-face {
   font-family: 'Jost';
-  src: url('./Jost-Bold.ttf');
+  src: url('./fonts/Jost-Bold.ttf');
 }
 
 svg text{

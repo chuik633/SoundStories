@@ -18,19 +18,19 @@ function executeCommand(command) {
 }
 
 //making all the directories
-function makeFolders(tmpDir, name) {
+function makeFolders(videoFilePath) {
   //save all paths
   let paths = {};
 
   //make the video folder if it doesnt exist
-  if (!fs.existsSync(tmpDir)) {
-    fs.mkdirSync(tmpDir, { recursive: true });
+  if (!fs.existsSync(videoFilePath)) {
+    fs.mkdirSync(videoFilePath, { recursive: true });
   }
 
   //add the inside folders
   const folders = ["images", "audios", "videos"];
   for (const folder of folders) {
-    const folderPath = path.join(tmpDir, folder);
+    const folderPath = path.join(videoFilePath, folder);
     paths[folder] = folderPath;
     if (!fs.existsSync(folderPath)) {
       //make it if it doesnt exist
@@ -58,14 +58,13 @@ async function getVideoLength(videoFilePath) {
 }
 
 //VIDEO PROCESS:
-async function processVideo(videoFilePath, name, numSamples) {
+async function processVideo( mainDir, numSamples) {
   //1. MAKE THE FOLDERS + GET THE PATHS
-  const tmpDir = path.join(__dirname, "tmp", name);
-
-  const { images, audios, videos } = makeFolders(tmpDir, name);
+  const { images, audios, videos } = makeFolders(mainDir);
+  const videoFilePath = mainDir + "video.mp4";
 
   try {
-    console.log("0. Computing video sample rate: ", name);
+    console.log("0. Computing video sample rate: ");
     const videoLength = await getVideoLength(videoFilePath);
     const intervalLen = videoLength / numSamples;
 
@@ -77,7 +76,7 @@ async function processVideo(videoFilePath, name, numSamples) {
     };
 
     fs.writeFile(
-      path.join(tmpDir, "videoInfo.json"),
+      path.join(mainDir, "videoInfo.json"),
       JSON.stringify(videoInfo, null, 2), // null, 2 adds indentation for pretty-printing
       (err) => {
         if (err) {
@@ -118,9 +117,9 @@ async function processVideo(videoFilePath, name, numSamples) {
   }
 }
 
-const name = process.argv[2];
+const videoPath = process.argv[2];
 const numSamples = process.argv[3];
-if (!name) {
+if (!videoPath) {
   console.error("Error: un please give a name thanks");
   process.exit(1);
 }
@@ -129,8 +128,7 @@ if (!numSamples) {
   process.exit(1);
 }
 
-const videoPath = `./tmp/${name}/video.mp4`;
-processVideo(videoPath, name, numSamples)
+processVideo(videoPath, numSamples)
   .then((result) => {
     console.log("Media processed successfully:", result);
   })

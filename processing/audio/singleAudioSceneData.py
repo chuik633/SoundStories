@@ -17,7 +17,7 @@ short_features_selected = ['spectral_centroid', 'spectral_spread', 'zcr']
 for start in ['chroma', 'mfcc']:
     for i in range(13):
         short_features_selected.append(start+"_"+str(i))
-print(short_features_selected)
+
 class AudioScene():
     def __init__(self, filepath):
         self.filepath = filepath

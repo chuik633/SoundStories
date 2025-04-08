@@ -1,6 +1,3 @@
-const mainDir = "../tmp/Everything/";
-const imgDir = mainDir + "images/";
-const audioDir = mainDir + "audios/";
 
 const width = window.innerWidth;
 const height = window.innerHeight;
@@ -8,6 +5,7 @@ const padding = 50
 let img_width;
 
 async function loadData() {
+  console.log(mainDir + "imageSceneData.json");
   let imageSceneData = await d3.json(mainDir + "imageSceneData.json");
 
   //   const audioSceneData = await d3.json(mainDir + "audioSceneData.json");

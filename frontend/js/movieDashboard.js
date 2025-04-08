@@ -1,6 +1,7 @@
+
 async function loadData() {
 
-  let imageSceneData = await d3.json(mainDir + "imageSceneData.json");
+  let imageSceneData = await d3.json(mainDir + pathConfig.imageDataFilename);
   imageSceneData = imageSceneData.sort((a, b) => a["sceneNum"] - b["sceneNum"]);
   let audioSceneData = await d3.json(mainDir + "audioSceneData.json");
   audioSceneData = audioSceneData.sort((a, b) => a["sceneNum"] - b["sceneNum"]);

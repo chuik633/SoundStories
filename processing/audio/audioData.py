@@ -3,10 +3,10 @@ import json
 from os import listdir
 import numpy as np
 
-from singleAudioSceneData import AudioScene
+from audio.singleAudioSceneData import AudioScene
 
-def getAudioData(name):
-    audioDir = f'./tmp/{name}/audios/'
+def getAudioData(dataDir,name):
+    audioDir = dataDir+'audios/'
     audioFilenames = [f for f in listdir(audioDir) if f.endswith('wav')]
 
     all_audio_Data = []
@@ -22,7 +22,7 @@ def getAudioData(name):
         all_audio_Data.append(entry)
 
     audio_df = pd.DataFrame(all_audio_Data)
-    audio_df.to_json(f'./tmp/{name}/audioSceneData.json', orient = 'records')
+    audio_df.to_json(dataDir+'audioSceneData.json', orient = 'records')
 
 
 # getAudioData("PrincessMononoke")
