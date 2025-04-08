@@ -5,13 +5,10 @@ const padding = 50
 let img_width;
 
 async function loadData() {
-  console.log(mainDir + "imageSceneData.json");
   let imageSceneData = await d3.json(mainDir + "imageSceneData.json");
-
-  //   const audioSceneData = await d3.json(mainDir + "audioSceneData.json");
-
+  const audioSceneData = await d3.json(mainDir + "audioSceneData.json");
   console.log(imageSceneData);
-  //   console.log(audioSceneData);
+  console.log(audioSceneData);
 
   const container = d3
     .select("body")
@@ -19,6 +16,7 @@ async function loadData() {
     .attr("class", "preview-container");
 
   makeLayout(container, imageSceneData);
+  new p5((p) => sketch_loadingGrain(p, container.node()));
 }
 
 function makeLayout(container, imageSceneData) {
@@ -39,7 +37,7 @@ function makeLayout(container, imageSceneData) {
     .attr("font-size", "30px")
     .attr("fill", "white")
     .text("SOUND STORIES");
-  img_width = Math.max(Math.min(150,(width / imageSceneData.length)),50) ;
+  img_width = Math.max(Math.min(100,(width / imageSceneData.length)),30) ;
 
   let nodes = imageSceneData.map((d, i) => {
       let z = Math.floor(Math.random() * 3) + 1;
@@ -61,7 +59,7 @@ function makeLayout(container, imageSceneData) {
   nodes = [...nodes].sort((a, b) => a.z - b.z);
   console.log(nodes.map((d)=>d.z));
 
-  let audio;
+  let currentAudio;
 
   const node = svg
     .selectAll("g")
@@ -86,22 +84,27 @@ function makeLayout(container, imageSceneData) {
       .attr("width", (d) => d.w / 2)
       .attr("height", (d) => d.h / 2)
       .on("mouseover", (event, d) => {
-        console.log('attempgint tp play audio')
-        console.log(d.audioPath);
-        audio = new Audio(d.audioPath)
-        audio.play()
+        const audioEl = d3.select('.audio-node.scene-'+d.sceneNum).node();
+        currentAudio = audioEl;
+        currentAudio.play();
         growSize(d.sceneNum)
       })
       .on("mouseleave", (event, d) => {
-        if (audio) {
-          console.log('pausing')
-          
-          audio.pause();
-          audio.currentTime = 0; 
+        if (currentAudio) {
+          currentAudio.pause();
+          currentAudio.currentTime = 0;
         }
-
         shrinkSize(d.sceneNum)});
-
+  container
+    .append("div")
+    .attr("class", "audio-container")
+    .selectAll("audio")
+    .data(nodes)
+    .enter()
+    .append("audio")
+    .attr("class", (d) => "audio-node scene-" + d.sceneNum)
+    .attr("src", (d) => d.audioPath)
+    .attr("preload", "auto");
   makeSim(nodes, node);
 
 
@@ -120,7 +123,7 @@ function makeLayout(container, imageSceneData) {
       .transition()
       .duration(100)
       .ease(d3.easeLinear)
-      .attr("height", (d) => d.h + growFac)
+      .attr("height", (d) => d.h)
       .attr("width", (d) => d.w + growFac);
   }
 
@@ -145,7 +148,6 @@ function makeLayout(container, imageSceneData) {
   const maxScroll = svg.node().getBBox().width;
 
   function updateScroll() {
-    console.log('updating')
     scrollPos += scrollSpeed;
 
     nodes.forEach((d) => {
@@ -171,7 +173,6 @@ function makeLayout(container, imageSceneData) {
 
 
 function makeSim(nodes, node) {
-  console.log('sim')
   let sim = d3
     .forceSimulation(nodes)
     .force("charge", d3.forceManyBody().strength(-0.01))
@@ -195,8 +196,6 @@ function makeSim(nodes, node) {
 
 
   function ticked() {
-    console.log('tick')
-
       node.attr(
         "transform",
         (d) =>{
@@ -207,9 +206,7 @@ function makeSim(nodes, node) {
           }
           d.y += d.vy; 
           updatedY = Math.max(0, Math.min(height - d.h, d.y));  
-          // updatedY = d.y
 
-          console.log(updatedX, updatedY);
           return `translate(${updatedX},  ${updatedY})`;
         }
       );

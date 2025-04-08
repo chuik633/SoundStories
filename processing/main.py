@@ -38,11 +38,13 @@ def getData(name, numSamples = 20, youtubeLink = False, captions = False):
     #1. if its a youtube link, it downloads it to a video
     if youtubeLink != False:
         try:
-            command = ['yt-dlp', '-f', 'mp4', '-o', dataDir + "video.mp4", youtubeLink]
+            # command = ['yt-dlp', '-f', 'mp4', '-o', dataDir + "video.mp4", youtubeLink]
+            command = ['yt-dlp', '-f', 'bestvideo+bestaudio', '-o', dataDir + "video.mp4", youtubeLink]
             result = subprocess.run(command, capture_output=True, text=True, check=True)
 
-            command1 = ["yt-dlp","--skip-download","--write-auto-sub", "--sub-lang", "en","--sub-format", "ass","-o", mainDir + "captions.ass",youtubeLink]
-            result1 = subprocess.run(command1, capture_output=True, text=True, check=True)
+            if captions:
+                command1 = ["yt-dlp","--skip-download","--write-auto-sub", "--sub-lang", "en","--sub-format", "ass","-o", pathConfig["dataPath" ] + "captions.ass",youtubeLink]
+                result1 = subprocess.run(command1, capture_output=True, text=True, check=True)
             # captions = True
 
         except subprocess.CalledProcessError as e:
@@ -56,6 +58,7 @@ def getData(name, numSamples = 20, youtubeLink = False, captions = False):
     try:
         result = subprocess.run(command, capture_output=True, text=True, check=True)
         print("Split video successfully")
+        print(result)
     except subprocess.CalledProcessError as e:
         print("Error processing video:", e.stderr)
         return
@@ -80,9 +83,10 @@ def getData(name, numSamples = 20, youtubeLink = False, captions = False):
     if captions:
         getCaptionData(name, round(videoInfo['sampleLength']))
 
-# getData('compilation', youtubeLink = "https://www.youtube.com/watch?v=xBasQG_6p40", numSamples = 50)
+# getData('compilation', youtubeLink="https://www.youtube.com/watch?v=c9iCUxuWSwQ", numSamples = 5,captions = False)
+getData('compilation', numSamples = 50,captions = False)
 # testlink = "https://www.youtube.com/watch?v=T51QSG9VN8w&t=5s"
-getData('Everything', numSamples = 5, captions = False)
+# getData('Everything', numSamples = 10, captions = False)
 # command1 = ["yt-dlp","--skip-download","--write-auto-sub", "--sub-lang", "en","--sub-format", "ass","-o", "captions.ass",testlink]
 # result1 = subprocess.run(command1, capture_output=True, text=True, check=True)
 # print(result1.stdout)

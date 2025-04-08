@@ -36,7 +36,7 @@ class AudioScene():
         self.mid_window_size = 2.0 *self.Fs
         self.mid_step_size = 1.0*self.Fs
         # print('windowInfo:',  self.short_window_size, self.short_step_size, self.mid_window_size,   self.mid_step_size )
-        print(self.Fs)
+
         # print('computing shorterm features')
         self.short_features, self.short_feature_names = ShortTermFeatures.feature_extraction(self.x, self.Fs, self.short_window_size, self.short_step_size)
 

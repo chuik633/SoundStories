@@ -17,17 +17,6 @@ function makeSingleVideoPlayer(
     .append("div")
     .attr("class", "video-sketch-container");
 
-  new p5((p) =>
-    sketchTest(
-      p,
-      sketch_container.node(),
-      imgDir + imgSceneData[sceneNum].filename,
-      imgSceneData[sceneNum]["colors"],
-      audioSceneData[sceneNum],
-      captionData[sceneNum]
-    )
-  );
-
   const video = container
     .append("video")
     .attr("id", "displayed-video")
@@ -55,13 +44,13 @@ function makeSingleVideoPlayer(
 
   const playPauseBtn = controls_container
     .append("img")
-    .attr("src", "./icons/play.svg")
+    .attr("src", "./styles/icons/play.svg")
     .attr("id", "playPauseBtn");
 
   //   const volumeBtn = controls_container.append("button").attr("id", "volumeBtn");
   const volumeBtn = controls_container
     .append("img")
-    .attr("src", "./icons/volume.svg")
+    .attr("src", "./styles/icons/volume.svg")
     .attr("id", "volumeBtn");
 
   const volumeBar = controls_container
@@ -82,10 +71,10 @@ function makeSingleVideoPlayer(
   playPauseBtn.on("click", () => {
     if (video.node().paused) {
       video.node().play();
-      playPauseBtn.attr("src", "./icons/pause.svg");
+      playPauseBtn.attr("src", "./styles/icons/pause.svg");
     } else {
       video.node().pause();
-      playPauseBtn.attr("src", "./icons/play.svg");
+      playPauseBtn.attr("src", "./styles/icons/play.svg");
     }
   });
 

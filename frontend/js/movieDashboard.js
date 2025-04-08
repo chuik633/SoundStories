@@ -1,17 +1,21 @@
 
 async function loadData() {
-
+  const videoInfo = await d3.json(mainDir + pathConfig.videoDataFilename);
   let imageSceneData = await d3.json(mainDir + pathConfig.imageDataFilename);
   imageSceneData = imageSceneData.sort((a, b) => a["sceneNum"] - b["sceneNum"]);
-  let audioSceneData = await d3.json(mainDir + "audioSceneData.json");
+  let audioSceneData = await d3.json(mainDir + pathConfig.audioDataFilename);
   audioSceneData = audioSceneData.sort((a, b) => a["sceneNum"] - b["sceneNum"]);
-  const captionData = await d3.json(mainDir + "captions.json");
-  const videoInfo = await d3.json(mainDir + "videoInfo.json");
+  let captionData;
+  try{
+      captionData = await d3.json(mainDir + "captions.json");
+  }catch (e){
+    console.log('no captions')
+  }
+  
   videoUtils = videoInfo;
-  console.log("got data");
-  console.log("previewing");
-  console.log(captionData);
-  console.log(imageSceneData)
+
+  // console.log(captionData);
+  // console.log(imageSceneData)
   layoutDashboard(imageSceneData, audioSceneData, captionData);
 }
 
@@ -23,10 +27,9 @@ function layoutDashboard(imageSceneData, audioSceneData, captionData) {
     .attr("class", "video-wrapper-outer full");
 
   // make the video player
-  const startScene = 8
   makeSingleVideoPlayer(
     previewArea,
-    8,
+    1,
     imageSceneData,
     audioSceneData,
     captionData
@@ -62,22 +65,27 @@ function layoutScenePreviews(
     sceneImg.on("click", () => {
       d3.select("#displayed-video").attr("src", videoDir + sceneNum + ".mp4");
       d3.select("#displayed-video").attr("sceneNum", sceneNum);
-      const sketch_container = d3.select(".video-sketch-container");
-      sketch_container.selectAll("*").remove();
-      console.log("new scene");
-      new p5((p) =>
-        sketchTest(
-          p,
-          sketch_container.node(),
-          imgDir + filename,
-          colors,
-          audioSceneData[sceneNum],
-          captionData[sceneNum]
-        )
-      );
+      // showSketches(filename, sceneNum);
     });
   }
 }
+
+//where you put all the sketch display stuff
+function showSketches(filename,sceneNum) {
+  const sketch_container = d3.select(".video-sketch-container");
+  sketch_container.selectAll("*").remove();
+  new p5((p) =>
+    sketchTest(
+      p,
+      sketch_container.node(),
+      imgDir + filename,
+      colors,
+      audioSceneData[sceneNum],
+      captionData[sceneNum]
+    )
+  );
+}
+
 
 function layoutFullSignalPlot(outer_container, audioSceneData) {}
 

@@ -1,3 +1,5 @@
+const movieName = "compilation";
+
 pathConfig = {
   dataPath: "../data/tmp/",
   audioDataFilename: "audioSceneData.json",
@@ -5,11 +7,9 @@ pathConfig = {
   videoDataFilename: "videoInfo.json",
 };
 
-
-const movieName = "Everything";
-
-const mainDir = pathConfig.dataPath + movieName +'/';
+const mainDir = pathConfig.dataPath + movieName + "/";
 const imgDir = mainDir + "images/";
 const audioDir = mainDir + "audios/";
+const videoDir = mainDir + "videos/";
 
 console.log("mainDir", mainDir);

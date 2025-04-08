@@ -106,7 +106,7 @@ async function processVideo( mainDir, numSamples) {
       await executeCommand(
         `ffmpeg -i "${videoSegmentPath}" -q:a 0 -map a "${audioSegmentPath}"`
       );
-
+      
       //extract the image
       await executeCommand(
         `ffmpeg -i "${videoSegmentPath}" -ss 00:00:00 -vframes 1 ${imgSegmentPath}`

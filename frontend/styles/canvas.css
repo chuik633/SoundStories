@@ -1,0 +1,17 @@
+.video-sketch-container {
+  position: absolute;
+  width: 300px;
+  height: 200px;
+  /* border: 1px solid white; */
+  /* background-color: white; */
+  z-index: 10;
+}
+
+.preview-container canvas{
+    position:absolute;
+    top:0px;
+    left:0px;
+    border: 1px solid white;
+    pointer-events: none;
+
+}
