@@ -1,0 +1,12 @@
+/vids/
+/singleVideoProcess/tmp/
+
+# Ignore all .mp4, .png, .jpg, .mp3 files in the repository
+*.mp4
+*.png
+*.jpg
+*.mp3
+*.wav
+*.webm
+*.csv
+*.json
