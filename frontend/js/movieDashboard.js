@@ -1,23 +1,4 @@
 
-async function loadData() {
-  const videoInfo = await d3.json(mainDir + pathConfig.videoDataFilename);
-  let imageSceneData = await d3.json(mainDir + pathConfig.imageDataFilename);
-  imageSceneData = imageSceneData.sort((a, b) => a["sceneNum"] - b["sceneNum"]);
-  let audioSceneData = await d3.json(mainDir + pathConfig.audioDataFilename);
-  audioSceneData = audioSceneData.sort((a, b) => a["sceneNum"] - b["sceneNum"]);
-  let captionData;
-  try{
-      captionData = await d3.json(mainDir + "captions.json");
-  }catch (e){
-    console.log('no captions')
-  }
-  
-  videoUtils = videoInfo;
-
-  // console.log(captionData);
-  // console.log(imageSceneData)
-  layoutDashboard(imageSceneData, audioSceneData, captionData);
-}
 
 function layoutDashboard(imageSceneData, audioSceneData, captionData) {
   const app = d3.select("#app");

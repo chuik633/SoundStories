@@ -4,18 +4,13 @@ const height = window.innerHeight;
 const padding = 50
 let img_width;
 
-async function loadData() {
-  let imageSceneData = await d3.json(mainDir + "imageSceneData.json");
-  const audioSceneData = await d3.json(mainDir + "audioSceneData.json");
-  console.log(imageSceneData);
-  console.log(audioSceneData);
-
-  const container = d3
-    .select("body")
-    .append("div")
-    .attr("class", "preview-container");
-
+function showPreviews(){
+  const container = d3.select("#app").append("div").attr("class", "preview-container");
+ 
+  //floating previews
   makeLayout(container, imageSceneData);
+
+  //sketch overlay
   new p5((p) => sketch_loadingGrain(p, container.node()));
 }
 
@@ -31,17 +26,17 @@ function makeLayout(container, imageSceneData) {
   svg
     .append("text")
     .attr("x", width / 2)
-    .attr("y", height / 2)
+    .attr("y", height / 2 + 50)
     .attr("text-anchor", "middle")
     .attr("dominant-baseline", "central")
-    .attr("font-size", "30px")
+    .attr("font-size", "10px")
     .attr("fill", "white")
-    .text("SOUND STORIES");
-  img_width = Math.max(Math.min(100,(width / imageSceneData.length)),30) ;
+    .text("MUSIC IN FILM");
+  img_width = Math.max(Math.min(100,(width / imageSceneData.length)),60) ;
 
   let nodes = imageSceneData.map((d, i) => {
       let z = Math.floor(Math.random() * 3) + 1;
-      let node_w = img_width/2 +z*30;
+      let node_w = img_width/2 +z*5;
       return {
         id: i,
         origional_x: timeScale(d.sceneNum),
@@ -239,4 +234,4 @@ function animateScroll(node, color_node,nodes){
   scrollNodes(color_node);
 
 }
-loadData();
+
