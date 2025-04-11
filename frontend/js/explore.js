@@ -4,25 +4,33 @@ const height = window.innerHeight;
 const padding = 50
 let img_width;
 
-function showPreviews(){
-  const container = d3.select("#app").append("div").attr("class", "preview-container");
- 
-  //floating previews
-  makeLayout(container, imageSceneData);
+function initExplorePage(){
+  const container = d3
+    .select("#explore-page")
+    .append("div")
+    .attr("class", "preview-container");
 
+  let loaded = document.getElementById("explore-page");
+
+  //floating previews
+  if (loaded) {
+    makeLayout(container, imageSceneData);
+    console.log("made layout");
+  } else {
+    console.log("not loaded");
+  }
   //sketch overlay
   new p5((p) => sketch_loadingGrain(p, container.node()));
 }
 
 function makeLayout(container, imageSceneData) {
   const times = imageSceneData.map((d) => d.sceneNum);
-  console.log(d3.extent(times));
   const timeScale = d3.scaleLinear().domain(d3.extent(times)).range([padding, width-padding]);
   const svg = container
     .append("svg")
     .attr("width", width)
     .attr("height", height);
-
+  console.log("SVG", svg)
   svg
     .append("text")
     .attr("x", width / 2)
@@ -32,11 +40,11 @@ function makeLayout(container, imageSceneData) {
     .attr("font-size", "10px")
     .attr("fill", "white")
     .text("MUSIC IN FILM");
-  img_width = Math.max(Math.min(100,(width / imageSceneData.length)),60) ;
+  img_width = Math.max(Math.min(120,(width / imageSceneData.length)),80) ;
 
   let nodes = imageSceneData.map((d, i) => {
       let z = Math.floor(Math.random() * 3) + 1;
-      let node_w = img_width/2 +z*5;
+      let node_w = img_width/2 +z*10;
       return {
         id: i,
         origional_x: timeScale(d.sceneNum),
@@ -48,11 +56,10 @@ function makeLayout(container, imageSceneData) {
         h:node_w*2/3,
         audioPath :audioDir+d.sceneNum+".wav",
         ...d,
-        parallaxSpeed: z * 0.5 + 0.5,
+        parallaxSpeed: z * 1.2 +.2,
       };
   });
   nodes = [...nodes].sort((a, b) => a.z - b.z);
-  console.log(nodes.map((d)=>d.z));
 
   let currentAudio;
 
@@ -100,23 +107,26 @@ function makeLayout(container, imageSceneData) {
     .attr("class", (d) => "audio-node scene-" + d.sceneNum)
     .attr("src", (d) => d.audioPath)
     .attr("preload", "auto");
+
+  
   makeSim(nodes, node);
 
 
 
-  const growFac = 10
+  const growFac = 20
+  const dur = 2000
   function growSize(sceneNum) {
     d3.select(".image-node.scene-" + sceneNum)
       .interrupt()
       .transition()
-      .duration(100)
+      .duration(dur)
       .ease(d3.easeLinear)
       .attr("height", (d) => d.h + growFac)
       .attr("width", (d) => d.w + growFac);
     d3.select(".color-node.scene-" + sceneNum)
       .interrupt()
       .transition()
-      .duration(100)
+      .duration(dur)
       .ease(d3.easeLinear)
       .attr("height", (d) => d.h)
       .attr("width", (d) => d.w + growFac);
@@ -125,23 +135,23 @@ function makeLayout(container, imageSceneData) {
   function shrinkSize(sceneNum){
     d3.select(".image-node.scene-" + sceneNum)
       .transition()
-      .duration(100)
+      .duration(dur/4)
       .ease(d3.easeLinear)
       .attr("height", (d) => d.h - growFac)
       .attr("width", (d) => d.w - growFac);
      d3.select(".color-node.scene-" + sceneNum)
        .transition()
-       .duration(100)
+       .duration(dur/4)
        .ease(d3.easeLinear)
        .attr("height", 1)
-       .attr("width",d=> d.w - growFac);
+       .attr("width", (d) => d.w - growFac);
   }
   
   
   let scrollPos = 0;
-  const scrollSpeed = .1;  // Overall speed of scrolling
-  const maxScroll = svg.node().getBBox().width;
+  const scrollSpeed = .1;  
 
+  const maxScroll = width;
   function updateScroll() {
     scrollPos += scrollSpeed;
 

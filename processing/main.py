@@ -38,8 +38,13 @@ def getData(name, numSamples = 20, youtubeLink = False, captions = False):
     #1. if its a youtube link, it downloads it to a video
     if youtubeLink != False:
         try:
-            # command = ['yt-dlp', '-f', 'mp4', '-o', dataDir + "video.mp4", youtubeLink]
-            command = ['yt-dlp', '-f', 'bestvideo+bestaudio', '-o', dataDir + "video.mp4", youtubeLink]
+            command = [
+                'yt-dlp',
+                '-f', 'bestvideo[height<=720]+bestaudio/best[height<=720]',
+                '-o', dataDir + "video.mp4",
+                youtubeLink
+            ]
+            # command = ['yt-dlp', '-f', 'bestvideo+bestaudio', '-o', dataDir + "video.mp4", youtubeLink]
             result = subprocess.run(command, capture_output=True, text=True, check=True)
 
             if captions:
@@ -84,7 +89,7 @@ def getData(name, numSamples = 20, youtubeLink = False, captions = False):
         getCaptionData(name, round(videoInfo['sampleLength']))
 
 # getData('compilation', youtubeLink="https://www.youtube.com/watch?v=c9iCUxuWSwQ", numSamples = 5,captions = False)
-getData('compilation', numSamples = 50,captions = False)
+getData('melody', youtubeLink="https://www.youtube.com/watch?v=Qvn0Fkt6OsU", numSamples = 50,captions = False)
 # testlink = "https://www.youtube.com/watch?v=T51QSG9VN8w&t=5s"
 # getData('Everything', numSamples = 10, captions = False)
 # command1 = ["yt-dlp","--skip-download","--write-auto-sub", "--sub-lang", "en","--sub-format", "ass","-o", "captions.ass",testlink]

@@ -14,16 +14,15 @@ async function loadData() {
   } catch (e) {
     console.log("no captions");
   }
+}
+
+window.addEventListener("load", async () => {
+  await loadData(); // only loads once
+  console.log("DATA LOADED")
+  console.log("IMAGE DATA", imageSceneData)
+  handleRouteChange();
   
-}
+});
 
-
-async function main(){
-    await loadData();
-    // layoutDashboard(imageSceneData, audioSceneData, captionData);
-
-    showPreviews()
-}
-
-main();
+window.addEventListener("hashchange", handleRouteChange);
 

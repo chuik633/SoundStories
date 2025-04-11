@@ -4,7 +4,7 @@ function sketch_loadingGrain(p, parentDiv) {
   let font;
   let letters = "S O U N D  S T O R I E S";
   let fontSize = 200;
-  let sampleFac = 0.2;
+  let sampleFac = 0.5;
  let sampleFac2 = 0.7;
   let particles = [];
   let text_points = []
@@ -44,7 +44,7 @@ function sketch_loadingGrain(p, parentDiv) {
     const rect = parentDiv.getBoundingClientRect();
     width = rect.width;
     height = rect.height;
-    console.log('width', width, height)
+    // console.log('width', width, height)
     const canvas = p.createCanvas(width, height);
     canvas.parent(parentDiv);
 
@@ -76,7 +76,7 @@ function sketch_loadingGrain(p, parentDiv) {
       }
     }
 
-    console.log(letters.length);
+    // console.log(letters.length);
     if (letters.length > binstoVis) {
       let letters_per_bin = Math.floor(letters.length / binstoVis);
       for (let binNum = 0; binNum < binstoVis; binNum++) {
@@ -106,7 +106,7 @@ function sketch_loadingGrain(p, parentDiv) {
   };
 
   function getLetterPoints(p,letters) {
-    fontSize = getResizedFontSize(p, letters, fontSize, p.width - 50);
+    fontSize = getResizedFontSize(p, letters, fontSize, p.width - 150);
 
     let textWidth = letters.length * fontSize;
     let x = p.width / 2 - textWidth / 2;
@@ -207,7 +207,7 @@ function sketch_loadingGrain(p, parentDiv) {
 
     update(p) {
       p.fill(particleColor);
-      p.ellipse(this.pos.x, this.pos.y, .7, .7);
+      p.ellipse(this.pos.x, this.pos.y, 1, 1);
     }
   }
 

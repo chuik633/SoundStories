@@ -1,20 +1,37 @@
-* {
-  box-sizing: border-box;
-  margin: 0px;
-}
-body {
-  display: flex;
-  flex-direction: row;
-  gap: 30px;
-  background-color: black;
-}
 
 @font-face {
   font-family: 'Jost';
   src: url('./fonts/Jost-Bold.ttf');
 }
 
+* {
+  box-sizing: border-box;
+  margin: 0px;
+}
+body {
+
+  display: flex;
+  flex-direction: row;
+  gap: 30px;
+  background-color: tan;
+  font-family: "Jost";
+}
+
+.page{
+  position:absolute;
+  width: 100vw;
+  height:100vh;
+  background-color: black;
+}
 svg text{
   letter-spacing: 20px;
  font-family: 'Jost';
+}
+
+.hidden{
+  visibility: hidden;
+}
+
+.visible{
+  visibility:visible;
 }
