@@ -1,9 +1,9 @@
 
 
-function layoutDashboard(imageSceneData, audioSceneData, captionData) {
-  const app = d3.select("#app");
-  const dashboard = app.append("div").attr("class", "dashboard small");
-  const previewArea = app
+function layoutDashboard(conatiner, imageSceneData, audioSceneData, captionData) {
+  console.log('showing dashboard')
+  const dashboard = conatiner.append("div").attr("class", "dashboard small");
+  const previewArea = conatiner
     .append("div")
     .attr("class", "video-wrapper-outer full");
 

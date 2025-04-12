@@ -13,35 +13,85 @@
     color:white;
     display: flex;
     flex-direction:column;
-    padding:20vw;
+    padding:100px;
+    padding-top:150px;
+    padding-bottom:200px;
 }
 #menu-container nav{
     display: flex;
     flex-direction:column;
     gap: 20px;
+    height:100%;
 }
 
 #menu-btn{
     position: fixed;
     z-index:4;
-    top:10px;
-    right:10px;
+    top:15px;
+    right:15px;
+    
     background: none;
     border:none;
+  
+    display: flex;
+    align-items:center;
+    justify-content:center;
+    height: 20px;
+    width: 20px;
 }
-#menu-btn:hover{
-    border:1px solid black;
+#menu-btn img{
+    height: 20px;
+    width: 20px;
+    object-fit: contain;
 }
+
 
 .menu-link{
     color:white;
-    font-size: 12px;
-    letter-spacing: 5px;
+    font-size: 25px;
+    letter-spacing: 10px;
     text-decoration: none;
     text-transform: uppercase;
+    font-weight: 700;
 }
 
 .menu-link:hover{
   text-decoration: underline;
   font-style:italic;
+}
+
+.menu-obscure{
+    width:80px;
+    height:100vh;
+    position:absolute;
+    background-color: black;
+    top:0px;
+    left:0px;
+}
+
+.film-submenu input[type="radio"] {
+  display: none;
+}
+
+.film-submenu {
+    transform:translateY(-10px);
+    padding-left: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+
+}
+.film-submenu label {
+  font-size: 10px;
+  font-weight: 400;
+  text-transform: uppercase;
+  letter-spacing: 4px;
+}
+.film-submenu label:hover{
+    font-weight: 700;
+}
+
+.about-link{
+    margin-top: auto;
+    font-size:12px;
 }

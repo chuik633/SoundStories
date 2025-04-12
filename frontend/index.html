@@ -4,8 +4,10 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>SOUND STORIES</title>
+   <link rel="stylesheet" href="styles/fonts/futura.css" />
     <link rel="stylesheet" href="styles/styles.css" />
     <link rel="stylesheet" href="styles/pages/menu.css" />
+     <link rel="stylesheet" href="styles/pages/about.css" />
     <link rel="stylesheet" href="styles/videoPlayer.css" />
     <link rel="stylesheet" href="styles/canvas.css" />
     <link rel="stylesheet" href="styles/movieDashboard.css" />
@@ -14,6 +16,7 @@
     <script src="./libraries/p5.min.js"></script>
     <script src="./libraries/p5.sound.min.js"></script>
     <script src="./libraries/p5.grain.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
 </head>
 <body>
    
@@ -34,16 +37,18 @@
 
     <!-- sketches -->
     <script src="./js/sketches/sketches_raw/loadingCanvas.js"></script>
-    <!-- pages -->
-    <script src="./js/explore.js"></script>
-    <script src="./js/videoPlayer.js"></script>
-    <script src="./js/movieDashboard.js"></script>
-
     
+    <!-- components -->
+    <script src="./js/components/videoPlayer.js"></script>
+    <script src="./js/components/movieDashboard.js"></script>
 
+    <!-- pages -->
+    <script src="./js/pages/about.js"></script>
+    <script src="./js/pages/explore.js"></script>
+    <script src="./js/pages/films.js"></script>
     
     <!-- nav -->
-    <script src="./js/nav.js"></script>
+    <script src="./js/menu.js"></script>
 
     <!-- main -->
     <script src="./js/main.js"></script>

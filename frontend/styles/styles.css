@@ -1,12 +1,9 @@
 
-@font-face {
-  font-family: 'Jost';
-  src: url('./fonts/Jost-Bold.ttf');
-}
 
 * {
   box-sizing: border-box;
   margin: 0px;
+  color:white;
 }
 body {
 
@@ -14,7 +11,7 @@ body {
   flex-direction: row;
   gap: 30px;
   background-color: tan;
-  font-family: "Jost";
+  font-family: "Futura";
 }
 
 .page{
@@ -34,4 +31,28 @@ svg text{
 
 .visible{
   visibility:visible;
+}
+h1{
+  font-size:32px;
+  letter-spacing: 7px;
+}
+
+h2{
+  font-size:20px;
+  letter-spacing: 5px;
+}
+
+h3{
+  font-size:12px;
+  font-weight: 700;
+  letter-spacing: 5px;
+}
+p{
+  font-size:9px;
+  font-family:Futura;
+  font-weight: 200;
+}
+
+.spacer{
+  height:20px;
 }
