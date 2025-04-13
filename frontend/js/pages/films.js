@@ -8,7 +8,10 @@ function initFilmsPage(){
         console.log('not loaded')
         return
     }
-    console.log("here")
-    layoutDashboard(container, imageSceneData, audioSceneData, captionData); 
-        
+    layoutDashboardAndPreview(
+      container,
+      imageSceneData,
+      audioSceneData,
+      captionData
+    );  
 }

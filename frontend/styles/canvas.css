@@ -1,9 +1,13 @@
-.video-sketch-container {
+#video-sketch-container {
   position: absolute;
-  width: 300px;
+  top: 60vh;
+  left:50vw;
+  transform: translate(-50%,0);
+  width: 80vw;
   height: 200px;
-  /* border: 1px solid white; */
+  border: 1px solid white;
   /* background-color: white; */
+  pointer-events: none;
   z-index: 10;
 }
 
@@ -11,7 +15,7 @@
     position:absolute;
     top:0px;
     left:0px;
-    border: 1px solid white;
+    /* border: 1px solid white; */
     pointer-events: none;
     mix-blend-mode: lighten;
 

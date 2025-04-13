@@ -1,29 +1,43 @@
-#app {
+#films-page {
   overflow: hidden;
   display: flex;
   height: 100vh;
-  flex-direction: row;
+  flex-direction: column;
+  /* background-color: blue; */
+  --shrinkSize:100px;
+
+  --selectedImageSize:150px;
+  --hoverImageSize:100px;
+  --prevImageSize:50px;
 }
-.video-wrapper-outer {
-  transition: width 0.5s ease-out;
-}
-.video-wrapper-outer.full {
-  width: 100%;
-  height: 100%;
+/* VIDEO WRAPPER */
+.preview-container {
+  transition: all 0.5s ease-out;
   border: 0.4px solid white;
+
 }
-.video-wrapper-outer.small {
-  width: 20vw;
-  overflow: hidden;
-  border: 0.4px solid white;
+.preview-container.full {
+  width: 100vw;
+  height: calc(100vh - var(--shrinkSize));
+  /* background-color: rgb(242, 122, 142); */
 }
+.preview-container.small {
+  width: 100vw;
+  height: var(--shrinkSize);
+  /* background-color: pink; */
+}
+
+/* DASHBOARD */
 .dashboard {
-  transition: width 0.5s ease-out;
+  transition: all 0.5s ease-out;
+  /* background-color: rgb(122, 154, 54); */
+  display:flex;
+  flex-direction:column;
 }
 .dashboard.full {
   padding: 10px;
-  width: 80vw;
-  height: 100%;
+  width: 100vw;
+  height: calc(100vh - var(--shrinkSize));;
   /* background-color: cadetblue; */
   overflow: hidden;
 }
@@ -32,7 +46,8 @@
   visibility: visible;
 }
 .dashboard.small {
-  width: 5vw;
+  width: 100vw;
+  height: var(--shrinkSize);
 }
 .dashboard.small:hover {
   background-color: rgb(37, 37, 37);
@@ -41,51 +56,64 @@
   visibility: hidden;
 }
 
-.scene-preview-container.narrow {
+/* DASHBOARD plots*/
+.plots-container{
+  width:100%;
+  height:100%;
+  background-color: darkcyan;
+}
+
+/* DASHBOARD scene previews*/
+.scene-preview-container {
+  position:relative;
   width: 100%;
   display: flex;
   flex-direction: row;
-  height: 100px;
-  overflow-y: hidden;
-  overflow-x: auto;
-  gap: 0px;
-  align-items: center;
-  justify-content: space-between;
+  align-items:center;
+  height: var(--selectedImageSize);
+  overflow: hidden;
+  /* overflow-x: auto; */
+  gap: .5px;
 }
 
-.scene-preview-container.narrow img {
-  height: 30%;
-  width: 4px;
+.scene-preview-container .sceneImg {
+  height: 50px;
+  width:var(--prevImageSize);
+  object-fit: fit;
+  /* border:1px solid white; */
   transition: width 0.3s ease-in-out, height 0.3s ease-in-out;
 }
 
-.scene-preview-container.narrow img:hover {
-  height: 100%;
-  width: 150px;
-  object-fit: contain;
-  /* border: 1px solid white; */
+.scene-preview-container .sceneImg[selected='false'][next='false'][prev='false']:hover{
+  height: var(--hoverImageSize);
 }
 
-.scene-preview-container.wide {
-  width: 100%;
-  display: flex;
-  flex-direction: row;
-  height: 100px;
-  overflow-y: hidden;
-  overflow-x: auto;
-  gap: 5px;
+.sceneImg[selected='true'] {
+  height: fit-content;
+  width: var(--selectedImageSize) !important;
+  object-fit: contain;
 }
 
-.scene-preview-container.wide img {
-  height: 100%;
-  width: 60px;
+.sceneImg[next='true'], .sceneImg[prev='true']  {
+  height: auto;
+  width: var(--hoverImageSize) ;
   object-fit: contain;
-  transition: width 0.3s ease-in-out, height 0.3s ease-in-out;
+  transition: transform .3s ease-in-out, opacity .2s ease-in-out;
+}
+.sceneImg[next='true']:hover, .sceneImg[prev='true']:hover  {
+  opacity:.8 !important;
+  border:.5px solid white;
 }
 
-.scene-preview-container.wide img:hover {
-  /* height: 100px; */
-  width: 150px;
-  object-fit: contain;
-  /* border: 1px solid white; */
+
+
+/* Video wrapper syncing */
+.video-wrapper-outer{
+  z-index:3;
+  position:absolute;
+  width: var(--selectedImageSize);
+  background-color: black;
+  opacity:0;
+  visibility:hidden;
+  transition: opacity .3s ease-in-out, width .3s ease-in-out;
 }

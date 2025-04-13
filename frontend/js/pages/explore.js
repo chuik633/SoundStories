@@ -80,23 +80,41 @@ function makeLayout(container, imageSceneData) {
       return `rgb(${r},${g},${b})`;
     });
   node
-      .append("image")
-      .attr("class", (d) => "image-node scene-" + d.sceneNum)
-      .attr("xlink:href", (d) => imgDir + d["filename"])
-      .attr("width", (d) => d.w / 2)
-      .attr("height", (d) => d.h / 2)
-      .on("mouseover", (event, d) => {
-        const audioEl = d3.select('.audio-node.scene-'+d.sceneNum).node();
-        currentAudio = audioEl;
-        currentAudio.play();
-        growSize(d.sceneNum)
-      })
-      .on("mouseleave", (event, d) => {
-        if (currentAudio) {
-          currentAudio.pause();
-          currentAudio.currentTime = 0;
-        }
-        shrinkSize(d.sceneNum)});
+    .append("image")
+    .attr("class", (d) => "image-node scene-" + d.sceneNum)
+    .attr("xlink:href", (d) => imgDir + d["filename"])
+    .attr("width", (d) => d.w / 2)
+    .attr("height", (d) => d.h / 2)
+    .on("mouseover", (event, d) => {
+      const audioEl = d3.select(".audio-node.scene-" + d.sceneNum).node();
+      currentAudio = audioEl;
+      currentAudio.play();
+      growSize(d.sceneNum);
+    })
+    .on("mouseleave", (event, d) => {
+      if (currentAudio) {
+        currentAudio.pause();
+        currentAudio.currentTime = 0;
+      }
+      shrinkSize(d.sceneNum);
+    })
+    .on("click", (event, d) => {
+      console.log("click")
+      if (currentAudio) {
+        currentAudio.pause();
+        currentAudio.currentTime = 0;
+      }
+
+      // makeSingleVideoPlayer(
+      //   d3.select("#explore-page-popup"),
+      //   d.sceneNum,
+      //   d,
+      //   audioSceneData,
+      //   captionData
+      // );
+
+    });
+
   container
     .append("div")
     .attr("class", "audio-container")

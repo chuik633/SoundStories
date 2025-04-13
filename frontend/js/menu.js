@@ -3,6 +3,7 @@ const menu_container = document.getElementById("menu-container");
 const menu_button = document.getElementById("menu-btn")
 const menuIcon = document.querySelector("#menu-btn img");
 let menuOpen = false;
+const startingPage = 'films'
 
 // menu creation
 const routes = {
@@ -82,7 +83,7 @@ function runPageScripts(page) {
   
 }
 function loadPage(page) {
-  const route = routes[page] || routes.films;
+  const route = routes[page] || routes.explore;
   fetch(route)
     .then((res) => res.text())
     .then((html) => {
@@ -100,7 +101,7 @@ function loadPage(page) {
 
 function handleRouteChange() {
   let hash = window.location.hash.slice(1);
-  if (!hash) hash = "explore"; 
+  if (!hash) hash = startingPage; 
   loadPage(hash);
 }
 

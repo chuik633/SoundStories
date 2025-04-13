@@ -1,9 +1,6 @@
 function makeSingleVideoPlayer(
   outer_container,
-  sceneNum,
-  imgSceneData,
-  audioSceneData,
-  captionData
+  sceneNum
 ) {
   const vidPath = videoDir + sceneNum + ".mp4";
   //create the vide
@@ -12,11 +9,7 @@ function makeSingleVideoPlayer(
     .append("div")
     .attr("class", "video-wrapper");
 
-  //place in the background sketch
-  const sketch_container = container
-    .append("div")
-    .attr("class", "video-sketch-container");
-
+ 
   const video = container
     .append("video")
     .attr("id", "displayed-video")
@@ -69,6 +62,7 @@ function makeSingleVideoPlayer(
 
   //pasuing playing
   playPauseBtn.on("click", () => {
+    console.log("changing video play mode")
     if (video.node().paused) {
       video.node().play();
       playPauseBtn.attr("src", "./styles/icons/pause.svg");
@@ -101,6 +95,6 @@ function makeSingleVideoPlayer(
   });
 }
 
-function showVideoColors() {}
+
 
 

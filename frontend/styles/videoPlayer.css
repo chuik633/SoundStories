@@ -1,24 +1,33 @@
+
+.video-wrapper-outer.full {
+  transition:all 1s ease-in-out;
+  top:calc(50vh - 100px)!important;
+  left:50vw!important;
+  transform:translate(-50%,-50%);
+  height: fit-content !important;
+  width: 80vw !important;
+  background-color: black;
+  border: 0.4px solid white;
+}
 .video-wrapper-outer.full .video-wrapper {
-  /* background-color: rgb(22, 22, 22); */
-  /* background-color: blue; */
   display: flex;
   flex-direction: column;
   gap: 10px;
-  padding: 10%;
-  height: 100%;
-  width: 100%;
+  padding: 10px;
+
 
   align-items: center;
   justify-content: center;
 }
+
 .video-wrapper-outer.small .video-wrapper {
   display: flex;
   /* background-color: burlywood; */
   flex-direction: column;
-  gap: 10px;
-  padding: 10%;
+  gap: 0px;
+  padding: 0px;
   height: 100%;
-  width: 100%;
+  width: 100% ;
 
   align-items: center;
   justify-content: center;

@@ -1,0 +1,15 @@
+#explore-page-popup{
+    position:absolute;
+    z-index:4;
+    width:100vw;
+    height:100vh;
+    pointer-events: none;
+    background-color: rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(2px);
+    top:0vh;
+    left:0vw;
+    padding:20px;
+    display: flex;
+    align-items: center;
+
+}
