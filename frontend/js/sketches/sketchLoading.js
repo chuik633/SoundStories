@@ -1,13 +1,15 @@
-const sketch_functions = [sketch_blur_font];
+const sketch_functions = [];
+
 //where you put all the sketch display stuff
 function showSketches(sceneNum) {
-  const sketch_container = d3.select("#video-sketch-container");
-  console.log(document.getElementById("video-sketch-container"));
-  if (!document.getElementById("video-sketch-container")){
-    return
+  const sketches_container = d3.select("#sketches-container");
+  console.log(document.getElementById("sketches-container"));
+  if (!document.getElementById("sketches-container")) {
+    return;
   }
-    sketch_container.selectAll("*").remove();
+  sketches_container.selectAll("*").remove();
   for (const sketch_fn of sketch_functions){
+    const sketch_container = sketches_container.append('div').attr('class', 'sketch-container')
     new p5((p) =>
       sketch_fn(
         p,

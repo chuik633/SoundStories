@@ -25,7 +25,7 @@ const sketch_template = (p, parentDiv, sceneNum) => {
   let sampleFac = 0.8;
 
   p.preload = function () {
-    font = p.loadFont("../fonts/Jost-Bold.ttf");
+    font = p.loadFont("styles/fonts/Jost-Bold.ttf");
   };
 
   p.setup = function () {
@@ -62,7 +62,7 @@ function syncData() {
   //chromagram
   chromagram_list = [];
   for (let coef_num = 1; coef_num < 12; coef_num++) {
-    chromagram_list.push(audioEntry[`chroma${coef_num}`][shortIdx]);
+    chromagram_list.push(audioEntry[`chroma_${coef_num}`][shortIdx]);
   }
 
   //notes

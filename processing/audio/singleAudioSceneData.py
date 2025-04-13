@@ -60,10 +60,10 @@ class AudioScene():
             'sample_rate':self.Fs,
             'notes_at_timestamps':self.getNotes(),
             'amplitude_avg':avgamp,
-            'amplitude':amp,
+            # 'amplitude':amp,
             'tempo':self.getTempo(),
             'energy_avg':avgenergy,
-            'energy':energy,
+            'energy':energy[0],
             'instruments':self.getInstruments(),
             'emotion': self.getEmotionLabel()
             }

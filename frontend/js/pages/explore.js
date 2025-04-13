@@ -124,7 +124,10 @@ function makeLayout(container, imageSceneData) {
     .append("audio")
     .attr("class", (d) => "audio-node scene-" + d.sceneNum)
     .attr("src", (d) => d.audioPath)
-    .attr("preload", "auto");
+    .attr("preload", "auto")
+    .each(function () {
+      this.load(); // Explicitly tell browser to load now
+    });
 
   
   makeSim(nodes, node);

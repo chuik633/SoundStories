@@ -9,6 +9,8 @@
   --selectedImageSize:150px;
   --hoverImageSize:100px;
   --prevImageSize:50px;
+
+  
 }
 /* VIDEO WRAPPER */
 .preview-container {
@@ -19,6 +21,10 @@
 .preview-container.full {
   width: 100vw;
   height: calc(100vh - var(--shrinkSize));
+  display:flex;
+  flex-direction:column;
+  align-items: center;
+  justify-content: flex-start;
   /* background-color: rgb(242, 122, 142); */
 }
 .preview-container.small {
@@ -26,6 +32,31 @@
   height: var(--shrinkSize);
   /* background-color: pink; */
 }
+
+.preview-container.small #sketches-container {
+  position: absolute;
+  top: 60vh;
+  left:50vw;
+  transform: translate(-50%,0);
+  width: 80vw;
+  height: 200px;
+  border: 1px solid white;
+  /* background-color: white; */
+  pointer-events: none;
+  z-index: 10;
+}
+
+.preview-container.full #sketches-container{
+  position:relative;
+  width: 80vw;
+  min-height: 200px;
+  /* border: 1px solid white; */
+  height:fit-content;
+  display: flex;
+  flex-direction:column;
+}
+
+
 
 /* DASHBOARD */
 .dashboard {
@@ -35,7 +66,7 @@
   flex-direction:column;
 }
 .dashboard.full {
-  padding: 10px;
+  padding: 0px;
   width: 100vw;
   height: calc(100vh - var(--shrinkSize));;
   /* background-color: cadetblue; */
@@ -60,7 +91,8 @@
 .plots-container{
   width:100%;
   height:100%;
-  background-color: darkcyan;
+  background-color: black;
+  border:1px solid white;
 }
 
 /* DASHBOARD scene previews*/
@@ -107,13 +139,3 @@
 
 
 
-/* Video wrapper syncing */
-.video-wrapper-outer{
-  z-index:3;
-  position:absolute;
-  width: var(--selectedImageSize);
-  background-color: black;
-  opacity:0;
-  visibility:hidden;
-  transition: opacity .3s ease-in-out, width .3s ease-in-out;
-}

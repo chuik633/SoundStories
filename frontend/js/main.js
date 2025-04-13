@@ -1,8 +1,4 @@
-let imageSceneData;
-let audioSceneData;
-let captionData;
-let videoInfo;
-let numSamples;
+
 
 async function loadData() {
   videoInfo = await d3.json(mainDir + pathConfig.videoDataFilename);

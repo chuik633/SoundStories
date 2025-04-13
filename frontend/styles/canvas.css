@@ -1,22 +1,18 @@
-#video-sketch-container {
-  position: absolute;
-  top: 60vh;
-  left:50vw;
-  transform: translate(-50%,0);
-  width: 80vw;
-  height: 200px;
-  border: 1px solid white;
-  /* background-color: white; */
-  pointer-events: none;
-  z-index: 10;
-}
-
 .preview-container canvas{
     position:absolute;
     top:0px;
     left:0px;
     /* border: 1px solid white; */
     pointer-events: none;
-    mix-blend-mode: lighten;
+    /* mix-blend-mode: lighten; */
+
+}
+
+
+.sketch-container{
+  width: 100%;
+  height:100%;
+  min-height: 200px;
+  border:.3px solid white;
 
 }

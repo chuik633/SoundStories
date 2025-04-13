@@ -1,9 +1,3 @@
-const shrinkSize = 50//size of when one of them shrinks
-const selectedImageSize = 200
-const overlap = 0
-const selectedVideoSize = selectedImageSize + overlap*2;
-const hoverImageSize = 100
-
 
 
 function layoutDashboardAndPreview(container) {
@@ -16,22 +10,27 @@ function layoutDashboardAndPreview(container) {
 
   //the dashboard
   const dashboard = container.append("div").attr("class", "dashboard full");
+  dashboard.append('h2').text('MOVIE TITLE')
   layoutDashboard(dashboard, imageSceneData);
+ 
 
   // the preview container
   const previewContainer = container
     .append("div")
     .attr("class", "preview-container small");
+
+  //the video player
+  const videoWrapper = previewContainer
+    .append("div")
+    .attr("class", "video-wrapper-outer small");
+
   //place in the background sketch
   const sketch_container = previewContainer
     .append("div")
-    .attr("id", "video-sketch-container");
+    .attr("id", "sketches-container").attr('class', 'hidden')
 
-  //the video player
-  const videoWrapper = container
-    .append("div")
-    .attr("class", "video-wrapper-outer small");
-  makeSingleVideoPlayer(videoWrapper, 0);
+  makeSingleVideoPlayer(videoWrapper, startSceneNum);
+  changeDisplayedVideo(startSceneNum);
 
   //grow and shrink elements
   dashboard.on("click", () => expandDashboard());
@@ -40,15 +39,17 @@ function layoutDashboardAndPreview(container) {
 
 //put motion and transitions into these?
 function expandDashboard(){
-  //grow preview container
+  //shrink preview container
   d3.select(".preview-container").attr("class", "preview-container small");
-  //grow video wrap
+  d3.select("#sketches-container").attr("class", "hidden");
+  //grow shrink wrap
   d3.select(".video-wrapper-outer").attr("class", "video-wrapper-outer small");
-  //shrink dashboard
+  //grow dashboard
   d3.select(".dashboard").attr("class", "dashboard full");
 }
 function expandPreviewContainer() {
   d3.select(".preview-container").attr("class", "preview-container full")
+   d3.select("#sketches-container").attr("class", "visible");
   d3.select(".video-wrapper-outer").attr("class", "video-wrapper-outer full");
   d3.select(".dashboard").attr("class", "dashboard small");
 }
@@ -78,11 +79,12 @@ function layoutScenePreviews(outer_container) {
       // showSketches(filename, sceneNum);
     });
   }
-   changeDisplayedVideo(0);
+   
     
 }
 
 function changeDisplayedVideo(sceneNum){
+  console.log('scene change')
   //RESIZE ALL OF THE IMAGES IN THE PREVIEW
   d3.selectAll(".sceneImg").attr("selected", false);
   d3.selectAll(".sceneImg").attr("prev", false);
@@ -119,7 +121,7 @@ function changeDisplayedVideo(sceneNum){
     "transitionend",
     () => {
       const rect = selectedSceneImg.getBoundingClientRect();
-      d3.select(".video-wrapper-outer")
+      d3.select(".video-wrapper-outer.small")
         .style("height", `${rect.height}px`)
         .style("width", `${selectedVideoSize}px`)
         .style("top", `${rect.top + window.scrollY}px`)
@@ -134,6 +136,9 @@ function changeDisplayedVideo(sceneNum){
   d3.select("#displayed-video").attr("src", videoDir + sceneNum + ".mp4");
   d3.select("#displayed-video").attr("sceneNum", sceneNum);
 
+
+  //update plots
+  layoutPlots(sceneNum);
   //show the sketches
   showSketches(sceneNum); 
 }
@@ -141,38 +146,3 @@ function changeDisplayedVideo(sceneNum){
 
 
 
-// DELETE THESE ONCE IT WORK
-function layoutDashboard2(
-  container,
-  imageSceneData,
-  audioSceneData,
-  captionData
-) {
-  const dashboard = container.append("div").attr("class", "dashboard small");
-  const previewArea = container
-    .append("div")
-    .attr("class", "video-wrapper-outer full");
-
-  // make the video player
-  makeSingleVideoPlayer(
-    previewArea,
-    1,
-    imageSceneData,
-    audioSceneData,
-    captionData
-  );
-
-  //expand preview
-  d3.select(".video-wrapper-outer").on("click", () => {
-    previewArea.attr("class", "video-wrapper-outer full");
-    dashboard.attr("class", "dashboard small");
-  });
-
-  d3.select(".dashboard").on("click", () => {
-    previewArea.attr("class", "video-wrapper-outer small");
-    dashboard.attr("class", "dashboard full");
-  });
-
-  //layout dashboard
-  layoutScenePreviews(dashboard, imageSceneData, audioSceneData, captionData);
-}

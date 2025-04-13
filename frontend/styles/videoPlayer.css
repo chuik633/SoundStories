@@ -1,13 +1,14 @@
 
 .video-wrapper-outer.full {
-  transition:all 1s ease-in-out;
-  top:calc(50vh - 100px)!important;
-  left:50vw!important;
-  transform:translate(-50%,-50%);
+  transition:all .5s ease-in-out;
   height: fit-content !important;
+  min-height:100px;
   width: 80vw !important;
   background-color: black;
   border: 0.4px solid white;
+  position:relative;
+  top:0px !important;
+  left:0px !important;
 }
 .video-wrapper-outer.full .video-wrapper {
   display: flex;
@@ -19,6 +20,17 @@
   align-items: center;
   justify-content: center;
 }
+/* Video wrapper syncing */
+.video-wrapper-outer.small{
+  z-index:3;
+  position:absolute;
+  width: var(--selectedImageSize);
+  background-color: black;
+  opacity:0;
+  visibility:hidden;
+  transition: opacity .3s ease-in-out, width .3s ease-in-out;
+}
+
 
 .video-wrapper-outer.small .video-wrapper {
   display: flex;

@@ -30,12 +30,13 @@ function sketch_loadingGrain(p, parentDiv) {
     analyserNode = audioContext.createAnalyser();
 
     //connect audio elements
-    let audioElements = document.querySelectorAll("audio, video");
+    let audioElements = document.querySelectorAll("audio");
     audioElements.forEach((audioElement) => {
       let sourceNode = audioContext.createMediaElementSource(audioElement);
       sourceNode.connect(analyserNode);
       analyserNode.connect(audioContext.destination);
     });
+    console.log('got all audio elements')
 
     fft = new p5.FFT(0.8, nbins);
     fft.setInput(analyserNode);
