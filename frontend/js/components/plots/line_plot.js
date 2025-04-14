@@ -2,19 +2,9 @@
  * val should be for every sample, show it aveaged for the condensed scenes,
  * slightly bigger for the nearby ones, and big for the current
  */
+let hover_square;
 function dynamicPlot(dashboard, val, plot_width, plot_height, sceneNum) {
-  // const hover_line = dashboard
-  //   .append("div")
-  //   .attr("class", "vertical-line")
-  //   .style("background-color", "white")
-  //   .style("position", "absolute")
-  //   .style("top", "0px")
-  //   .style("left", "0px")
-  //   .style("z-index", `5`)
-  //   .style("width", `1px`)
-  //   .style("height", `${plot_height}px`);
-
-  const hover_square = dashboard
+   hover_square = dashboard
     .append("div")
     .style("border", ".5px solid white")
     .attr('class', 'hidden')
@@ -33,8 +23,8 @@ function dynamicPlot(dashboard, val, plot_width, plot_height, sceneNum) {
   const minVal = d3.min(flatVals);
   const maxVal = d3.max(flatVals);
 
-  const smallChunkSize = Math.min(80, list_len);
-  const hoverChunkSize = Math.min(30, smallChunkSize);
+  const smallChunkSize = Math.min(50, list_len);
+  const hoverChunkSize = Math.min(10, smallChunkSize);
   const chunk = (arr, size) =>
     arr.reduce(
       (acc, _, i) => (i % size === 0 ? [...acc, arr.slice(i, i + size)] : acc),
@@ -148,16 +138,8 @@ function dynamicPlot(dashboard, val, plot_width, plot_height, sceneNum) {
     const [x] = d3.pointer(event, this);
     //get the corresponding scene to the hover
     let hoverSceneNum = getSceneNumfromX(x);
-    hover_square.attr("class", "visible");
-    // hover_line.style('left', `${x}px`)
-    if(hoverSceneNum==sceneNum){
-      hover_square.style('width', `${selectedImageSize}px`)
-    }else if (hoverSceneNum == sceneNum - 1 || hoverSceneNum == sceneNum - 1+1) {
-      hover_square.style("width", `${hoverImageSize}px`);
-    }else{
-       hover_square.style("width", `${smallSceneW}px`);
-    }
-    hover_square.style("left", `${getSceneStartX(hoverSceneNum)}px`);
+    hoverLinePlot(hoverSceneNum);
+    highlightNoteScene(hoverSceneNum);
    
   });
   svg.on('click', function (event) {
@@ -254,7 +236,26 @@ function dynamicPlot(dashboard, val, plot_width, plot_height, sceneNum) {
         .x((d, i) => curr_x + xScale1(i))
         .y((d) => yScale(d))
     );
+
+    function hoverLinePlot(hoverSceneNum) {
+      hover_square.attr("class", "visible");
+      // hover_line.style('left', `${x}px`)
+      if (hoverSceneNum == sceneNum) {
+        hover_square.style("width", `${selectedImageSize}px`);
+      } else if (
+        hoverSceneNum == sceneNum - 1 ||
+        hoverSceneNum == sceneNum + 1
+      ) {
+        hover_square.style("width", `${hoverImageSize}px`);
+      } else {
+        hover_square.style("width", `${smallSceneW}px`);
+      }
+      hover_square.style("left", `${getSceneStartX(hoverSceneNum)}px`);
+    }
+
+    return hoverLinePlot
 }
+
 
 
 

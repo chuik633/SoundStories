@@ -3,7 +3,9 @@
  * parentDiv; the div to fit the canvas to
  * sceneNum; the int for the scene index for the data
  */
+
 const sketch_template = (p, parentDiv, sceneNum) => {
+    const syncId = "#displayed-video";
   //data variables
   const img_path = `${imgDir}${sceneNum}.png`;
   const imgEntry = imageSceneData[sceneNum];
@@ -13,7 +15,7 @@ const sketch_template = (p, parentDiv, sceneNum) => {
 
   //audio variables
   let timestamp, shortIdx, captionIdx;
-  let mcc_list;
+  let mcc_list, chromagram_list, notes;
   let caption;
 
   //canvas variables

@@ -1,4 +1,4 @@
-const movieName = "princessSmall";
+const movieName = "compilation";
 
 const pathConfig = {
   dataPath: "../data/tmp/",

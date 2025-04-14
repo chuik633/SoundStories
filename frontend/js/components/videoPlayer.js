@@ -2,6 +2,7 @@ function makeSingleVideoPlayer(
   outer_container,
   sceneNum
 ) {
+  let currSceneNum = sceneNum
   const vidPath = videoDir + sceneNum + ".mp4";
   //create the vide
 
@@ -62,7 +63,16 @@ function makeSingleVideoPlayer(
 
   //pasuing playing
   playPauseBtn.on("click", () => {
-    console.log("changing video play mode")
+    togglePausePlay();
+  });
+  document.addEventListener("keydown", function (event) {
+    if (event.code === "Space") {
+      togglePausePlay();
+    }
+  });
+
+
+  function togglePausePlay(){
     if (video.node().paused) {
       video.node().play();
       playPauseBtn.attr("src", "./styles/icons/pause.svg");
@@ -70,7 +80,7 @@ function makeSingleVideoPlayer(
       video.node().pause();
       playPauseBtn.attr("src", "./styles/icons/play.svg");
     }
-  });
+  }
 
   //progress bar function
   video.on("timeupdate", function () {
@@ -78,7 +88,14 @@ function makeSingleVideoPlayer(
     const progress = progressBar.node();
     if (video.node().duration > 0) {
       progress.value = (video.node().currentTime / video.node().duration) * 100;
+      if(video.node().currentTime == video.node().duration){
+        let currSceneNum = (video.attr("sceneNum")+1)%numSamples
+        changeDisplayedVideo(currSceneNum);
+        video.node().currentTime= 0
+        video.node().play();
+      }
     }
+
   });
 
   //adjusting progress bar

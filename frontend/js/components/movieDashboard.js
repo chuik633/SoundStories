@@ -48,10 +48,12 @@ function expandDashboard(){
   d3.select(".dashboard").attr("class", "dashboard full");
 }
 function expandPreviewContainer() {
+  
   d3.select(".preview-container").attr("class", "preview-container full")
    d3.select("#sketches-container").attr("class", "visible");
   d3.select(".video-wrapper-outer").attr("class", "video-wrapper-outer full");
   d3.select(".dashboard").attr("class", "dashboard small");
+  showSketches(d3.select("#displayed-video").attr("sceneNum"));
 }
 
 
@@ -76,7 +78,6 @@ function layoutScenePreviews(outer_container) {
     sceneImg.on("click", () => {
       console.log("SELECTED:", sceneNum)
       changeDisplayedVideo(sceneNum);
-      // showSketches(filename, sceneNum);
     });
   }
    
@@ -139,6 +140,7 @@ function changeDisplayedVideo(sceneNum){
 
   //update plots
   layoutPlots(sceneNum);
+
   //show the sketches
   showSketches(sceneNum); 
 }

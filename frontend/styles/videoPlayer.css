@@ -2,7 +2,7 @@
 .video-wrapper-outer.full {
   transition:all .5s ease-in-out;
   height: fit-content !important;
-  min-height:100px;
+  /* min-height:100px; */
   width: 80vw !important;
   background-color: black;
   border: 0.4px solid white;
@@ -15,6 +15,7 @@
   flex-direction: column;
   gap: 10px;
   padding: 10px;
+  height:fit-content;
 
 
   align-items: center;

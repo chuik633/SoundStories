@@ -35,15 +35,6 @@
 
 .preview-container.small #sketches-container {
   position: absolute;
-  top: 60vh;
-  left:50vw;
-  transform: translate(-50%,0);
-  width: 80vw;
-  height: 200px;
-  border: 1px solid white;
-  /* background-color: white; */
-  pointer-events: none;
-  z-index: 10;
 }
 
 .preview-container.full #sketches-container{
@@ -51,9 +42,11 @@
   width: 80vw;
   min-height: 200px;
   /* border: 1px solid white; */
-  height:fit-content;
+  height:100%;
   display: flex;
   flex-direction:column;
+  gap:10px;
+  overflow-y:auto
 }
 
 

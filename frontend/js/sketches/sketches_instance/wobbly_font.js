@@ -6,7 +6,7 @@
  * parentDiv; the div to fit the canvas to
  * sceneNum; the int for the scene index for the data
  */
-const sketch_blur_font = (p,parentDiv, sceneNum) => {
+const sketch_wobbly_font = (p,parentDiv, sceneNum) => {
   //the video or audio to sync to
   const syncId = "#displayed-video";
 
@@ -48,6 +48,8 @@ const sketch_blur_font = (p,parentDiv, sceneNum) => {
     const parentRect = parentDiv.getBoundingClientRect();
     width = parentRect.width
     height = parentRect.height
+    console.log(parentDiv)
+    console.log('width', width, height)
 
     //bind canvas to parent
     const canvas = p.createCanvas(width, height);
@@ -67,18 +69,18 @@ const sketch_blur_font = (p,parentDiv, sceneNum) => {
 
     //draw the caption
     if(display_text==undefined){
-      display_text = 'c defgabc'
+      display_text = 'cdefgabc'
     }else{
-      console.log(chromagram_list);
+      console.log(display_text);
     }
     drawText(
-      mcc_list,
-      display_text,
+      chromagram_list,
+      "cdefgabc",
       (x = width / 2),
       (y = height / 2),
       (maxWidth = width - 50),
       (animateNoise = true),
-      (animatePos = true),
+      (animatePos = false),
       (animateSize = true)
     );
   };
@@ -141,8 +143,8 @@ const sketch_blur_font = (p,parentDiv, sceneNum) => {
     //divide the input_list up to the letters
     let sample_size = Math.round(input_list.length / inputText.length); //the size of the spectrum to correspond to each letter
 
-    // p.fill("green");
-    // p.text(inputText, x, y);
+    p.fill("green");
+    p.text(inputText, x, y);
     //Draw each letter
     for (let letterIdx = 0; letterIdx < inputText.length; letterIdx++) {
       const letter = inputText[letterIdx];
@@ -153,7 +155,7 @@ const sketch_blur_font = (p,parentDiv, sceneNum) => {
 
       //Animate Size
       let size_shift = 1;
-      console.log(val_average)
+      // console.log(val_average)
       if (animateSize) {
         size_shift = p.map(val_average, min_val, max_val, 1, 2);
       }

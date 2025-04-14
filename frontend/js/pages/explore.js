@@ -8,7 +8,7 @@ function initExplorePage(){
   const container = d3
     .select("#explore-page")
     .append("div")
-    .attr("class", "preview-container");
+    .attr("class", "explore-container");
 
   let loaded = document.getElementById("explore-page");
 

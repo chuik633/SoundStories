@@ -9,19 +9,23 @@ const startingPage = 'films'
 const routes = {
   about: "pages/about.html",
   explore: "pages/explore.html",
+  experiment: "pages/experiment.html",
   films: "pages/films.html",
 };
 function layoutMenu(){ 
     if (document.querySelector("nav")) return;//dont want to add it twice
     menu_container.innerHTML += `
         <nav>  
-            <a class = 'menu-link' href="#explore">Explore</a>
+            <a class = 'menu-link' href="#explore">Scenes</a>
+           
             <a class = 'menu-link' href="#films">Films</a>
             <div class="film-submenu">
-                <label class = 'menu-link' ><input type="radio" name="film-select" value="film1"> Film 1</label>
-                <label class = 'menu-link' ><input type="radio" name="film-select" value="film2"> Film 2</label>
-                <label class = 'menu-link' ><input type="radio" name="film-select" value="film3"> Film 3</label>
+                <label class = 'menu-link' ><input type="radio" name="film-select" value="film1"> Interstellar</label>
+                <label class = 'menu-link' ><input type="radio" name="film-select" value="film2"> Princess Mononoke</label>
+                <label class = 'menu-link' ><input type="radio" name="film-select" value="film3"> Challengers</label>
             </div>
+
+             <a class = 'menu-link' href="#experiment">TRY IT</a>
 
             <a class = 'menu-link about-link' href="#about">About</a>
         </nav>
@@ -79,6 +83,8 @@ function runPageScripts(page) {
   } else if (page =='films'){
     console.log('films page')
     initFilmsPage();
+  } else if (page =='experiment'){
+    initExperimentPage();
   }
   
 }
