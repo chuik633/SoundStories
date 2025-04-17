@@ -4,25 +4,25 @@
   height: 100vh;
   flex-direction: column;
   /* background-color: blue; */
-  --shrinkSize:100px;
+  --shrinkSize: 100px;
 
-  --selectedImageSize:150px;
-  --hoverImageSize:100px;
-  --prevImageSize:50px;
-
-  
+  --selectedImageSize: 150px;
+  --hoverImageSize: 100px;
+  --prevImageSize: 50px;
 }
 /* VIDEO WRAPPER */
 .preview-container {
   transition: all 0.5s ease-out;
   border: 0.4px solid white;
-
 }
 .preview-container.full {
   width: 100vw;
-  height: calc(100vh - var(--shrinkSize));
-  display:flex;
-  flex-direction:column;
+  /* height: calc(100vh - var(--shrinkSize)); */
+  height: fit-content;
+  padding: 100px 0px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: flex-start;
   /* background-color: rgb(242, 122, 142); */
@@ -37,31 +37,36 @@
   position: absolute;
 }
 
-.preview-container.full #sketches-container{
-  position:relative;
+.preview-container.full #sketches-container {
+  position: relative;
   width: 80vw;
+  min-width: 400px;
+
   min-height: 200px;
-  /* border: 1px solid white; */
-  height:100%;
+  /* border: 0.1px solid white; */
+  height: 100%;
   display: flex;
-  flex-direction:column;
-  gap:10px;
-  overflow-y:auto
+  flex-direction: column;
+  gap: 20px;
+  overflow-y: auto;
 }
 
-
+.preview-container.full .sketch-container {
+  position: relative;
+  /* border: 0.1px solid white; */
+}
 
 /* DASHBOARD */
 .dashboard {
   transition: all 0.5s ease-out;
   /* background-color: rgb(122, 154, 54); */
-  display:flex;
-  flex-direction:column;
+  display: flex;
+  flex-direction: column;
 }
 .dashboard.full {
   padding: 0px;
   width: 100vw;
-  height: calc(100vh - var(--shrinkSize));;
+  height: calc(100vh - var(--shrinkSize));
   /* background-color: cadetblue; */
   overflow: hidden;
 }
@@ -81,54 +86,54 @@
 }
 
 /* DASHBOARD plots*/
-.plots-container{
-  width:100%;
-  height:100%;
+.plots-container {
+  width: 100%;
+  height: 100%;
   background-color: black;
-  border:1px solid white;
+  border: 1px solid white;
 }
 
 /* DASHBOARD scene previews*/
 .scene-preview-container {
-  position:relative;
+  position: relative;
   width: 100%;
   display: flex;
   flex-direction: row;
-  align-items:center;
+  align-items: center;
   height: var(--selectedImageSize);
   overflow: hidden;
   /* overflow-x: auto; */
-  gap: .5px;
+  gap: 0.5px;
 }
 
 .scene-preview-container .sceneImg {
   height: 50px;
-  width:var(--prevImageSize);
+  width: var(--prevImageSize);
   object-fit: fit;
   /* border:1px solid white; */
   transition: width 0.3s ease-in-out, height 0.3s ease-in-out;
 }
 
-.scene-preview-container .sceneImg[selected='false'][next='false'][prev='false']:hover{
+.scene-preview-container
+  .sceneImg[selected="false"][next="false"][prev="false"]:hover {
   height: var(--hoverImageSize);
 }
 
-.sceneImg[selected='true'] {
+.sceneImg[selected="true"] {
   height: fit-content;
   width: var(--selectedImageSize) !important;
   object-fit: contain;
 }
 
-.sceneImg[next='true'], .sceneImg[prev='true']  {
+.sceneImg[next="true"],
+.sceneImg[prev="true"] {
   height: auto;
-  width: var(--hoverImageSize) ;
+  width: var(--hoverImageSize);
   object-fit: contain;
-  transition: transform .3s ease-in-out, opacity .2s ease-in-out;
+  transition: transform 0.3s ease-in-out, opacity 0.2s ease-in-out;
 }
-.sceneImg[next='true']:hover, .sceneImg[prev='true']:hover  {
-  opacity:.8 !important;
-  border:.5px solid white;
+.sceneImg[next="true"]:hover,
+.sceneImg[prev="true"]:hover {
+  opacity: 0.8 !important;
+  border: 0.5px solid white;
 }
-
-
-

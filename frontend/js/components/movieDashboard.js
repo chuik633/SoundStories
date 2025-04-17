@@ -1,6 +1,4 @@
-
-
-function layoutDashboardAndPreview(container) {
+function layoutDashboardAndPreview(container, movieName, dashboard_mode) {
   d3.select("#films-page").style("--shrinkSize", `${shrinkSize}px`); //sync it with the css
   d3.select("#films-page").style("--hoverImageSize", `${hoverImageSize}px`);
   d3.select("#films-page").style(
@@ -9,36 +7,48 @@ function layoutDashboardAndPreview(container) {
   );
 
   //the dashboard
-  const dashboard = container.append("div").attr("class", "dashboard full");
-  dashboard.append('h2').text('MOVIE TITLE')
-  layoutDashboard(dashboard, imageSceneData);
- 
-
-  // the preview container
-  const previewContainer = container
+  const dashboard = container
     .append("div")
-    .attr("class", "preview-container small");
+    .attr("class", "dashboard full")
+    .attr("id", `dashboard-${movieName}`);
+  dashboard.append("h2").text(" ");
+  layoutDashboard(dashboard, movieName);
 
-  //the video player
-  const videoWrapper = previewContainer
-    .append("div")
-    .attr("class", "video-wrapper-outer small");
-
-  //place in the background sketch
-  const sketch_container = previewContainer
-    .append("div")
-    .attr("id", "sketches-container").attr('class', 'hidden')
-
-  makeSingleVideoPlayer(videoWrapper, startSceneNum);
-  changeDisplayedVideo(startSceneNum);
+  //the preview
+  const previewContainer = layoutPreview(container, 0, movieName);
 
   //grow and shrink elements
   dashboard.on("click", () => expandDashboard());
   previewContainer.on("click", () => expandPreviewContainer());
+  if (dashboard_mode) {
+    expandDashboard();
+  } else {
+    expandPreviewContainer();
+  }
+}
+
+function layoutPreview(container, sceneNum, movieName) {
+  const previewContainer = container
+    .append("div")
+    .attr("class", "preview-container full");
+
+  //the video player
+  const videoWrapper = previewContainer
+    .append("div")
+    .attr("class", "video-wrapper-outer full");
+
+  //place in the background sketch
+  const sketch_container = previewContainer
+    .append("div")
+    .attr("id", "sketches-container")
+    .attr("class", "hidden");
+  makeSingleVideoPlayer(videoWrapper, movieName, sceneNum);
+  changeDisplayedVideo(movieName, sceneNum);
+  return previewContainer;
 }
 
 //put motion and transitions into these?
-function expandDashboard(){
+function expandDashboard() {
   //shrink preview container
   d3.select(".preview-container").attr("class", "preview-container small");
   d3.select("#sketches-container").attr("class", "hidden");
@@ -48,44 +58,41 @@ function expandDashboard(){
   d3.select(".dashboard").attr("class", "dashboard full");
 }
 function expandPreviewContainer() {
-  
-  d3.select(".preview-container").attr("class", "preview-container full")
-   d3.select("#sketches-container").attr("class", "visible");
+  d3.select(".preview-container").attr("class", "preview-container full");
+  d3.select("#sketches-container").attr("class", "visible");
   d3.select(".video-wrapper-outer").attr("class", "video-wrapper-outer full");
   d3.select(".dashboard").attr("class", "dashboard small");
   showSketches(d3.select("#displayed-video").attr("sceneNum"));
 }
 
-
-function layoutDashboard(dashboard) {
-  dashboard.append('div').attr('class', 'plots-container')
-  layoutScenePreviews(dashboard, imageSceneData);
+function layoutDashboard(dashboard, movieName) {
+  dashboard.append("div").attr("class", "plots-container");
+  layoutScenePreviews(dashboard, movieName);
 }
 
-function layoutScenePreviews(outer_container) {
+function layoutScenePreviews(outer_container, movieName) {
   const container = outer_container
     .append("div")
     .attr("class", "scene-preview-container");
-  for (const { filename, colors, sceneNum } of imageSceneData) {
+  for (const { filename, colors, sceneNum } of data[movieName].imageSceneData) {
     const sceneImg = container
       .append("img")
       .attr("class", `sceneImg sceneImg-${sceneNum}`)
-      .attr("src", imgDir + filename)
+      .attr("src", metaData[movieName].imgDir + filename)
       .attr("next", false)
       .attr("prev", false)
       .attr("selected", false);
     //TODO change this to make the scene selection
     sceneImg.on("click", () => {
-      console.log("SELECTED:", sceneNum)
-      changeDisplayedVideo(sceneNum);
+      console.log("SELECTED:", sceneNum);
+      changeDisplayedVideo(movieName, sceneNum);
     });
   }
-   
-    
 }
 
-function changeDisplayedVideo(sceneNum){
-  console.log('scene change')
+function changeDisplayedVideo(movieName, sceneNum) {
+  const numSamples = data[movieName].numSamples;
+  console.log("scene change");
   //RESIZE ALL OF THE IMAGES IN THE PREVIEW
   d3.selectAll(".sceneImg").attr("selected", false);
   d3.selectAll(".sceneImg").attr("prev", false);
@@ -116,7 +123,9 @@ function changeDisplayedVideo(sceneNum){
   d3.select("#films-page").style("--prevImageSize", `${imgW}px`);
 
   //PLACE THE VIDEO WRAPPER WHERE THE SLEECTED IMAGE IS
-  d3.select(".video-wrapper-outer").style("visibility", "hidden").style("opacity", 0);
+  d3.select(".video-wrapper-outer")
+    .style("visibility", "hidden")
+    .style("opacity", 0);
   const selectedSceneImg = d3.select(`.sceneImg-${sceneNum}`).node();
   selectedSceneImg.addEventListener(
     "transitionend",
@@ -134,17 +143,15 @@ function changeDisplayedVideo(sceneNum){
   );
 
   //set the displayed video
-  d3.select("#displayed-video").attr("src", videoDir + sceneNum + ".mp4");
+  d3.select("#displayed-video").attr(
+    "src",
+    metaData[movieName].videoDir + sceneNum + ".mp4"
+  );
   d3.select("#displayed-video").attr("sceneNum", sceneNum);
 
-
   //update plots
-  layoutPlots(sceneNum);
+  layoutPlots(movieName, sceneNum);
 
   //show the sketches
-  showSketches(sceneNum); 
+  showSketches(movieName, sceneNum);
 }
-
-
-
-

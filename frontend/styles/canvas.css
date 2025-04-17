@@ -1,18 +1,17 @@
-.explore-container canvas{
-    position:absolute;
-    top:0px;
-    left:0px;
-    /* border: 1px solid white; */
-    pointer-events: none;
-    mix-blend-mode: lighten;
-
+.explore-container canvas {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  /* border: 1px solid white; */
+  pointer-events: none;
+  mix-blend-mode: lighten;
 }
 
 .preview-container.small #video-sketch-container {
   position: absolute;
   top: 60vh;
-  left:50vw;
-  transform: translate(-50%,0);
+  left: 50vw;
+  transform: translate(-50%, 0);
   width: 80vw;
   height: 200px;
   border: 1px solid white;
@@ -21,10 +20,9 @@
   z-index: 10;
 }
 
-.preview-container.full #video-sketch-container{
-  position:relative;
+.preview-container.full #video-sketch-container {
+  position: relative;
   width: 80vw;
   height: 200px;
   border: 1px solid white;
 }
-

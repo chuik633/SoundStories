@@ -1,19 +1,20 @@
-
 const NOTES = ["C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"];
-const num_white_notes = 7
+const num_white_notes = 7;
 let noteYscale = {};
 function showNotes(
   dashboard,
   plot_width,
   plot_height,
+  movieName,
   sceneNum,
+
   hoverLinePlot
 ) {
   const side_w = 100;
 
   const xScale = d3
     .scaleLinear()
-    .domain([0, audioSceneData.length])
+    .domain([0, data[movieName].audioSceneData.length])
     .range([side_w, plot_width]);
   const note_width = xScale(1) - xScale(0);
   const note_height = plot_height / num_white_notes;
@@ -70,10 +71,10 @@ function showNotes(
       d3.selectAll("." + getNoteClass(d)).attr("opacity", 1);
     });
 
-  const sceneColors = imageSceneData
+  const sceneColors = data[movieName].imageSceneData
     .map((d) => d["colors"][0])
     .map((d) => `rgb(${d[0]},${d[1]},${d[2]})`);
-  const notes_data = audioSceneData.map(
+  const notes_data = data[movieName].audioSceneData.map(
     (d) => new Set(Object.values(d["notes_at_timestamps"]).flat())
   );
   svg
@@ -106,7 +107,7 @@ function showNotes(
 
   svg
     .selectAll("rect.pianoSceneBG")
-    .data(imageSceneData.map((d) => d["colors"][0]))
+    .data(data[movieName].imageSceneData.map((d) => d["colors"][0]))
     .enter()
     .append("rect")
     .attr("data-index", (d, i) => i)
@@ -126,15 +127,15 @@ function showNotes(
     })
     .on("click", function (event, d) {
       const i = +this.getAttribute("data-index");
-      changeDisplayedVideo(i);
+      changeDisplayedVideo(movieName, i);
     });
 
   highlightNoteScene(sceneNum);
 }
 
-function highlightNoteScene(sceneNum){
-      d3.selectAll(".pianoScene .note").attr("opacity", 0.2);
-      d3.selectAll(".pianoSceneBG").attr("opacity", .01);
-      d3.selectAll(".pianoSceneBG-" + sceneNum).attr("opacity", .7);
-      d3.selectAll(".pianoScene-" + sceneNum + " .note").attr("opacity", 1);
+function highlightNoteScene(sceneNum) {
+  d3.selectAll(".pianoScene .note").attr("opacity", 0.2);
+  d3.selectAll(".pianoSceneBG").attr("opacity", 0.01);
+  d3.selectAll(".pianoSceneBG-" + sceneNum).attr("opacity", 0.7);
+  d3.selectAll(".pianoScene-" + sceneNum + " .note").attr("opacity", 1);
 }

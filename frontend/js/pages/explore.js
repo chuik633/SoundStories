@@ -1,10 +1,9 @@
-
 const width = window.innerWidth;
 const height = window.innerHeight;
-const padding = 50
+const padding = 50;
 let img_width;
 
-function initExplorePage(){
+function initExplorePage() {
   const container = d3
     .select("#explore-page")
     .append("div")
@@ -14,7 +13,7 @@ function initExplorePage(){
 
   //floating previews
   if (loaded) {
-    makeLayout(container, imageSceneData);
+    makeLayout(container);
     console.log("made layout");
   } else {
     console.log("not loaded");
@@ -23,14 +22,17 @@ function initExplorePage(){
   new p5((p) => sketch_loadingGrain(p, container.node()));
 }
 
-function makeLayout(container, imageSceneData) {
-  const times = imageSceneData.map((d) => d.sceneNum);
-  const timeScale = d3.scaleLinear().domain(d3.extent(times)).range([padding, width-padding]);
+function makeLayout(container) {
+  const times = allSceneData.map((d) => d.sceneNum);
+  const timeScale = d3
+    .scaleLinear()
+    .domain(d3.extent(times))
+    .range([padding, width - padding]);
   const svg = container
     .append("svg")
     .attr("width", width)
     .attr("height", height);
-  console.log("SVG", svg)
+  console.log("SVG", svg);
   svg
     .append("text")
     .attr("x", width / 2)
@@ -40,24 +42,24 @@ function makeLayout(container, imageSceneData) {
     .attr("font-size", "10px")
     .attr("fill", "white")
     .text("MUSIC IN FILM");
-  img_width = Math.max(Math.min(120,(width / imageSceneData.length)),80) ;
+  img_width = Math.max(Math.min(120, width / allSceneData.length), 80);
 
-  let nodes = imageSceneData.map((d, i) => {
-      let z = Math.floor(Math.random() * 3) + 1;
-      let node_w = img_width/2 +z*10;
-      return {
-        id: i,
-        origional_x: timeScale(d.sceneNum),
-        origional_y: height / 2,
-        x: timeScale(d.sceneNum),
-        y: height / 2,
-        z: z,
-        w: node_w,
-        h:node_w*2/3,
-        audioPath :audioDir+d.sceneNum+".wav",
-        ...d,
-        parallaxSpeed: z * 1.2 +.2,
-      };
+  let nodes = allSceneData.map((d, i) => {
+    let z = Math.floor(Math.random() * 3) + 1;
+    let node_w = img_width / 2 + z * 10;
+    return {
+      id: i,
+      origional_x: timeScale(d.sceneNum),
+      origional_y: height / 2,
+      x: timeScale(d.sceneNum),
+      y: height / 2,
+      z: z,
+      w: node_w,
+      h: (node_w * 2) / 3,
+      audioPath: d.audioDir + d.sceneNum + ".wav",
+      ...d,
+      parallaxSpeed: z * 1.2 + 0.2,
+    };
   });
   nodes = [...nodes].sort((a, b) => a.z - b.z);
 
@@ -68,11 +70,11 @@ function makeLayout(container, imageSceneData) {
     .data(nodes)
     .enter()
     .append("g")
-    .attr("class", (d) => "node-scene-" + d.sceneNum)
-    .attr("transform", (d) => `translate(${d.x}, ${d.y})`)
+    .attr("class", (d) => "node-id-" + d.id)
+    .attr("transform", (d) => `translate(${d.x}, ${d.y})`);
   node
     .append("rect")
-    .attr("class", (d) => "color-node scene-" + d.sceneNum)
+    .attr("class", (d) => "color-node id-" + d.id)
     .attr("width", (d) => d.w / 2)
     .attr("height", 1)
     .attr("fill", (d) => {
@@ -81,12 +83,12 @@ function makeLayout(container, imageSceneData) {
     });
   node
     .append("image")
-    .attr("class", (d) => "image-node scene-" + d.sceneNum)
-    .attr("xlink:href", (d) => imgDir + d["filename"])
+    .attr("class", (d) => "image-node id-" + d.id)
+    .attr("xlink:href", (d) => d.imgDir + d["filename"])
     .attr("width", (d) => d.w / 2)
     .attr("height", (d) => d.h / 2)
     .on("mouseover", (event, d) => {
-      const audioEl = d3.select(".audio-node.scene-" + d.sceneNum).node();
+      const audioEl = d3.select(".audio-node.id-" + d.id).node();
       currentAudio = audioEl;
       currentAudio.play();
       growSize(d.sceneNum);
@@ -99,20 +101,11 @@ function makeLayout(container, imageSceneData) {
       shrinkSize(d.sceneNum);
     })
     .on("click", (event, d) => {
-      console.log("click")
+      console.log("click");
       if (currentAudio) {
         currentAudio.pause();
         currentAudio.currentTime = 0;
       }
-
-      // makeSingleVideoPlayer(
-      //   d3.select("#explore-page-popup"),
-      //   d.sceneNum,
-      //   d,
-      //   audioSceneData,
-      //   captionData
-      // );
-
     });
 
   container
@@ -122,29 +115,26 @@ function makeLayout(container, imageSceneData) {
     .data(nodes)
     .enter()
     .append("audio")
-    .attr("class", (d) => "audio-node scene-" + d.sceneNum)
+    .attr("class", (d) => "audio-node id-" + d.id)
     .attr("src", (d) => d.audioPath)
     .attr("preload", "auto")
     .each(function () {
       this.load(); // Explicitly tell browser to load now
     });
 
-  
   makeSim(nodes, node);
 
-
-
-  const growFac = 20
-  const dur = 2000
-  function growSize(sceneNum) {
-    d3.select(".image-node.scene-" + sceneNum)
+  const growFac = 20;
+  const dur = 2000;
+  function growSize(id) {
+    d3.select(".image-node.id-" + id)
       .interrupt()
       .transition()
       .duration(dur)
       .ease(d3.easeLinear)
       .attr("height", (d) => d.h + growFac)
       .attr("width", (d) => d.w + growFac);
-    d3.select(".color-node.scene-" + sceneNum)
+    d3.select(".color-node.id-" + id)
       .interrupt()
       .transition()
       .duration(dur)
@@ -153,24 +143,23 @@ function makeLayout(container, imageSceneData) {
       .attr("width", (d) => d.w + growFac);
   }
 
-  function shrinkSize(sceneNum){
-    d3.select(".image-node.scene-" + sceneNum)
+  function shrinkSize(id) {
+    d3.select(".image-node.id-" + id)
       .transition()
-      .duration(dur/4)
+      .duration(dur / 4)
       .ease(d3.easeLinear)
       .attr("height", (d) => d.h - growFac)
       .attr("width", (d) => d.w - growFac);
-     d3.select(".color-node.scene-" + sceneNum)
-       .transition()
-       .duration(dur/4)
-       .ease(d3.easeLinear)
-       .attr("height", 1)
-       .attr("width", (d) => d.w - growFac);
+    d3.select(".color-node.id-" + id)
+      .transition()
+      .duration(dur / 4)
+      .ease(d3.easeLinear)
+      .attr("height", 1)
+      .attr("width", (d) => d.w - growFac);
   }
-  
-  
+
   let scrollPos = 0;
-  const scrollSpeed = .1;  
+  const scrollSpeed = 0.1;
 
   const maxScroll = width;
   function updateScroll() {
@@ -179,14 +168,12 @@ function makeLayout(container, imageSceneData) {
     nodes.forEach((d) => {
       const parallaxOffset = d.parallaxSpeed * scrollPos;
       d.x = d.origional_x - parallaxOffset;
-      if(d.x > width){
-        d.x= 0
+      if (d.x > width) {
+        d.x = 0;
       }
 
-      d3.select(".image-node.scene-" + d.sceneNum)
-        .attr("x", d.x);
-      d3.select(".color-node.scene-" + d.sceneNum)
-        .attr("x", d.x);
+      d3.select(".image-node.id-" + d.id).attr("x", d.x);
+      d3.select(".color-node.id-" + d.id).attr("x", d.x);
     });
     // svg.attr("transform", `translate(${-scrollPos}, 0)`);
     if (scrollPos > maxScroll) {
@@ -194,9 +181,8 @@ function makeLayout(container, imageSceneData) {
     }
     requestAnimationFrame(updateScroll);
   }
-  updateScroll()
+  updateScroll();
 }
-
 
 function makeSim(nodes, node) {
   let sim = d3
@@ -211,42 +197,41 @@ function makeSim(nodes, node) {
         .radius((d) => d.w + 20)
         .strength(1)
     )
-    .force("y", d3.forceY().strength(1.5).y(height / 2))
+    .force(
+      "y",
+      d3
+        .forceY()
+        .strength(1.5)
+        .y(height / 2)
+    )
     .on("tick", () => ticked())
     .on("end", () => {
       console.log("ending");
       sim.stop();
       // animateScroll(node, color_node, nodes);
     });
-  
-
 
   function ticked() {
-      node.attr(
-        "transform",
-        (d) =>{
-          let updatedX = Math.max(0, Math.min(width - 0 - d.w, d.x));
-          let updatedY = d.y;
-          if (updatedY <= 0 || updatedY >= height - d.h) {
-            d.vy = -d.vy*.5;
-          }
-          d.y += d.vy; 
-          updatedY = Math.max(0, Math.min(height - d.h, d.y));  
+    node.attr("transform", (d) => {
+      let updatedX = Math.max(0, Math.min(width - 0 - d.w, d.x));
+      let updatedY = d.y;
+      if (updatedY <= 0 || updatedY >= height - d.h) {
+        d.vy = -d.vy * 0.5;
+      }
+      d.y += d.vy;
+      updatedY = Math.max(0, Math.min(height - d.h, d.y));
 
-          return `translate(${updatedX},  ${updatedY})`;
-        }
-      );
-
+      return `translate(${updatedX},  ${updatedY})`;
+    });
   }
-
 
   return sim;
 }
 
-function animateScroll(node, color_node,nodes){
+function animateScroll(node, color_node, nodes) {
   const scrollDuration = 50000;
   const easeFN = d3.easeLinear;
-  function scrollNodes(n){
+  function scrollNodes(n) {
     n.transition()
       .duration(scrollDuration)
       .ease(easeFN)
@@ -255,7 +240,7 @@ function animateScroll(node, color_node,nodes){
         return d.x + width;
       })
       .on("end", function () {
-        console.log("end of image")
+        console.log("end of image");
         const d = d3.select(this).data()[0];
         d.x = 0;
         d3.select(this).attr("x", d.x).on("end", scrollNodes);
@@ -263,6 +248,4 @@ function animateScroll(node, color_node,nodes){
   }
   scrollNodes(node);
   scrollNodes(color_node);
-
 }
-

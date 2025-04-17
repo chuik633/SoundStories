@@ -3,23 +3,30 @@
  * slightly bigger for the nearby ones, and big for the current
  */
 let hover_square;
-function dynamicPlot(dashboard, val, plot_width, plot_height, sceneNum) {
-   hover_square = dashboard
+function dynamicPlot(
+  dashboard,
+  val,
+  plot_width,
+  plot_height,
+  movieName,
+  sceneNum
+) {
+  hover_square = dashboard
     .append("div")
     .style("border", ".5px solid white")
-    .attr('class', 'hidden')
+    .attr("class", "hidden")
     .style("position", "absolute")
     .style("top", "30px")
     .style("left", "0px")
     .style("z-index", `5`)
     .style("width", `10px`)
-    .style("height", `${plot_height*2/3}px`);
+    .style("height", `${(plot_height * 2) / 3}px`);
   //   const sceneNum = d3.select("#displayed-video").attr("sceneNum");
 
-  const list_vals = audioSceneData.map((d) => d[val]);
+  const list_vals = data[movieName].audioSceneData.map((d) => d[val]);
   const list_len = list_vals[0].length;
 
-  const flatVals = audioSceneData.flatMap((d) => d[val]);
+  const flatVals = data[movieName].audioSceneData.flatMap((d) => d[val]);
   const minVal = d3.min(flatVals);
   const maxVal = d3.max(flatVals);
 
@@ -54,7 +61,7 @@ function dynamicPlot(dashboard, val, plot_width, plot_height, sceneNum) {
   ).map(avg);
 
   //single scene for the flat mat
-  const numSmallScenes = numSamples - 3;
+  const numSmallScenes = data[movieName].numSamples - 3;
   const remaining_width = plot_width - hoverImageSize * 2 - selectedImageSize;
 
   const xScale1 = d3
@@ -77,7 +84,6 @@ function dynamicPlot(dashboard, val, plot_width, plot_height, sceneNum) {
     .domain([minVal, maxVal])
     .range([plot_height - plotPadding.bottom, plotPadding.top]);
 
-
   // SVG STUFF AND HOVERING
   const svg = dashboard
     .append("svg")
@@ -85,9 +91,9 @@ function dynamicPlot(dashboard, val, plot_width, plot_height, sceneNum) {
     .attr("height", plot_height);
 
   const sceneFromChunkIndex = (chunkIndex, chunkSize) =>
-      Math.floor((chunkIndex * chunkSize) / list_len);
+    Math.floor((chunkIndex * chunkSize) / list_len);
 
-  function getSceneNumfromX(x){
+  function getSceneNumfromX(x) {
     let pre_prev_x = xScale1(prePrevVals.length - 1);
     if (x < pre_prev_x) {
       let idx = Math.floor(xScale1.invert(x));
@@ -132,7 +138,7 @@ function dynamicPlot(dashboard, val, plot_width, plot_height, sceneNum) {
   }
 
   svg.style("pointer-events", "all");
-  hover_square.style('pointer-events', 'none')
+  hover_square.style("pointer-events", "none");
   svg.selectAll("*").style("pointer-events", "none");
   svg.on("mousemove", function (event) {
     const [x] = d3.pointer(event, this);
@@ -140,13 +146,12 @@ function dynamicPlot(dashboard, val, plot_width, plot_height, sceneNum) {
     let hoverSceneNum = getSceneNumfromX(x);
     hoverLinePlot(hoverSceneNum);
     highlightNoteScene(hoverSceneNum);
-   
   });
-  svg.on('click', function (event) {
+  svg.on("click", function (event) {
     const [x] = d3.pointer(event, this);
     let hoverSceneNum = getSceneNumfromX(x);
-    console.log('clicke', hoverSceneNum)
-    changeDisplayedVideo(hoverSceneNum);
+    console.log("clicke", hoverSceneNum);
+    changeDisplayedVideo(movieName, hoverSceneNum);
   });
 
   //before prev square
@@ -154,7 +159,7 @@ function dynamicPlot(dashboard, val, plot_width, plot_height, sceneNum) {
   svg
     .append("path")
     .datum(prePrevVals)
-   
+
     .attr("fill", "none")
     .attr("stroke", "white")
     .attr("opacity", 0.3)
@@ -173,7 +178,7 @@ function dynamicPlot(dashboard, val, plot_width, plot_height, sceneNum) {
     .append("path")
     .datum(prevVals)
     .attr("fill", "none")
-    .attr( "class",`line-plot-line line-plot-line-${sceneNum-1}`)
+    .attr("class", `line-plot-line line-plot-line-${sceneNum - 1}`)
     .attr("stroke", "white")
     .attr("opacity", 0.5)
     .attr("stroke-width", 0.5)
@@ -191,9 +196,7 @@ function dynamicPlot(dashboard, val, plot_width, plot_height, sceneNum) {
     .datum(currVals)
     .attr("fill", "none")
     .attr("stroke", "white")
-    .attr(
-      "class",`line-plot-line line-plot-line-${sceneNum}`
-    )
+    .attr("class", `line-plot-line line-plot-line-${sceneNum}`)
     .attr("stroke-width", 0.5)
     .attr(
       "d",
@@ -237,29 +240,18 @@ function dynamicPlot(dashboard, val, plot_width, plot_height, sceneNum) {
         .y((d) => yScale(d))
     );
 
-    function hoverLinePlot(hoverSceneNum) {
-      hover_square.attr("class", "visible");
-      // hover_line.style('left', `${x}px`)
-      if (hoverSceneNum == sceneNum) {
-        hover_square.style("width", `${selectedImageSize}px`);
-      } else if (
-        hoverSceneNum == sceneNum - 1 ||
-        hoverSceneNum == sceneNum + 1
-      ) {
-        hover_square.style("width", `${hoverImageSize}px`);
-      } else {
-        hover_square.style("width", `${smallSceneW}px`);
-      }
-      hover_square.style("left", `${getSceneStartX(hoverSceneNum)}px`);
+  function hoverLinePlot(hoverSceneNum) {
+    hover_square.attr("class", "visible");
+    // hover_line.style('left', `${x}px`)
+    if (hoverSceneNum == sceneNum) {
+      hover_square.style("width", `${selectedImageSize}px`);
+    } else if (hoverSceneNum == sceneNum - 1 || hoverSceneNum == sceneNum + 1) {
+      hover_square.style("width", `${hoverImageSize}px`);
+    } else {
+      hover_square.style("width", `${smallSceneW}px`);
     }
+    hover_square.style("left", `${getSceneStartX(hoverSceneNum)}px`);
+  }
 
-    return hoverLinePlot
+  return hoverLinePlot;
 }
-
-
-
-
-
-
-
-

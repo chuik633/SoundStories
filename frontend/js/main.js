@@ -1,15 +1,34 @@
-
-
 async function loadData() {
-  videoInfo = await d3.json(mainDir + pathConfig.videoDataFilename);
-  imageSceneData = await d3.json(mainDir + pathConfig.imageDataFilename);
-  imageSceneData = imageSceneData.sort((a, b) => a["sceneNum"] - b["sceneNum"]);
-  audioSceneData = await d3.json(mainDir + pathConfig.audioDataFilename);
-  audioSceneData = audioSceneData.sort((a, b) => a["sceneNum"] - b["sceneNum"]);
-  
-  numSamples = parseInt(videoInfo['samples'])
+  allSceneData = [];
+  for (const movieName of movies) {
+    const mainDir = metaData[movieName].mainDir;
+    data[movieName].videoInfo = await d3.json(
+      mainDir + pathConfig.videoDataFilename
+    );
+    let imageSceneData = await d3.json(mainDir + pathConfig.imageDataFilename);
+
+    data[movieName].imageSceneData = imageSceneData.sort(
+      (a, b) => a["sceneNum"] - b["sceneNum"]
+    );
+
+    let audioSceneData = await d3.json(mainDir + pathConfig.audioDataFilename);
+    data[movieName].audioSceneData = audioSceneData.sort(
+      (a, b) => a["sceneNum"] - b["sceneNum"]
+    );
+
+    data[movieName].imageSceneData.forEach((d, i) => {
+      allSceneData.push({
+        ...d,
+        movieName: movieName,
+        imgDir: metaData[movieName].imgDir,
+        audioDir: metaData[movieName].audioDir,
+      });
+    });
+  }
+
+  data[movieName].numSamples = parseInt(data[movieName].videoInfo["samples"]);
   try {
-    captionData = await d3.json(mainDir + "captions.json");
+    data[movieName].captionData = await d3.json(mainDir + "captions.json");
   } catch (e) {
     console.log("no captions");
   }
@@ -17,13 +36,12 @@ async function loadData() {
 
 window.addEventListener("load", async () => {
   await loadData(); // only loads once
-  console.log("DATA LOADED")
-  console.log("IMAGE DATA", imageSceneData)
-  console.log("AUDIO DATA", audioSceneData);
-  console.log("CAPTION DATA", captionData);
+  console.log("DATA LOADED");
+  console.log(allSceneData);
+  // console.log("IMAGE DATA", imageSceneData);
+  // console.log("AUDIO DATA", audioSceneData);
+  // console.log("CAPTION DATA", captionData);
   handleRouteChange();
-  
 });
 
 window.addEventListener("hashchange", handleRouteChange);
-

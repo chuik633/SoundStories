@@ -4,14 +4,16 @@
  * sceneNum; the int for the scene index for the data
  */
 
-const sketch_template = (p, parentDiv, sceneNum) => {
-    const syncId = "#displayed-video";
+const sketch_template = (p, parentDiv, movieName, sceneNum) => {
+  //the video or audio to sync to
+  const syncId = "#displayed-video";
+
   //data variables
-  const img_path = `${imgDir}${sceneNum}.png`;
-  const imgEntry = imageSceneData[sceneNum];
-  const audioEntry = audioSceneData[sceneNum];
-  const captionSceneEntry = captionData[sceneNum];
-  const audio_path = `${audioDir}${sceneNum}.png`;
+  const img_path = `${metaData[movieName].imgDir}${sceneNum}.png`;
+  const imgEntry = data[movieName].imageSceneData[sceneNum];
+  const audioEntry = data[movieName].audioSceneData[sceneNum];
+  const captionSceneEntry = data[movieName].captionData[sceneNum];
+  const audio_path = `${metaData[movieName].audioDir}${sceneNum}.png`;
 
   //audio variables
   let timestamp, shortIdx, captionIdx;
@@ -46,35 +48,37 @@ const sketch_template = (p, parentDiv, sceneNum) => {
   };
 
   p.draw = function () {
-    syncData(); 
+    syncData();
+  };
 
- };
+  function syncData() {
+    //get current time stamp
+    timestamp = d3.select(syncId).node().currentTime;
+    shortIdx = Math.round(timestamp / audioUtils.shortStep);
 
-function syncData() {
-  //get current time stamp
-  timestamp = d3.select(syncId).node().currentTime;
-  shortIdx = Math.round(timestamp / audioUtils.shortStep);
+    //mcc list info
+    mcc_list = [];
+    for (let coef_num = 1; coef_num < 12; coef_num++) {
+      mcc_list.push(audioEntry[`mfcc_${coef_num}`][shortIdx]);
+    }
 
-  //mcc list info
-  mcc_list = [];
-  for (let coef_num = 1; coef_num < 12; coef_num++) {
-    mcc_list.push(audioEntry[`mfcc_${coef_num}`][shortIdx]);
-  }
+    //chromagram
+    chromagram_list = [];
+    for (let coef_num = 1; coef_num < 12; coef_num++) {
+      chromagram_list.push(audioEntry[`chroma_${coef_num}`][shortIdx]);
+    }
 
-  //chromagram
-  chromagram_list = [];
-  for (let coef_num = 1; coef_num < 12; coef_num++) {
-    chromagram_list.push(audioEntry[`chroma_${coef_num}`][shortIdx]);
-  }
+    //notes
+    notes = audioEntry["notes_at_timestamps"][Math.floor(timestamp)];
 
-  //notes
-  notes = audioEntry["notes_at_timestamps"][Math.floor(timestamp)];
-
-  //get the caption
-  for (const caption of captionSceneEntry) {
-    if (timestamp > caption.start_seconds && timestamp < caption.end_seconds) {
-      caption = caption.caption;
+    //get the caption
+    for (const caption of captionSceneEntry) {
+      if (
+        timestamp > caption.start_seconds &&
+        timestamp < caption.end_seconds
+      ) {
+        caption = caption.caption;
+      }
     }
   }
-}
-}
+};

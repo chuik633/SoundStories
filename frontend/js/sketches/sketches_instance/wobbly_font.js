@@ -1,20 +1,17 @@
-
-
-
 /**
  * p; the sketc instance
  * parentDiv; the div to fit the canvas to
  * sceneNum; the int for the scene index for the data
  */
-const sketch_wobbly_font = (p,parentDiv, sceneNum) => {
+const sketch_wobbly_font = (p, parentDiv, movieName, sceneNum) => {
   //the video or audio to sync to
   const syncId = "#displayed-video";
 
   //data variables
-  const img_path = `${imgDir}${sceneNum}.png`;
-  const imgEntry = imageSceneData[sceneNum];
-  const audioEntry = audioSceneData[sceneNum];
-  const captionSceneEntry = captionData[sceneNum];
+  const img_path = `${metaData[movieName].imgDir}${sceneNum}.png`;
+  const imgEntry = data[movieName].imageSceneData[sceneNum];
+  const audioEntry = data[movieName].audioSceneData[sceneNum];
+  const captionSceneEntry = data[movieName].captionData[sceneNum];
 
   //audio variables
   let timestamp, shortIdx, captionIdx;
@@ -24,9 +21,8 @@ const sketch_wobbly_font = (p,parentDiv, sceneNum) => {
   let display_text;
 
   //range for mapping
-  let min_val = -1
-  let max_val = 1
-  
+  let min_val = -1;
+  let max_val = 1;
 
   //canvas variables
   let width, height;
@@ -35,21 +31,20 @@ const sketch_wobbly_font = (p,parentDiv, sceneNum) => {
   let font;
   let maxFontSize = 15;
   let sampleFac = 0.8;
-  const bgColor = 'black'
+  const bgColor = "black";
   const textColor = "white";
 
   p.preload = function () {
     font = p.loadFont("styles/fonts/Jost-Bold.ttf");
-
   };
 
   p.setup = function () {
     //instance mode set up DO THIS FOR ALL
     const parentRect = parentDiv.getBoundingClientRect();
-    width = parentRect.width
-    height = parentRect.height
-    console.log(parentDiv)
-    console.log('width', width, height)
+    width = parentRect.width;
+    height = parentRect.height;
+    console.log(parentDiv);
+    console.log("width", width, height);
 
     //bind canvas to parent
     const canvas = p.createCanvas(width, height);
@@ -60,22 +55,21 @@ const sketch_wobbly_font = (p,parentDiv, sceneNum) => {
     p.textFont(font);
   };
 
-  
   p.draw = function () {
-    syncData(); 
+    syncData();
     p.background(bgColor);
-    p.fill(textColor)
-    p.noStroke()
+    p.fill(textColor);
+    p.noStroke();
 
     //draw the caption
-    if(display_text==undefined){
-      display_text = 'cdefgabc'
-    }else{
+    if (display_text == undefined) {
+      display_text = "cdefgabc";
+    } else {
       console.log(display_text);
     }
     drawText(
       chromagram_list,
-      "cdefgabc",
+      display_text,
       (x = width / 2),
       (y = height / 2),
       (maxWidth = width - 50),
@@ -88,7 +82,7 @@ const sketch_wobbly_font = (p,parentDiv, sceneNum) => {
   /**
    * use this for all sketches to sync data on each frame
    */
-  function syncData(){
+  function syncData() {
     //get current time stamp
     timestamp = d3.select(syncId).node().currentTime;
     shortIdx = Math.round(timestamp / audioUtils.shortStep);
@@ -119,9 +113,6 @@ const sketch_wobbly_font = (p,parentDiv, sceneNum) => {
     }
   }
 
-
-
-
   function drawText(
     input_list,
     inputText,
@@ -149,7 +140,11 @@ const sketch_wobbly_font = (p,parentDiv, sceneNum) => {
     for (let letterIdx = 0; letterIdx < inputText.length; letterIdx++) {
       const letter = inputText[letterIdx];
       let val_average = 0;
-      for (let i = sample_size * letterIdx;i < sample_size * (letterIdx + 1) && i < input_list.length;i++) {
+      for (
+        let i = sample_size * letterIdx;
+        i < sample_size * (letterIdx + 1) && i < input_list.length;
+        i++
+      ) {
         val_average += input_list[i] / sample_size;
       }
 
@@ -218,5 +213,3 @@ const sketch_wobbly_font = (p,parentDiv, sceneNum) => {
     return squishedFontSize;
   }
 };
-
-

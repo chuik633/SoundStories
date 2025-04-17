@@ -1,13 +1,13 @@
 function sketch_loadingGrain(p, parentDiv) {
-    let width, height;
+  let width, height;
   //font variables (these we can make globals in the instance mode)
   let font;
   let letters = "S O U N D  S T O R I E S";
   let fontSize = 200;
   let sampleFac = 0.5;
- let sampleFac2 = 0.7;
+  let sampleFac2 = 0.7;
   let particles = [];
-  let text_points = []
+  let text_points = [];
   const particleColor = "white";
   const backgroundColor = [0, 0, 0];
 
@@ -19,10 +19,9 @@ function sketch_loadingGrain(p, parentDiv) {
   let audioContext;
   let analyserNode;
 
-
-  p.preload = function(){
-    font = p.loadFont('./styles/fonts/Jost-Bold.ttf')
-  }
+  p.preload = function () {
+    font = p.loadFont("./styles/fonts/Jost-Bold.ttf");
+  };
 
   p.setup = function () {
     //set up the audio stuff
@@ -36,7 +35,7 @@ function sketch_loadingGrain(p, parentDiv) {
       sourceNode.connect(analyserNode);
       analyserNode.connect(audioContext.destination);
     });
-    console.log('got all audio elements')
+    console.log("got all audio elements");
 
     fft = new p5.FFT(0.8, nbins);
     fft.setInput(analyserNode);
@@ -66,14 +65,18 @@ function sketch_loadingGrain(p, parentDiv) {
     for (let binNum = 0; binNum < binstoVis; binNum++) {
       let amp = spectrum[binNum];
       if (amp > 0) {
-        p.push()
-        for (let i = binNum * particles_per_bin;i < (binNum + 1) * particles_per_bin;i++) {
+        p.push();
+        for (
+          let i = binNum * particles_per_bin;
+          i < (binNum + 1) * particles_per_bin;
+          i++
+        ) {
           particles[i].noiseZoom = p.map(amp, 0, 200, 0.0001, 0.5);
           particles[i].speed = p.map(amp, 0, 200, 0.001, 4);
           particles[i].noiseMag = p.map(amp, 0, 200, 0.001, 0.5);
           particles[i].run(p);
         }
-        p.pop()
+        p.pop();
       }
     }
 
@@ -90,23 +93,26 @@ function sketch_loadingGrain(p, parentDiv) {
           drawLetterFromPoints(text_points[binNum], amp + 1, 10);
         }
       }
-    }else{
-        let bins_per_letter = Math.floor(binstoVis / letters.length);
-        for(let letterIdx = 0; letterIdx<letters.length; letterIdx++){
-            let amp_avg = 0;
-            for(let binNum = bins_per_letter*letterIdx;binNum<bins_per_letter*(letterIdx+1);binNum++){
-                amp_avg += spectrum[binNum]/binstoVis
-            }
-            drawLetterFromPoints(text_points[letterIdx], amp_avg + 1, 10);
+    } else {
+      let bins_per_letter = Math.floor(binstoVis / letters.length);
+      for (let letterIdx = 0; letterIdx < letters.length; letterIdx++) {
+        let amp_avg = 0;
+        for (
+          let binNum = bins_per_letter * letterIdx;
+          binNum < bins_per_letter * (letterIdx + 1);
+          binNum++
+        ) {
+          amp_avg += spectrum[binNum] / binstoVis;
         }
+        drawLetterFromPoints(text_points[letterIdx], amp_avg + 1, 10);
+      }
     }
-    
 
     // p.background('pink')
     // p.applyMonochromaticGrain(50);
   };
 
-  function getLetterPoints(p,letters) {
+  function getLetterPoints(p, letters) {
     fontSize = getResizedFontSize(p, letters, fontSize, p.width - 150);
 
     let textWidth = letters.length * fontSize;
@@ -125,16 +131,18 @@ function sketch_loadingGrain(p, parentDiv) {
         // p.fill("white");
         // p.ellipse(point.x, point.y, 1, 1);
       }
-      text_points.push(font.textToPoints(letter, x, y, fontSize, {
-        sampleFactor: sampleFac2,
-      }))
+      text_points.push(
+        font.textToPoints(letter, x, y, fontSize, {
+          sampleFactor: sampleFac2,
+        })
+      );
 
       x += fontSize;
     }
   }
 
   function drawLetterFromPoints(letter_points, amp, noiseSize) {
-    p.fill('white');
+    p.fill("white");
     p.noStroke();
     p.beginShape();
     for (const point of letter_points) {
@@ -147,8 +155,6 @@ function sketch_loadingGrain(p, parentDiv) {
     }
     p.endShape();
   }
-
-
 
   class Particle {
     constructor(pos, endPos, speed) {
@@ -223,5 +229,3 @@ function sketch_loadingGrain(p, parentDiv) {
     return squishedFontSize;
   }
 }
-
-

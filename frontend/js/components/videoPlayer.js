@@ -1,16 +1,12 @@
-function makeSingleVideoPlayer(
-  outer_container,
-  sceneNum
-) {
-  let currSceneNum = sceneNum
-  const vidPath = videoDir + sceneNum + ".mp4";
+function makeSingleVideoPlayer(outer_container, movieName, sceneNum) {
+  let currSceneNum = sceneNum;
+  const vidPath = metaData[movieName].videoDir + sceneNum + ".mp4";
   //create the vide
 
   const container = outer_container
     .append("div")
     .attr("class", "video-wrapper");
 
- 
   const video = container
     .append("video")
     .attr("id", "displayed-video")
@@ -71,8 +67,7 @@ function makeSingleVideoPlayer(
     }
   });
 
-
-  function togglePausePlay(){
+  function togglePausePlay() {
     if (video.node().paused) {
       video.node().play();
       playPauseBtn.attr("src", "./styles/icons/pause.svg");
@@ -88,14 +83,14 @@ function makeSingleVideoPlayer(
     const progress = progressBar.node();
     if (video.node().duration > 0) {
       progress.value = (video.node().currentTime / video.node().duration) * 100;
-      if(video.node().currentTime == video.node().duration){
-        let currSceneNum = (video.attr("sceneNum")+1)%numSamples
-        changeDisplayedVideo(currSceneNum);
-        video.node().currentTime= 0
+      if (video.node().currentTime == video.node().duration) {
+        let currSceneNum =
+          (video.attr("sceneNum") + 1) % data[movieName].numSamples;
+        changeDisplayedVideo(movieName, currSceneNum);
+        video.node().currentTime = 0;
         video.node().play();
       }
     }
-
   });
 
   //adjusting progress bar
@@ -111,7 +106,3 @@ function makeSingleVideoPlayer(
     video.node().volume = volume.value;
   });
 }
-
-
-
-

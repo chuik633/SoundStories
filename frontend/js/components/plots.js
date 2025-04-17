@@ -5,9 +5,9 @@ const plotPadding = {
   left: 10,
 };
 
-function layoutPlots(sceneNum) {
-  const dashboard = d3.select(".plots-container")
-  dashboard.selectAll("*").remove()
+function layoutPlots(movieName, sceneNum) {
+  const dashboard = d3.select(".plots-container");
+  dashboard.selectAll("*").remove();
   const dash_node = dashboard.node().getBoundingClientRect();
   const dash_width = dash_node.width;
   const dash_height = dash_node.height;
@@ -16,12 +16,18 @@ function layoutPlots(sceneNum) {
     dashboard,
     "spectral_centroid",
     dash_width,
-    dash_height/2,
+    dash_height / 2,
+    movieName,
     sceneNum
   );
-  showNotes(dashboard, dash_width, dash_height / 3, sceneNum, hoverLinePlot);
-  
+  showNotes(
+    dashboard,
+    dash_width,
+    dash_height / 3,
+    movieName,
+    sceneNum,
+    hoverLinePlot
+  );
 
-//   dynamicPlot(dashboard, "zcr", dash_width, 150, sceneNum);
+  //   dynamicPlot(dashboard, "zcr", dash_width, 150, sceneNum);
 }
-
