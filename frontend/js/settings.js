@@ -1,5 +1,5 @@
 const movieName = "princessSmall";
-const movies = ["princessSmall", "Space", "Everything"];
+const movies = ["princessSmall", "Space", "compilation"];
 
 const pathConfig = {
   dataPath: "../data/tmp/",
@@ -51,16 +51,10 @@ const hoverImageSize = 100;
 const startSceneNum = 4;
 
 // navigation to a clip
-function getClipHash(sceneNum, movieName) {
-  return `movieName=${movieName}&sceneNum=${sceneNum}`;
-}
-function navigateToClip(sceneNum, movieName) {
-  const url = `pages/films.html#${getClipHash(sceneNum, movieName)}`;
-  window.open(url, "_blank");
-}
 function createBackButton(container) {
   const backButton = container
     .append("img")
+    .attr("id", "back-btn")
     .attr("src", "./styles/icons/x.svg");
   backButton.on("click", () => {
     window.history.back();

@@ -1,4 +1,9 @@
-function layoutDashboardAndPreview(container, movieName, dashboard_mode) {
+function layoutDashboardAndPreview(
+  container,
+  movieName,
+  sceneNum,
+  dashboard_mode
+) {
   d3.select("#films-page").style("--shrinkSize", `${shrinkSize}px`); //sync it with the css
   d3.select("#films-page").style("--hoverImageSize", `${hoverImageSize}px`);
   d3.select("#films-page").style(
@@ -15,7 +20,7 @@ function layoutDashboardAndPreview(container, movieName, dashboard_mode) {
   layoutDashboard(dashboard, movieName);
 
   //the preview
-  const previewContainer = layoutPreview(container, 0, movieName);
+  const previewContainer = layoutPreview(container, sceneNum, movieName);
 
   //grow and shrink elements
   dashboard.on("click", () => expandDashboard());
@@ -25,6 +30,7 @@ function layoutDashboardAndPreview(container, movieName, dashboard_mode) {
   } else {
     expandPreviewContainer();
   }
+  changeDisplayedVideo(movieName, sceneNum);
 }
 
 function layoutPreview(container, sceneNum, movieName) {
@@ -43,7 +49,6 @@ function layoutPreview(container, sceneNum, movieName) {
     .attr("id", "sketches-container")
     .attr("class", "hidden");
   makeSingleVideoPlayer(videoWrapper, movieName, sceneNum);
-  changeDisplayedVideo(movieName, sceneNum);
   return previewContainer;
 }
 
@@ -84,7 +89,6 @@ function layoutScenePreviews(outer_container, movieName) {
       .attr("selected", false);
     //TODO change this to make the scene selection
     sceneImg.on("click", () => {
-      console.log("SELECTED:", sceneNum);
       changeDisplayedVideo(movieName, sceneNum);
     });
   }
@@ -92,7 +96,6 @@ function layoutScenePreviews(outer_container, movieName) {
 
 function changeDisplayedVideo(movieName, sceneNum) {
   const numSamples = data[movieName].numSamples;
-  console.log("scene change");
   //RESIZE ALL OF THE IMAGES IN THE PREVIEW
   d3.selectAll(".sceneImg").attr("selected", false);
   d3.selectAll(".sceneImg").attr("prev", false);
@@ -131,7 +134,8 @@ function changeDisplayedVideo(movieName, sceneNum) {
     "transitionend",
     () => {
       const rect = selectedSceneImg.getBoundingClientRect();
-      d3.select(".video-wrapper-outer.small")
+      console.log("setting visibility");
+      d3.select(".video-wrapper-outer")
         .style("height", `${rect.height}px`)
         .style("width", `${selectedVideoSize}px`)
         .style("top", `${rect.top + window.scrollY}px`)

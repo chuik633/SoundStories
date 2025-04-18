@@ -9,10 +9,11 @@ function initFilmsPage(movieName, sceneNum) {
   console.log("loading page for,", movieName);
 
   if (sceneNum) {
-    layoutDashboardAndPreview(container, movieName, false);
+    layoutDashboardAndPreview(container, movieName, sceneNum, false);
   } else {
-    layoutDashboardAndPreview(container, movieName, true);
+    layoutDashboardAndPreview(container, movieName, 0, true);
   }
+  createBackButton(container);
 }
 
 // so whenever i change the displayed video right now i am jsut replacing

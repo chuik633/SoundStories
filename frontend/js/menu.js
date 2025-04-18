@@ -20,9 +20,10 @@ function layoutMenu() {
            
             <a class = 'menu-link' href="#films">Films</a>
             <div class="film-submenu">
-                 <a class='menu-link' href="#films/princessSmall/2">Princess Mononoke</a>
-
-            </div>
+                <a class='menu-link' href="#films/princessSmall">Princess Mononoke</a>
+                <a class='menu-link' href="#films/Space">Space Odyssey</a>
+                <a class='menu-link' href="#films/compilation">compilation</a>
+              </div>
 
              <a class = 'menu-link' href="#experiment">TRY IT</a>
 
@@ -78,7 +79,7 @@ function runPageScripts(page, movieName, sceneNum) {
     if (movieName) {
       initFilmsPage(movieName, sceneNum);
     } else {
-      initFilmsPage("princessSmall");
+      initFilmsPage("princessSmall", 0);
     }
   } else if (page == "experiment") {
     initExperimentPage();

@@ -32,7 +32,6 @@ function makeLayout(container) {
     .append("svg")
     .attr("width", width)
     .attr("height", height);
-  console.log("SVG", svg);
   svg
     .append("text")
     .attr("x", width / 2)
@@ -59,6 +58,7 @@ function makeLayout(container) {
       audioPath: d.audioDir + d.sceneNum + ".wav",
       ...d,
       parallaxSpeed: z * 1.2 + 0.2,
+      paused: false,
     };
   });
   nodes = [...nodes].sort((a, b) => a.z - b.z);
@@ -91,6 +91,7 @@ function makeLayout(container) {
       const audioEl = d3.select(".audio-node.id-" + d.id).node();
       currentAudio = audioEl;
       currentAudio.play();
+      d.paused = true;
       growSize(d.sceneNum);
     })
     .on("mouseleave", (event, d) => {
@@ -98,6 +99,7 @@ function makeLayout(container) {
         currentAudio.pause();
         currentAudio.currentTime = 0;
       }
+      d.paused = false;
       shrinkSize(d.sceneNum);
     })
     .on("click", (event, d) => {
@@ -105,6 +107,7 @@ function makeLayout(container) {
       if (currentAudio) {
         currentAudio.pause();
         currentAudio.currentTime = 0;
+        window.location.hash = `#films/${d.movieName}/${d.sceneNum}`;
       }
     });
 
@@ -166,14 +169,16 @@ function makeLayout(container) {
     scrollPos += scrollSpeed;
 
     nodes.forEach((d) => {
-      const parallaxOffset = d.parallaxSpeed * scrollPos;
-      d.x = d.origional_x - parallaxOffset;
-      if (d.x > width) {
-        d.x = 0;
-      }
+      if (!d.paused) {
+        const parallaxOffset = d.parallaxSpeed * scrollPos;
+        d.x = d.origional_x - parallaxOffset;
+        if (d.x > width) {
+          d.x = 0;
+        }
 
-      d3.select(".image-node.id-" + d.id).attr("x", d.x);
-      d3.select(".color-node.id-" + d.id).attr("x", d.x);
+        d3.select(".image-node.id-" + d.id).attr("x", d.x);
+        d3.select(".color-node.id-" + d.id).attr("x", d.x);
+      }
     });
     // svg.attr("transform", `translate(${-scrollPos}, 0)`);
     if (scrollPos > maxScroll) {

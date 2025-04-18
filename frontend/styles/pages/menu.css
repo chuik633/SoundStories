@@ -92,3 +92,12 @@
   margin-top: auto;
   font-size: 12px;
 }
+
+#back-btn {
+  object-fit: contain;
+  width: 15px;
+  height: 15px;
+  position: fixed;
+  top: 20px;
+  left: 20px;
+}
