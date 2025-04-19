@@ -24,13 +24,13 @@ async function loadData() {
         audioDir: metaData[movieName].audioDir,
       });
     });
-  }
-
-  data[movieName].numSamples = parseInt(data[movieName].videoInfo["samples"]);
-  try {
-    data[movieName].captionData = await d3.json(mainDir + "captions.json");
-  } catch (e) {
-    console.log("no captions");
+    data[movieName].numSamples = parseInt(data[movieName].videoInfo["samples"]);
+    try {
+      data[movieName].captionData = await d3.json(mainDir + "captions.json");
+    } catch (e) {
+      data[movieName].captionData = [[]];
+      console.log("no captions");
+    }
   }
 }
 

@@ -8,6 +8,7 @@ const sketch_wobbly_font = (p, parentDiv, movieName, sceneNum) => {
   const syncId = "#displayed-video";
 
   //data variables
+  let movie = "";
   const img_path = `${metaData[movieName].imgDir}${sceneNum}.png`;
   const imgEntry = data[movieName].imageSceneData[sceneNum];
   const audioEntry = data[movieName].audioSceneData[sceneNum];
@@ -40,11 +41,13 @@ const sketch_wobbly_font = (p, parentDiv, movieName, sceneNum) => {
 
   p.setup = function () {
     //instance mode set up DO THIS FOR ALL
-    const parentRect = parentDiv.getBoundingClientRect();
-    width = parentRect.width;
-    height = parentRect.height;
+    console.log("setup, ", movieName);
     console.log(parentDiv);
     console.log("width", width, height);
+    const parentRect = parentDiv.getBoundingClientRect();
+    movie = movieName;
+    width = parentRect.width;
+    height = parentRect.height;
 
     //bind canvas to parent
     const canvas = p.createCanvas(width, height);
@@ -63,7 +66,7 @@ const sketch_wobbly_font = (p, parentDiv, movieName, sceneNum) => {
 
     //draw the caption
     if (display_text == undefined) {
-      display_text = "cdefgabc";
+      display_text = movieName;
     } else {
       console.log(display_text);
     }
@@ -134,8 +137,8 @@ const sketch_wobbly_font = (p, parentDiv, movieName, sceneNum) => {
     //divide the input_list up to the letters
     let sample_size = Math.round(input_list.length / inputText.length); //the size of the spectrum to correspond to each letter
 
-    p.fill("green");
-    p.text(inputText, x, y);
+    // p.fill("green");
+    // p.text(inputText, x, y);
     //Draw each letter
     for (let letterIdx = 0; letterIdx < inputText.length; letterIdx++) {
       const letter = inputText[letterIdx];

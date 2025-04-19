@@ -1,5 +1,19 @@
-const movieName = "princessSmall";
-const movies = ["princessSmall", "Space", "compilation"];
+const movies = [
+  // "PrincessMononoke",
+  // "Space",
+  "Oppenheimer",
+  "Oppenheimer2",
+  "The Imitation Game",
+  "Whiplash",
+  "Arrival",
+  "Arrival2",
+  "Inception",
+  "Interstellar",
+  "Interstellar2",
+  "Challengers",
+  "Nope",
+  "Star Wars",
+];
 
 const pathConfig = {
   dataPath: "../data/tmp/",

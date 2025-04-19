@@ -8,6 +8,7 @@ const blury_image = (p, parentDiv, movieName, sceneNum) => {
   const syncId = "#displayed-video";
 
   //data variables
+  let movie;
   const img_path = `${metaData[movieName].imgDir}${sceneNum}.png`;
   const imgEntry = data[movieName].imageSceneData[sceneNum];
   const audioEntry = data[movieName].audioSceneData[sceneNum];
@@ -18,14 +19,14 @@ const blury_image = (p, parentDiv, movieName, sceneNum) => {
   let mcc_list;
   let caption;
   let min_val = 0.00001;
-  let max_val = 1;
+  let max_val = 0.8;
 
   //canvas variables
   let width, height;
 
   //text variables
   let font;
-  let maxFontSize = 50;
+  let maxFontSize = 80;
   let sampleFac = 0.8;
 
   //saved font lines
@@ -34,8 +35,8 @@ const blury_image = (p, parentDiv, movieName, sceneNum) => {
 
   let textColor = imgEntry["colors"][1];
   let bgColor = "black";
-  let max_pull = 0.5;
-  let stepsize = 4;
+  let max_pull = 1.2;
+  let stepsize = 3;
   let num_bins = 12;
   let bin_size;
 
@@ -47,6 +48,7 @@ const blury_image = (p, parentDiv, movieName, sceneNum) => {
   };
 
   p.setup = function () {
+    movie = movieName;
     //instance mode set up DO THIS FOR ALL
     const parentRect = parentDiv.getBoundingClientRect();
     width = parentRect.width;
@@ -60,9 +62,10 @@ const blury_image = (p, parentDiv, movieName, sceneNum) => {
     p.textFont(font);
     p.background(bgColor);
     p.angleMode(p.RADIANS);
-    p.image(img, 0, 0, width, height);
-    // processScreen(5, "black", 100);
-    processScreen(5, imgEntry["colors"][0], 50);
+    // p.image(img, 0, 0, width, height)
+    p.background("black");
+    draw_underlay(movieName.toUpperCase(), width / 2, height / 2, "white");
+    processScreen(3, "white", 50);
   };
 
   p.draw = function () {
@@ -77,13 +80,41 @@ const blury_image = (p, parentDiv, movieName, sceneNum) => {
       i++;
       let color_idx = Math.floor(i / bin_size) % imgEntry["colors"].length;
       p.stroke(imgEntry["colors"][color_idx]);
-      p.strokeWeight(1);
+      // p.stroke("white");
+      p.strokeWeight(0.8);
       p.line(width / 2, height / 2, loc.x, loc.y);
-      p.strokeWeight(0.1);
+      p.strokeWeight(0.04);
       drawLineSegments(max_r, loc.x, loc.y);
     }
     p.blendMode(p.BLEND);
   };
+
+  function draw_underlay(inputText, x, y, c) {
+    let fontSize = getResizedFontSize(inputText, maxFontSize, width - 50);
+    p.textSize(fontSize);
+    p.noStroke();
+    p.fill(c);
+
+    //text positioning
+    let textWidth = inputText.length * fontSize;
+    // x -= textWidth / 2; //shift it so its centered
+    p.textAlign(p.CENTER);
+
+    //show text
+    p.text(inputText, x, y);
+  }
+
+  function getResizedFontSize(inputText, currFontSize, max_size) {
+    const inputletters = inputText.split("");
+    let squishedFontSize = currFontSize;
+
+    // squeeze the width to fit
+    while (inputletters.length * squishedFontSize > max_size) {
+      squishedFontSize -= 1;
+    }
+
+    return squishedFontSize;
+  }
 
   function syncData() {
     //get current time stamp
@@ -117,9 +148,10 @@ const blury_image = (p, parentDiv, movieName, sceneNum) => {
         bin_amp_avg += audio_list[i] / bin_size;
       }
       if (isNaN(bin_amp_avg)) {
-        bin_amp_avg = 0;
+        bin_amp_avg = min_val;
       }
       // console.log(bin_amp_avg)
+
       let bin_angle = bin * bin_angle_size;
       let r = p.map(
         Math.log(bin_amp_avg),
@@ -170,6 +202,7 @@ const blury_image = (p, parentDiv, movieName, sceneNum) => {
         0,
         max_pull
       );
+
       let pulledMidpointX = midpointx + (dirX - midpointx) * pullFactor;
       let pulledMidpointY = midpointy + (dirY - midpointy) * pullFactor;
       let n_zoom = 0.005;

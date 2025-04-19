@@ -1,7 +1,7 @@
 // const sketch_functions = [sketch_wobbly_font];
-const sketch_functions = [sketch_wobbly_font];
+const sketch_functions = [blury_image];
 //where you put all the sketch display stuff
-function showSketches(sceneNum) {
+function showSketches(movieName, sceneNum) {
   const sketches_container = d3.select("#sketches-container");
   const sketch_h = sketches_container.node().getBoundingClientRect().height;
   const sketch_w = sketches_container.node().getBoundingClientRect().width;
@@ -15,8 +15,8 @@ function showSketches(sceneNum) {
     const sketch_container = sketches_container
       .append("div")
       .attr("class", "sketch-container")
-      .style("width", `${sketch_w}px`)
-      .style("height", `${sketch_w}px`);
+      .style("width", `${500}px`)
+      .style("height", `${500}px`);
 
     new p5((p) => sketch_fn(p, sketch_container.node(), movieName, sceneNum));
   }

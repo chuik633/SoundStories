@@ -13,6 +13,8 @@ from image.imageData import getImageData
 from captions.captionsData import getCaptionData
 from settings.settings import pathConfig
 
+from sceneMetaData import sceneLinks
+
 """
 inputting a movie file, it then:
 1. if its a youtube link, it downloads it to a video
@@ -90,9 +92,13 @@ def getData(name, numSamples = 20, youtubeLink = False, captions = False):
         getCaptionData(name, round(videoInfo['sampleLength']))
 
 # getData('compilation', youtubeLink="https://www.youtube.com/watch?v=c9iCUxuWSwQ", numSamples = 5,captions = False)
-getData('Space', youtubeLink="https://www.youtube.com/watch?v=f9X1C7pTu-M", numSamples = 10,captions = False)
+# getData('Space', youtubeLink="https://www.youtube.com/watch?v=f9X1C7pTu-M", numSamples = 10,captions = False)
 # testlink = "https://www.youtube.com/watch?v=T51QSG9VN8w&t=5s"
 # getData('Everything', numSamples = 10, captions = False)
 # command1 = ["yt-dlp","--skip-download","--write-auto-sub", "--sub-lang", "en","--sub-format", "ass","-o", "captions.ass",testlink]
 # result1 = subprocess.run(command1, capture_output=True, text=True, check=True)
 # print(result1.stdout)
+for movieName in sceneLinks.keys():
+    url = sceneLinks[movieName]["url"]
+    numSamples = sceneLinks[movieName]["numSamples"]
+    getData(movieName, numSamples, youtubeLink=url, captions = False)

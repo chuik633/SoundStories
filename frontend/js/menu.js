@@ -20,9 +20,9 @@ function layoutMenu() {
            
             <a class = 'menu-link' href="#films">Films</a>
             <div class="film-submenu">
-                <a class='menu-link' href="#films/princessSmall">Princess Mononoke</a>
+                <a class='menu-link' href="#films/PrincessMononoke">Princess Mononoke</a>
                 <a class='menu-link' href="#films/Space">Space Odyssey</a>
-                <a class='menu-link' href="#films/compilation">compilation</a>
+             
               </div>
 
              <a class = 'menu-link' href="#experiment">TRY IT</a>

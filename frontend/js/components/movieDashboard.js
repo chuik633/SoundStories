@@ -24,11 +24,11 @@ function layoutDashboardAndPreview(
 
   //grow and shrink elements
   dashboard.on("click", () => expandDashboard());
-  previewContainer.on("click", () => expandPreviewContainer());
+  previewContainer.on("click", () => expandPreviewContainer(movieName));
   if (dashboard_mode) {
     expandDashboard();
   } else {
-    expandPreviewContainer();
+    expandPreviewContainer(movieName);
   }
   changeDisplayedVideo(movieName, sceneNum);
 }
@@ -62,12 +62,12 @@ function expandDashboard() {
   //grow dashboard
   d3.select(".dashboard").attr("class", "dashboard full");
 }
-function expandPreviewContainer() {
+function expandPreviewContainer(movieName) {
   d3.select(".preview-container").attr("class", "preview-container full");
   d3.select("#sketches-container").attr("class", "visible");
   d3.select(".video-wrapper-outer").attr("class", "video-wrapper-outer full");
   d3.select(".dashboard").attr("class", "dashboard small");
-  showSketches(d3.select("#displayed-video").attr("sceneNum"));
+  showSketches(movieName, d3.select("#displayed-video").attr("sceneNum"));
 }
 
 function layoutDashboard(dashboard, movieName) {
