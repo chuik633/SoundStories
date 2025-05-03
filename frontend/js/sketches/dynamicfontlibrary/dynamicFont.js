@@ -18,6 +18,8 @@ function drawDynamicFont(p, type, values, inputText, font, x, y, maxWidth) {
     drawFlowFont(p, values, inputText, font, x, y, maxWidth);
   } else if (type == "blur") {
     drawBlurFont(p, values, inputText, font, x, y, maxWidth);
+  } else if (type == "swirl") {
+    drawFlow2Font(p, values, inputText, font, x, y, maxWidth);
   }
 }
 
@@ -30,5 +32,7 @@ function setupDynamicFont(p, type, values, inputText, font, x, y, maxWidth) {
     setupFlowFont(p, values, inputText, font, x, y, maxWidth);
   } else if (type == "blur") {
     setupBlurFont(p, values, inputText, font, x, y, maxWidth);
+  } else if (type == "swirl") {
+    setupFlow2Font(p, values, inputText, font, x, y, maxWidth);
   }
 }

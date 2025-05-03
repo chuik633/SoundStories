@@ -57,3 +57,71 @@ function lowerOpacity(hex, a) {
   let c = color(`rgba(${r}, ${g}, ${b}, ${a})`);
   return c;
 }
+
+// Particle class
+class FlowParticle {
+  constructor(p, pos, endPos, speed) {
+    this.p = p;
+    this.noiseZoom = 0.001;
+    this.noiseSpeed = 0.01;
+    this.noiseMag = 0.5;
+    this.origPos = { x: pos.x, y: pos.y };
+    this.endPos = endPos;
+    this.pos = { x: pos.x, y: pos.y };
+    this.speed = speed;
+    this.dir = this.getDirection(pos, endPos);
+  }
+
+  run() {
+    this.move();
+    this.checkEdges();
+    this.update();
+  }
+
+  move() {
+    const dx = this.endPos.x - this.pos.x;
+    const dy = this.endPos.y - this.pos.y;
+    const angle = Math.atan2(dy, dx);
+    const n = this.p.noise(
+      this.pos.x * this.noiseZoom,
+      this.pos.y * this.noiseZoom,
+      this.p.frameCount * this.noiseSpeed
+    );
+    const angleNoise = n * this.p.TWO_PI * this.noiseMag;
+
+    this.dir.x = this.p.cos(angle + angleNoise);
+    this.dir.y = this.p.sin(angle + angleNoise);
+
+    this.pos.x += this.dir.x * this.speed;
+    this.pos.y += this.dir.y * this.speed;
+  }
+
+  checkEdges() {
+    const d = this.p.dist(this.pos.x, this.pos.y, this.endPos.x, this.endPos.y);
+    if (d < 10) {
+      const temp = this.endPos;
+      this.endPos = this.origPos;
+      this.origPos = temp;
+      this.pos = { x: this.origPos.x, y: this.origPos.y };
+    }
+
+    if (
+      this.pos.x < 0 ||
+      this.pos.x > this.p.width ||
+      this.pos.y < 0 ||
+      this.pos.y > this.p.height
+    ) {
+      this.pos = { x: this.origPos.x, y: this.origPos.y };
+    }
+  }
+
+  update() {
+    this.p.fill(particleColor);
+    this.p.ellipse(this.pos.x, this.pos.y, 2, 2);
+  }
+
+  getDirection(from, to) {
+    const angle = Math.atan2(to.y - from.y, to.x - from.x);
+    return { x: this.p.cos(angle), y: this.p.sin(angle) };
+  }
+}
