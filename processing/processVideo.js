@@ -58,7 +58,7 @@ async function getVideoLength(videoFilePath) {
 }
 
 //VIDEO PROCESS:
-async function processVideo( mainDir, numSamples) {
+async function processVideo(mainDir, numSamples) {
   //1. MAKE THE FOLDERS + GET THE PATHS
   const { images, audios, videos } = makeFolders(mainDir);
   const videoFilePath = mainDir + "video.mp4";
@@ -106,11 +106,17 @@ async function processVideo( mainDir, numSamples) {
       await executeCommand(
         `ffmpeg -i "${videoSegmentPath}" -q:a 0 -map a "${audioSegmentPath}"`
       );
-      
+
       //extract the image
       await executeCommand(
-        `ffmpeg -i "${videoSegmentPath}" -ss 00:00:00 -vframes 1 ${imgSegmentPath}`
+        `ffmpeg -i "${videoSegmentPath}" -vf fps=1 "${path.join(
+          images,
+          `${sampleNum}-%03d.png`
+        )}"`
       );
+      // await executeCommand(
+      //   `ffmpeg -i "${videoSegmentPath}" -ss 00:00:00 -vframes 1 ${imgSegmentPath}`
+      // );
     }
   } catch (error) {
     console.error("!ERROR PROCESSING VIDEO:", error);

@@ -98,7 +98,9 @@ def getData(name, numSamples = 20, youtubeLink = False, captions = False):
 # command1 = ["yt-dlp","--skip-download","--write-auto-sub", "--sub-lang", "en","--sub-format", "ass","-o", "captions.ass",testlink]
 # result1 = subprocess.run(command1, capture_output=True, text=True, check=True)
 # print(result1.stdout)
-for movieName in sceneLinks.keys():
-    url = sceneLinks[movieName]["url"]
-    numSamples = sceneLinks[movieName]["numSamples"]
-    getData(movieName, numSamples, youtubeLink=url, captions = False)
+# for movieName in sceneLinks.keys():
+#     url = sceneLinks[movieName]["url"]
+#     numSamples = sceneLinks[movieName]["numSamples"]
+#     getData(movieName, numSamples, youtubeLink=url, captions = False)
+
+getData('MysteryLove',youtubeLink='https://www.youtube.com/watch?v=y7Hq8hjlzd4', numSamples = 1)

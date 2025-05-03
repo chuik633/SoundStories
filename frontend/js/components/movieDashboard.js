@@ -79,6 +79,7 @@ function layoutScenePreviews(outer_container, movieName) {
   const container = outer_container
     .append("div")
     .attr("class", "scene-preview-container");
+  console.log(data);
   for (const { filename, colors, sceneNum } of data[movieName].imageSceneData) {
     const sceneImg = container
       .append("img")

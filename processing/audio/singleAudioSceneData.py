@@ -53,6 +53,7 @@ class AudioScene():
     def getData(self):
         avgamp, amp = self.getAmplitude()
         avgenergy, energy = self.getEnergy()
+        beats, beat_times = self.getTempo()
 
         self.feature_dict = {name: value for name, value in zip(self.short_feature_names, self.short_features) if name in short_features_selected}
         self.feature_dict.update(
@@ -61,7 +62,8 @@ class AudioScene():
             'notes_at_timestamps':self.getNotes(),
             'amplitude_avg':avgamp,
             # 'amplitude':amp,
-            'tempo':self.getTempo(),
+            'beats':beats,
+            'beat_times':beat_times,
             'energy_avg':avgenergy,
             'energy':energy[0],
             'instruments':self.getInstruments(),
@@ -99,7 +101,8 @@ class AudioScene():
     
     def getTempo(self):
         tempo, beats = librosa.beat.beat_track(y=self.x, sr=self.Fs)
-        return float(tempo[0])
+        beat_times = librosa.frames_to_time(beats, sr=self.Fs)
+        return beats,beat_times
     
     def getInstruments(self):
         #TODO: DO THIS for ML class

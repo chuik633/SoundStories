@@ -1,6 +1,6 @@
 const movies = [
-  // "PrincessMononoke",
-  // "Space",
+  "PrincessMononoke",
+  "Space",
   "Oppenheimer",
   "Oppenheimer2",
   "The Imitation Game",
