@@ -1,16 +1,16 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>SOUND STORIES</title>
-   <link rel="stylesheet" href="styles/fonts/futura.css" />
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SOUND STORIES</title>
+    <link rel="stylesheet" href="styles/fonts/futura.css" />
     <link rel="stylesheet" href="styles/styles.css" />
-        <link rel="stylesheet" href="styles/canvas.css" />
+    <link rel="stylesheet" href="styles/canvas.css" />
     <link rel="stylesheet" href="styles/pages/menu.css" />
     <link rel="stylesheet" href="styles/pages/explore.css" />
-     <link rel="stylesheet" href="styles/pages/experiment.css" />
-     <link rel="stylesheet" href="styles/pages/about.css" />
+    <link rel="stylesheet" href="styles/pages/experiment.css" />
+    <link rel="stylesheet" href="styles/pages/about.css" />
     <link rel="stylesheet" href="styles/videoPlayer.css" />
 
     <link rel="stylesheet" href="styles/movieDashboard.css" />
@@ -20,20 +20,16 @@
     <script src="./libraries/p5.sound.min.js"></script>
     <script src="./libraries/p5.grain.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
-</head>
-<body>
-   
-     <div id="app"></div>
+  </head>
+  <body>
+    <div id="app"></div>
 
-     <div class="hidden" id="popup-container">
-        <div id="menu-container"></div>
-     </div>
-     <button id="menu-btn" state="closed">
-        <img src="styles/icons/menu.svg" alt="Menu" width="30" height="30">
+    <div class="hidden" id="popup-container">
+      <div id="menu-container"></div>
+    </div>
+    <button id="menu-btn" state="closed">
+      <img src="styles/icons/menu.svg" alt="Menu" width="30" height="30" />
     </button>
-    
-
-
 
     <!-- settings -->
     <script src="./js/settings.js"></script>
@@ -51,26 +47,35 @@
 
     <script src="./js/sketches/sketchLoading.js"></script>
 
+    <!-- dynamic font lybrary -->
+    <script src="./js/sketches/dynamicfontlibrary/helpers.js"></script>
+    <!-- all the fontss -->
+    <script src="./js/sketches/dynamicfontlibrary/wigglyfont.js"></script>
+    <script src="./js/sketches/dynamicfontlibrary/strings_font.js"></script>
+    <script src="./js/sketches/dynamicfontlibrary/flow_font.js"></script>
+    <script src="./js/sketches/dynamicfontlibrary/blur_font.js"></script>
+    <script src="./js/sketches/dynamicfontlibrary/flow_font2.js"></script>
+    <!-- the compilation of them -->
+    <script src="./js/sketches/dynamicfontlibrary/dynamicFont.js"></script>
+    <script src="./js/sketches/sketches_instance/sketch_dynamic.js"></script>
+
     <!-- components and plots-->
     <script src="./js/components/videoPlayer.js"></script>
     <script src="./js/components/plots/line_plot.js"></script>
-     <script src="./js/components/plots/notesplot.js"></script>
+    <script src="./js/components/plots/notesplot.js"></script>
     <script src="./js/components/plots.js"></script>
     <script src="./js/components/movieDashboard.js"></script>
-   
 
     <!-- pages -->
     <script src="./js/pages/about.js"></script>
     <script src="./js/pages/experiment.js"></script>
     <script src="./js/pages/explore.js"></script>
     <script src="./js/pages/films.js"></script>
-    
+
     <!-- nav -->
     <script src="./js/menu.js"></script>
 
     <!-- main -->
     <script src="./js/main.js"></script>
-
-    
-</body>
+  </body>
 </html>

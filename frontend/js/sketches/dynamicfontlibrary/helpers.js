@@ -1,4 +1,4 @@
-const maxFontSize = 100;
+const maxFontSize = 120;
 /**
  * helper function to get resized font size
  */
@@ -12,6 +12,19 @@ function getResizedFontSize(inputText, currFontSize, max_size) {
   }
 
   return squishedFontSize;
+}
+
+function drawGrid(p, numRows, numCols, color, x, y, gridW, gridH) {
+  const w = gridW / numCols;
+  const h = w;
+  p.stroke(color);
+  p.strokeWeight(0.2);
+  for (let j = 0; j < numRows; j++) {
+    p.line(x, y + h * j, x + gridW, y + h * j);
+  }
+  for (let i = 0; i < numCols; i++) {
+    p.line(x + i * w, y, x + i * w, y + gridH);
+  }
 }
 
 function simplifyList(lst, threshold) {
@@ -40,7 +53,6 @@ function drawCurvedLine(p, x1, y1, x2, y2, mx, my) {
   let controlY2 = (y2 + my) / 2;
 
   p.beginShape();
-  p.fill("white");
   p.vertex(x1, y1);
   p.bezierVertex(controlX1, controlY1, controlX2, controlY2, x2, y2);
   p.endShape();
@@ -116,8 +128,7 @@ class FlowParticle {
   }
 
   update() {
-    this.p.fill(particleColor);
-    this.p.ellipse(this.pos.x, this.pos.y, 2, 2);
+    this.p.ellipse(this.pos.x, this.pos.y, 1, 1);
   }
 
   getDirection(from, to) {

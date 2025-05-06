@@ -30,8 +30,8 @@ function drawFlowFont(p, values, inputText, font, x, y, maxWidth) {
   if (!flowParticles.length) return;
 
   p.noStroke();
-  p.fill(...flowBackground, 15);
-  p.rect(0, 0, p.width, p.height);
+  // p.fill(...flowBackground, 15);
+  // p.rect(0, 0, p.width, p.height);
 
   const binsToUse = values.length;
   const particlesPerBin = Math.floor(flowParticles.length / binsToUse);
