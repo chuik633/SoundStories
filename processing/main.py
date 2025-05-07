@@ -102,7 +102,8 @@ def getData(name, numSamples = 20, youtubeLink = False, captions = False):
 #     url = sceneLinks[movieName]["url"]
 #     numSamples = sceneLinks[movieName]["numSamples"]
 #     getData(movieName, numSamples, youtubeLink=url, captions = False)
-getData("Up", youtubeLink="https://www.youtube.com/watch?v=2rn-vMbFglI", numSamples = 1)
-getData("totoro", youtubeLink="https://www.youtube.com/watch?v=MZgBjQFMPvk", numSamples = 1)
-getData('Gymnopedie',youtubeLink='https://www.youtube.com/watch?v=S-Xm7s9eGxU', numSamples = 1)
-# getData('MysteryLove',youtubeLink='https://www.youtube.com/watch?v=y7Hq8hjlzd4', numSamples = 1)g
+# getData("Up", youtubeLink="https://www.youtube.com/watch?v=2rn-vMbFglI", numSamples = 1)
+# getData("totoro", youtubeLink="https://www.youtube.com/watch?v=MZgBjQFMPvk", numSamples = 1)
+# getData('Gymnopedie',youtubeLink='https://www.youtube.com/watch?v=S-Xm7s9eGxU', numSamples = 1)
+# # getData('MysteryLove',youtubeLink='https://www.youtube.com/watch?v=y7Hq8hjlzd4', numSamples = 1)g
+getData('interstellar',youtubeLink="https://www.youtube.com/watch?v=8kooIgKESYE", numSamples = 2)

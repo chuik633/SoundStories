@@ -9,14 +9,14 @@ const dynamicFontSketch = (p, parentDiv, movieName, sceneNum) => {
 
   //dynamic font stuff
   const dynamicFontOptions = ["wiggly", "strings", "flow", "blur", "swirl"];
-  const dynamicFontType = "swirl";
-  let width = 700;
-  let height = 500;
+  const dynamicFontType = "strings";
+  let width = window.innerWidth;
+  let height = (window.innerHeight * 2) / 3 - 100;
   const textX = width / 2;
   const textY = height / 2;
   const textWidth = width - 80;
   const textContent = movieName;
-  let textColor = "white";
+  let textColor = "black";
   let bgColor;
   let sound = d3.select(syncId).node();
 
@@ -37,6 +37,7 @@ const dynamicFontSketch = (p, parentDiv, movieName, sceneNum) => {
   ];
 
   p.preload = () => {
+    // font = p.loadFont("styles/fonts/futura/FuturaCyrillicBold.ttf");
     font = p.loadFont("styles/fonts/Jost-Bold.ttf");
     audioSceneEntry = p.loadJSON(
       metaData[movieName]["mainDir"] + pathConfig.audioDataFilename
@@ -47,8 +48,9 @@ const dynamicFontSketch = (p, parentDiv, movieName, sceneNum) => {
   };
 
   p.setup = () => {
-    bgColor = "black";
+    bgColor = "#EFEDE3";
     audioSceneEntry = audioSceneEntry[sceneNum];
+    console.log("setting up new sketch");
     console.log(audioSceneEntry);
 
     const canvas = p.createCanvas(width, height);
@@ -75,9 +77,16 @@ const dynamicFontSketch = (p, parentDiv, movieName, sceneNum) => {
     p.stroke(textColor);
 
     timestamp = d3.select(syncId).node().currentTime;
+
     audioIdx = Math.round(timestamp / 0.02);
     timestamp = p.round(timestamp);
-
+    // drawChromagram(width / 2, height / 2, 100, 100);
+    if (addBeat()) {
+      // console.log(imageSceneEntry[timestamp]);
+      let colorslist = imageSceneEntry[timestamp]["colors"];
+      bgColor = colorslist[0];
+      textColor = colorslist[colorslist.length - 1];
+    }
     drawDynamicFont(
       p,
       dynamicFontType,
@@ -121,10 +130,11 @@ const dynamicFontSketch = (p, parentDiv, movieName, sceneNum) => {
 
     for (let i = 0; i < numBeats; i++) {
       const beat_time = audioSceneEntry["beat_times"][i];
-      if (Math.abs(beat_time - sound.currentTime()) < 0.02) {
-        console.log("beat");
+      if (Math.abs(beat_time - d3.select(syncId).node().currentTime) < 0.02) {
+        return true;
       }
     }
+    return false;
   }
 
   function drawChromagram(x, y, chromagramW, noteH) {
@@ -162,21 +172,6 @@ const dynamicFontSketch = (p, parentDiv, movieName, sceneNum) => {
       p.text(pitches[chromaNum], xpos, y - 10);
     }
 
-    p.pop();
-  }
-
-  function drawMFCCS() {
-    p.push();
-    p.translate(-width / 2, -height / 2);
-    const xSize = width / 12;
-    const hSize = height / 12;
-    for (let mfccNum = 0; mfccNum < 12; mfccNum++) {
-      const [minMFCC, maxMFCC] = mfcc_ranges[`mfcc_${mfccNum + 1}`];
-      const mfccVal = audioSceneEntry[`mfcc_${mfccNum + 1}`][audioIdx];
-      const normalVal = p.map(mfccVal, minMFCC, maxMFCC, 0, 1);
-      p.map(normalVal, 0, 1, 30);
-      createBuilding(xSize * mfccNum, 0, 0, l, w, h);
-    }
     p.pop();
   }
 };

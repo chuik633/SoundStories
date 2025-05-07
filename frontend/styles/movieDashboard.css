@@ -3,7 +3,7 @@
   display: flex;
   height: 100vh;
   flex-direction: column;
-  /* background-color: blue; */
+
   --shrinkSize: 100px;
 
   --selectedImageSize: 150px;
@@ -18,8 +18,7 @@
 .preview-container.full {
   width: 100vw;
   /* height: calc(100vh - var(--shrinkSize)); */
-  height: fit-content;
-  padding: 100px 0px;
+  height: 100%;
   overflow-y: auto;
   display: flex;
   flex-direction: column;
@@ -27,6 +26,7 @@
   justify-content: flex-start;
   /* background-color: rgb(242, 122, 142); */
 }
+
 .preview-container.small {
   width: 100vw;
   height: var(--shrinkSize);
@@ -38,22 +38,15 @@
 }
 
 .preview-container.full #sketches-container {
-  position: relative;
-  width: 80vw;
-  min-width: 400px;
+  position: absolute;
+  width: 100vw;
 
-  min-height: 200px;
-  /* border: 0.1px solid white; */
-  height: 100%;
+  height: calc(100% - 30vh - 100px);
+  /* background: pink; */
   display: flex;
   flex-direction: column;
   gap: 20px;
-  overflow-y: auto;
-}
-
-.preview-container.full .sketch-container {
-  position: relative;
-  /* border: 0.1px solid white; */
+  overflow-y: hidden;
 }
 
 /* DASHBOARD */
@@ -136,4 +129,17 @@
 .sceneImg[prev="true"]:hover {
   opacity: 0.8 !important;
   border: 0.5px solid white;
+}
+
+.scene-preview-container.small {
+  padding: 0px;
+  height: var(--shrinkSize);
+  position: absolute;
+  top: 0px;
+  left: 0px;
+}
+.scene-preview-container.small .sceneImg,
+.scene-preview-container.small .sceneImg[selected="true"] {
+  height: 100% !important;
+  object-fit: cover;
 }

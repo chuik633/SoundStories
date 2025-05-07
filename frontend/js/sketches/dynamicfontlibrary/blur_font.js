@@ -58,7 +58,7 @@ function processBlurScreen(p, strokeLen, selectedColor, tolerance) {
 }
 
 function drawBlurLineSegments(p, maxDistance, dirX, dirY) {
-  p.strokeWeight(0.5);
+  p.strokeWeight(0.1);
   p.noFill();
 
   for (const [x1, y1, x2, y2] of blurFontSegments) {

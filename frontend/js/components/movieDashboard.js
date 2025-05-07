@@ -17,7 +17,8 @@ function layoutDashboardAndPreview(
     .attr("class", "dashboard full")
     .attr("id", `dashboard-${movieName}`);
   dashboard.append("h2").text(" ");
-  layoutDashboard(dashboard, movieName);
+  dashboard.append("div").attr("class", "plots-container");
+  layoutScenePreviews(container, movieName);
 
   //the preview
   const previewContainer = layoutPreview(container, sceneNum, movieName);
@@ -42,7 +43,8 @@ function layoutPreview(container, sceneNum, movieName) {
   const videoWrapper = previewContainer
     .append("div")
     .attr("class", "video-wrapper-outer full");
-
+  videoWrapper.append("div").attr("class", "bottom-container visible");
+  makeBottomContainer();
   //place in the background sketch
   const sketch_container = previewContainer
     .append("div")
@@ -57,17 +59,45 @@ function expandDashboard() {
   //shrink preview container
   d3.select(".preview-container").attr("class", "preview-container small");
   d3.select("#sketches-container").attr("class", "hidden");
+  d3.select(".scene-preview-container").attr(
+    "class",
+    "scene-preview-container full"
+  );
   //grow shrink wrap
   d3.select(".video-wrapper-outer").attr("class", "video-wrapper-outer small");
+  d3.select(".video-wrapper-outer .bottom-container").attr(
+    "class",
+    "bottom-container hidden"
+  );
   //grow dashboard
-  d3.select(".dashboard").attr("class", "dashboard full");
+  d3.select(".dashboard")
+    .attr("class", "dashboard full")
+    .style("background-image", `none`);
 }
 function expandPreviewContainer(movieName) {
   d3.select(".preview-container").attr("class", "preview-container full");
   d3.select("#sketches-container").attr("class", "visible");
-  d3.select(".video-wrapper-outer").attr("class", "video-wrapper-outer full");
-  d3.select(".dashboard").attr("class", "dashboard small");
-  showSketches(movieName, d3.select("#displayed-video").attr("sceneNum"));
+  d3.select(".scene-preview-container").attr(
+    "class",
+    "scene-preview-container small"
+  );
+  d3.select(".video-wrapper-outer")
+    .select(".bottom-container")
+    .attr("class", "bottom-container visible");
+  makeBottomContainer();
+  d3.select(".video-wrapper-outer").attr(
+    "class",
+    "video-wrapper-outer full visible"
+  );
+  const sceneNum = d3.select("#displayed-video").attr("sceneNum");
+  d3.select(".dashboard")
+    .attr("class", "dashboard small")
+    .style(
+      "background-image",
+      `url(${metaData[movieName].imgDir}${sceneNum}-005.png)`
+    );
+
+  showSketches(movieName, sceneNum);
 }
 
 function layoutDashboard(dashboard, movieName) {
@@ -78,8 +108,8 @@ function layoutDashboard(dashboard, movieName) {
 function layoutScenePreviews(outer_container, movieName) {
   const container = outer_container
     .append("div")
-    .attr("class", "scene-preview-container");
-  console.log(data);
+    .attr("class", "scene-preview-container small");
+  // console.log(data);
   for (const { filename, colors, sceneNum } of data[movieName].imageSceneData) {
     const sceneImg = container
       .append("img")
@@ -127,9 +157,9 @@ function changeDisplayedVideo(movieName, sceneNum) {
   d3.select("#films-page").style("--prevImageSize", `${imgW}px`);
 
   //PLACE THE VIDEO WRAPPER WHERE THE SLEECTED IMAGE IS
-  d3.select(".video-wrapper-outer")
-    .style("visibility", "hidden")
-    .style("opacity", 0);
+  // d3.select(".video-wrapper-outer")
+  //   .style("visibility", "hidden")
+  //   .style("opacity", 0);
   const selectedSceneImg = d3.select(`.sceneImg-${sceneNum}`).node();
   selectedSceneImg.addEventListener(
     "transitionend",
@@ -160,3 +190,43 @@ function changeDisplayedVideo(movieName, sceneNum) {
   //show the sketches
   showSketches(movieName, sceneNum);
 }
+
+function makeBottomContainer() {
+  const container = d3.select(".bottom-container");
+  console.log(container);
+  container.selectAll("*").remove();
+  const captionParamContainer = container
+    .append("div")
+    .attr("class", "section");
+
+  //label the caption
+  const c1 = captionParamContainer.append("div").attr("class", "subsection");
+  c1.append("div").attr("class", "label").text("CAPTION");
+  c1.append("div").attr("id", "caption-text").text("caption text");
+
+  //select the caption type
+  const pltoContainer2 = container.append("div").attr("class", "section");
+  const c2 = pltoContainer2.append("div").attr("class", "subsection");
+  c2.append("div").attr("class", "label").text("TEXT TYPE");
+  const options = ["blur", "flow1", "flow2", "strings", "wiggly"];
+  const radioGroup = c2.append("div").attr("class", "radio-group");
+  options.forEach((opt, i) => {
+    const label = radioGroup.append("label").attr("for", `text-type-${i}`);
+    label
+      .append("input")
+      .attr("type", "radio")
+      .attr("name", "text-type")
+      .attr("id", `text-type-${i}`)
+      .attr("value", opt)
+      .property("checked", i === 0);
+    label.append("span").text(opt);
+  });
+
+  d3.selectAll('input[name="text-type"]').on("change", function (event) {
+    const selectedValue = this.value;
+    console.log("Selected text type:", selectedValue);
+    // …or call your handler:
+    // handleTextTypeChange(selectedValue);
+  });
+}
+function updateBottomContainer() {}

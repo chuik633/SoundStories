@@ -1,4 +1,4 @@
-const maxFontSize = 120;
+const maxFontSize = 110;
 /**
  * helper function to get resized font size
  */
@@ -128,7 +128,7 @@ class FlowParticle {
   }
 
   update() {
-    this.p.ellipse(this.pos.x, this.pos.y, 1, 1);
+    this.p.ellipse(this.pos.x, this.pos.y, 2, 2);
   }
 
   getDirection(from, to) {
