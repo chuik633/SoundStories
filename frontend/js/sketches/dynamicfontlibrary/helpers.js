@@ -128,7 +128,7 @@ class FlowParticle {
   }
 
   update() {
-    this.p.ellipse(this.pos.x, this.pos.y, 2, 2);
+    this.p.ellipse(this.pos.x, this.pos.y, 1, 1);
   }
 
   getDirection(from, to) {

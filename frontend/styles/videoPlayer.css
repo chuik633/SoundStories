@@ -4,7 +4,7 @@
   /* min-height:100px; */
   width: 100vw !important;
   /* background-color: black; */
-  border: 0.4px solid white;
+  border: 0.4px solid var(--text-color);
   position: fixed;
   bottom: 0px !important;
   left: 0px !important;
@@ -47,7 +47,7 @@
   display: flex;
   flex-direction: column;
   gap: 30px;
-  border-right: 1px solid white;
+  border-right: 1px solid var(--text-color);
 }
 
 .subsection {
@@ -98,6 +98,7 @@
   transform: translateY(-8px);
   left: 2.5%;
   width: 95%;
+  z-index: 100;
   height: 30px;
 }
 .video-wrapper-outer.full .controls-container {
@@ -120,7 +121,7 @@
   z-index: 3;
   position: absolute;
   width: var(--selectedImageSize);
-  background-color: black;
+  background-color: var(--text-color);
   opacity: 0;
   visibility: hidden;
   transition: opacity 0.3s ease-in-out, width 0.3s ease-in-out;
@@ -176,7 +177,7 @@ input[type="range"] {
   -webkit-appearance: none;
   width: 100%;
   height: 5px;
-  border: 0.5px solid white;
+  border: 0.5px solid var(--text-color);
   background: inherit; /* Light gray background */
   /* border-radius: 5px; */
   outline: none;
@@ -197,7 +198,7 @@ input[type="range"]::-webkit-slider-thumb {
   height: 100%;
   position: relative;
 
-  background: white;
+  background: var(--text-color);
   transition: width 0.2s ease-in-out, height 0.2s ease-in-out;
   cursor: pointer;
 }
@@ -210,7 +211,7 @@ input[type="range"]::-webkit-slider-thumb:hover {
   /* border-radius: 10px; */
   position: relative;
 
-  background: white;
+  background: var(--text-color);
 
   cursor: pointer;
 }

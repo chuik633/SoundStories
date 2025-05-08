@@ -42,7 +42,7 @@ function drawWigglyFont(
     //Animate position
     let y_shift = 0;
     if (animatePos) {
-      y_shift = p.map(value, 0, 1, 0, letter_fontSize);
+      y_shift = p.map(value, 0, 1, 0, letter_fontSize / 4);
     }
 
     //Sample letter points
@@ -57,25 +57,29 @@ function drawWigglyFont(
 
     //Draw letter from points
     if (animateNoise) {
-      drawLetterFromPoints(p, letter_points, value, fontSize / 2);
+      drawLetterFromPoints(p, letter_points, value, fontSize);
     } else {
       drawLetterFromPoints(p, letter_points, value, 0);
     }
 
     //move position along
-    x += letter_fontSize;
+    x += letter_fontSize - letter_fontSize / 3;
   }
 } //draw a single letter add params her
 function drawLetterFromPoints(p, points, val, noiseSize) {
-  p.fill("white");
+  // p.fill("white");
   p.noStroke();
   p.beginShape();
   for (const point of points) {
-    let n_zoom = 0.05;
-    let n_speed = p.map(val, 0, 1, 0.001, 0.05);
+    console.log(noiseSize);
+    let n_zoom = p.map(noiseSize, 1, 100, 0.06, 0.021);
+    console.log("zoom", n_zoom);
+    let n_speed =
+      p.map(val, 0, 1, 0.001, 0.05) * p.map(noiseSize, 1, 100, 1, 1.5);
     let n =
-      p.noise(n_zoom * point.x, n_zoom * point.x, p.frameCount * n_speed) *
-      noiseSize;
+      (p.noise(n_zoom * point.x, n_zoom * point.x, p.frameCount * n_speed) *
+        noiseSize) /
+      4;
     p.vertex(point.x + n, point.y + n);
   }
   p.endShape();

@@ -7,7 +7,7 @@ function setupStringsFont(p, values, inputText, font, x, y, maxWidth) {
   sampleFac = p.map(fontSize, 10, 100, 0.8, 0.3);
 
   const textWidth = inputText.length * fontSize;
-  let startX = x - textWidth / 2;
+  let startX = x - textWidth / 2.5;
 
   //reset it cuz maybe new text
   lines = [];
@@ -26,7 +26,7 @@ function setupStringsFont(p, values, inputText, font, x, y, maxWidth) {
     let letterLines = get_shape_lines(letter_points);
     lines = [...lines, ...letterLines];
 
-    startX += fontSize;
+    startX += fontSize - fontSize / 4;
   }
 }
 

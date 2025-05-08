@@ -31,8 +31,8 @@ function setupFlow2Font(p, values, inputText, font, x, y, maxWidth) {
 
 function drawFlow2Font(p, values, inputText, font, x, y, maxWidth) {
   p.noStroke();
-  p.fill(...flow2Bg, 15);
-  p.rect(0, 0, p.width, p.height);
+  // p.fill(...flow2Bg, 10);
+  // p.rect(0, 0, p.width, p.height);
 
   const binsToUse = values.length;
   const particlesPerBin = Math.floor(flow2Particles.length / binsToUse);

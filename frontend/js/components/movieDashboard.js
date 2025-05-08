@@ -79,7 +79,7 @@ function expandPreviewContainer(movieName) {
   d3.select("#sketches-container").attr("class", "visible");
   d3.select(".scene-preview-container").attr(
     "class",
-    "scene-preview-container small"
+    "scene-preview-container small hidden"
   );
   d3.select(".video-wrapper-outer")
     .select(".bottom-container")
@@ -90,12 +90,11 @@ function expandPreviewContainer(movieName) {
     "video-wrapper-outer full visible"
   );
   const sceneNum = d3.select("#displayed-video").attr("sceneNum");
-  d3.select(".dashboard")
-    .attr("class", "dashboard small")
-    .style(
-      "background-image",
-      `url(${metaData[movieName].imgDir}${sceneNum}-005.png)`
-    );
+  d3.select(".dashboard").attr("class", "dashboard small");
+  // .style(
+  //   "background-image",
+  //   `url(${metaData[movieName].imgDir}${sceneNum}-005.png)`
+  // );
 
   showSketches(movieName, sceneNum);
 }

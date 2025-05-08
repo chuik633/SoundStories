@@ -3,21 +3,23 @@ const dynamicFontSketch = (p, parentDiv, movieName, sceneNum) => {
   let font;
   let audioSceneEntry;
   let imageSceneEntry;
+  let captionSceneEntry;
   let timestamp = 0;
   let audioIdx;
   let mfcc_ranges = {};
+  let captions = false;
 
   //dynamic font stuff
   const dynamicFontOptions = ["wiggly", "strings", "flow", "blur", "swirl"];
-  const dynamicFontType = "strings";
+  const dynamicFontType = "blur";
   let width = window.innerWidth;
   let height = (window.innerHeight * 2) / 3 - 100;
   const textX = width / 2;
   const textY = height / 2;
   const textWidth = width - 80;
-  const textContent = movieName;
-  let textColor = "black";
-  let bgColor;
+  let textContent = "THANK YOU";
+  let textColor = "white";
+  let bgColor = "#000000";
   let sound = d3.select(syncId).node();
 
   //audio info
@@ -45,13 +47,21 @@ const dynamicFontSketch = (p, parentDiv, movieName, sceneNum) => {
     imageSceneEntry = p.loadJSON(
       metaData[movieName].mainDir + pathConfig.imageDataFilename
     );
+    if (movieName == "totoro") {
+      captions = true;
+      let captionpath = metaData[movieName]["mainDir"] + "captions.json";
+      captionSceneEntry = p.loadJSON(captionpath);
+    }
   };
 
   p.setup = () => {
-    bgColor = "#EFEDE3";
     audioSceneEntry = audioSceneEntry[sceneNum];
     console.log("setting up new sketch");
     console.log(audioSceneEntry);
+    console.log(captionSceneEntry);
+    if (captions) {
+      captionSceneEntry = captionSceneEntry[0];
+    }
 
     const canvas = p.createCanvas(width, height);
     canvas.parent(parentDiv);
@@ -71,6 +81,9 @@ const dynamicFontSketch = (p, parentDiv, movieName, sceneNum) => {
   };
 
   p.draw = () => {
+    // p.background(bgColor);
+    // console.log(bgColor);
+    // p.background(...bgColor, 100);
     p.background(bgColor);
 
     p.fill(textColor);
@@ -85,19 +98,59 @@ const dynamicFontSketch = (p, parentDiv, movieName, sceneNum) => {
       // console.log(imageSceneEntry[timestamp]);
       let colorslist = imageSceneEntry[timestamp]["colors"];
       bgColor = colorslist[0];
-      textColor = colorslist[colorslist.length - 1];
+      // textColor = colorslist[0];
+      textColor = "white";
+      // textColor = colorslist[0];
     }
     drawDynamicFont(
       p,
       dynamicFontType,
-      getNormalizedFeature("mfcc"),
+      getNormalizedFeature("chroma"),
       textContent,
       font,
       textX,
       textY,
       textWidth
     );
+    let newText = getCaption();
+
+    if (newText != false) {
+      console.log(newText);
+      if (newText != textContent) {
+        //redo
+        console.log("trying to set new text");
+        textContent = newText;
+        sound = setupDynamicFont(
+          p,
+          dynamicFontType,
+          [],
+          textContent,
+          font,
+          textX,
+          textY,
+          textWidth
+        );
+        d3.select("#caption-text").text(textContent);
+        console.log("set up new font");
+      }
+    }
   };
+
+  function getCaption() {
+    if (captions) {
+      for (const captionE of captionSceneEntry) {
+        // console.log(captionE, timestamp);
+        if (
+          timestamp > captionE.start_seconds &&
+          timestamp < captionE.end_seconds
+        ) {
+          // console.log("here");
+          return captionE.caption;
+        }
+      }
+    }
+    return false;
+  }
 
   function setupFeatureRanges() {
     for (let mfccNum = 0; mfccNum < 12; mfccNum++) {

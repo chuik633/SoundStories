@@ -1,4 +1,4 @@
-const movies = ["Up", "MysteryLove"];
+const movies = ["ghibli", "interstellarMusic"];
 
 const pathConfig = {
   dataPath: "../data/tmp/",

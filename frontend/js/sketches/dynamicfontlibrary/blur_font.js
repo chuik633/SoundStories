@@ -1,6 +1,6 @@
 let blurFontSegments = [];
 let blurTextColor = "white";
-let blurMaxPull = 1;
+let blurMaxPull = 1.5;
 let blurStepSize = 4;
 let blurNumBins = 12;
 
@@ -11,7 +11,7 @@ function setupBlurFont(p, values, inputText, font, x, y, maxWidth) {
   p.textSize(fontSize);
 
   const textWidth = inputText.length * fontSize;
-  x -= textWidth / 2;
+  x -= textWidth / 3;
 
   p.background("white");
   p.fill("black");
@@ -25,18 +25,47 @@ function setupBlurFont(p, values, inputText, font, x, y, maxWidth) {
 function drawBlurFont(p, values, inputText, font, x, y, maxWidth) {
   const centerX = p.width / 2;
   const centerY = p.height / 2;
-  const maxR = p.dist(centerX, centerY, 0, 0);
-  const angleStep = (2 * Math.PI) / blurNumBins;
-  const bins = values.length;
+  p.angleMode(p.RADIANS);
+  const maxR = p.dist(p.width / 2, p.height / 2, 0, 0);
+  let bins = values.length;
+  // bins = 8;
+  const angleStep = (2 * Math.PI) / bins;
 
   for (let i = 0; i < bins; i++) {
     let binValue = values[i];
     const angle = i * angleStep;
+    // console.log((angle / 2 / Math.PI) * 360);
 
-    const r = p.map(Math.log(binValue + 1), 1, Math.log(2), 100, maxR);
+    let r = p.map(
+      Math.log(binValue + 0.1),
+      Math.log(0.1),
+      Math.log(1.1),
+      10,
+      maxR
+    );
+    // r = p.map(binValue, 0.2, 1, 1, maxR);
+    // r = 1 + (maxR - 1) * (binValue * binValue);
     const dirX = Math.min(r * Math.cos(angle), p.width / 2);
     const dirY = Math.min(r * Math.sin(angle), p.height / 2);
 
+    p.stroke("white");
+    p.strokeWeight(0.8);
+    p.line(
+      p.width / 2,
+      p.height / 2,
+      centerX + r * Math.cos(angle),
+      centerY + r * Math.sin(angle)
+    );
+
+    p.textSize(5);
+    p.fill("white");
+    p.noStroke();
+    p.text(
+      "angle: " + p.round((angle / 2 / Math.PI) * 360),
+      centerX + 100 * Math.cos(angle) - 5,
+      centerY + 100 * Math.sin(angle)
+    );
+    p.stroke("white");
     drawBlurLineSegments(p, maxR, dirX + centerX, dirY + centerY);
   }
 }
@@ -58,7 +87,7 @@ function processBlurScreen(p, strokeLen, selectedColor, tolerance) {
 }
 
 function drawBlurLineSegments(p, maxDistance, dirX, dirY) {
-  p.strokeWeight(0.1);
+  p.strokeWeight(0.03);
   p.noFill();
 
   for (const [x1, y1, x2, y2] of blurFontSegments) {

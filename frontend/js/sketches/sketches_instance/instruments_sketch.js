@@ -78,10 +78,14 @@ const instrumentSketch = (p, parentDiv, movieName, sceneNum) => {
     brush.load();
   };
 
+  let mode = 0;
   p.draw = () => {
     p.fill(textColor);
     p.stroke(textColor);
     p.background(bgColor);
+    if (mode == 0) {
+      p.background(bgColor);
+    }
 
     timestamp = d3.select(syncId).node().currentTime;
 
@@ -95,13 +99,21 @@ const instrumentSketch = (p, parentDiv, movieName, sceneNum) => {
     drawChromagram(200, -100, 300, 200);
     brush.pop();
     if (addBeat()) {
+      p.background(bgColor);
       // console.log(imageSceneEntry[timestamp]);
       let colorslist = imageSceneEntry[timestamp]["colors"];
-      bgColor = colorslist[0];
-      textColor = colorslist[colorslist.length - 1];
+      textColor = colorslist[0];
+      // textColor = colorslist[colorslist.length - 1];
     }
     drawBeats();
-    drawMFCCS();
+    if (mode == 1) {
+      // drawMFCCS();
+    }
+  };
+  p.mouseClicked = function () {
+    console.log("mode change", mode);
+    mode = (mode + 1) % 3;
+    console.log("mode change", mode);
   };
 
   function setupFeatureRanges() {
@@ -140,10 +152,37 @@ const instrumentSketch = (p, parentDiv, movieName, sceneNum) => {
   }
   function addBeat() {
     const numBeats = audioSceneEntry["beat_times"].length;
-
+    const beatRows = p.round(numBeats ** 0.5);
+    const beatCols = p.round(numBeats / beatRows);
+    const beatySize = height / beatRows;
+    let beatXScale;
     for (let i = 0; i < numBeats; i++) {
       const beat_time = audioSceneEntry["beat_times"][i];
       if (Math.abs(beat_time - d3.select(syncId).node().currentTime) < 0.02) {
+        const rowNum = Math.floor(i / beatCols);
+        const colNum = i % beatCols;
+        const startIdx = rowNum * beatCols;
+        const endIdx = Math.min((rowNum + 1) * beatCols - 1, numBeats - 1);
+        beatXScale = d3
+          .scaleLinear()
+          .domain([
+            audioSceneEntry["beat_times"][startIdx],
+            audioSceneEntry["beat_times"][endIdx],
+          ])
+          .range([50, width - 50]);
+        lastBeat = {
+          x: beatXScale(beat_time) + 10,
+          y: rowNum * beatySize + 10,
+          c: imageSceneEntry[timestamp]["colors"][0],
+          c2: imageSceneEntry[timestamp]["colors"][1],
+        };
+
+        beats.push(lastBeat);
+        lastBeat["x2"] = p.random(-width / 2 + 50, width / 2 - 50);
+        lastBeat["y2"] = p.random(-height / 2 + 50, height / 2 - 50);
+        lastBeat["w"] = p.random(10, 50);
+        lastBeat["h"] = p.random(10, 50);
+
         return true;
       }
     }
@@ -337,15 +376,10 @@ const instrumentSketch = (p, parentDiv, movieName, sceneNum) => {
         p.random(10, 50)
       );
     } else {
-      brush.setHatch("HB", p.random(imageSceneEntry[timestamp]["colors"]));
+      brush.setHatch("HB", lastBeat.c2);
       brush.hatch(3, p.random() * 180);
       brush.noStroke();
-      brush.rect(
-        p.random(-width / 2 + 50, width / 2 - 50),
-        p.random(-height / 2 + 50, height / 2 - 50),
-        p.random(10, 50),
-        p.random(10, 50)
-      );
+      brush.rect(lastBeat.x2, lastBeat.y2, lastBeat.w, lastBeat.h);
     }
 
     p.pop();
