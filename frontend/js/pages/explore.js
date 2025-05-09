@@ -91,6 +91,7 @@ function makeLayout(container) {
       const audioEl = d3.select(".audio-node.id-" + d.id).node();
       currentAudio = audioEl;
       currentAudio.play();
+      console.log(d);
       // d.paused = true;
       growSize(d.sceneNum);
     })

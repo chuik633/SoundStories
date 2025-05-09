@@ -11,16 +11,17 @@ const dynamicFontSketch = (p, parentDiv, movieName, sceneNum) => {
 
   //dynamic font stuff
   const dynamicFontOptions = ["wiggly", "strings", "flow", "blur", "swirl"];
-  const dynamicFontType = "blur";
+  let dynamicFontType = d3
+    .select('input[name="text-type"]:checked')
+    .property("value");
   let width = window.innerWidth;
   let height = (window.innerHeight * 2) / 3 - 100;
   const textX = width / 2;
   const textY = height / 2;
   const textWidth = width - 80;
-  let textContent = "THANK YOU";
+  let textContent = movieName;
   let textColor = "white";
   let bgColor = "#000000";
-  let sound = d3.select(syncId).node();
 
   //audio info
   const pitches = [
@@ -55,28 +56,27 @@ const dynamicFontSketch = (p, parentDiv, movieName, sceneNum) => {
   };
 
   p.setup = () => {
+    if (!dynamicFontOptions.includes(dynamicFontType)) {
+      dynamicFontType = "wiggly";
+    }
+    console.log(dynamicFontType);
     audioSceneEntry = audioSceneEntry[sceneNum];
-    console.log("setting up new sketch");
-    console.log(audioSceneEntry);
-    console.log(captionSceneEntry);
+    // setup listeners
+    setupListeners();
+
     if (captions) {
       captionSceneEntry = captionSceneEntry[0];
     }
 
     const canvas = p.createCanvas(width, height);
     canvas.parent(parentDiv);
+    // set up settings
     p.background(bgColor);
     p.textFont(font);
-    sound = setupDynamicFont(
-      p,
-      dynamicFontType,
-      [],
-      textContent,
-      font,
-      textX,
-      textY,
-      textWidth
-    );
+
+    updateSketch();
+
+    // set feature ranges
     setupFeatureRanges();
   };
 
@@ -84,7 +84,24 @@ const dynamicFontSketch = (p, parentDiv, movieName, sceneNum) => {
     // p.background(bgColor);
     // console.log(bgColor);
     // p.background(...bgColor, 100);
-    p.background(bgColor);
+    //  d3.select("#caption-text").property("value")
+    const colorMode = d3
+      .selectAll('input[name="sketch-bgMode"]:checked')
+      .property("value");
+    if (colorMode == "simple") {
+      bgColor = d3.select("#films-page").style("--bgColor");
+      textColor = d3.select("#films-page").style("--text-color");
+    }
+
+    const fadeMode = d3.select("#fade-mode").property("checked");
+    if (fadeMode) {
+      let c = p.color(bgColor);
+      c.setAlpha(20);
+      p.fill(c);
+      p.rect(0, 0, p.width, p.height);
+    } else {
+      p.background(bgColor);
+    }
 
     p.fill(textColor);
     p.stroke(textColor);
@@ -95,17 +112,25 @@ const dynamicFontSketch = (p, parentDiv, movieName, sceneNum) => {
     timestamp = p.round(timestamp);
     // drawChromagram(width / 2, height / 2, 100, 100);
     if (addBeat()) {
-      // console.log(imageSceneEntry[timestamp]);
+      if (fadeMode) {
+        p.background(bgColor);
+      }
       let colorslist = imageSceneEntry[timestamp]["colors"];
-      bgColor = colorslist[0];
-      // textColor = colorslist[0];
-      textColor = "white";
-      // textColor = colorslist[0];
+      if (colorMode == "sync with image") {
+        bgColor = colorslist[colorslist.length - 1];
+        textColor = colorslist[0];
+        d3.select("#films-page").style("--bgColor", `rgb(${bgColor})`);
+        d3.select("#films-page").style("--text-color", `rgb(${textColor})`);
+      }
     }
+    const audioFeature = d3
+      .selectAll('input[name="audio-feature"]:checked')
+      .property("value");
+    console.log(audioFeature);
     drawDynamicFont(
       p,
       dynamicFontType,
-      getNormalizedFeature("chroma"),
+      getNormalizedFeature(audioFeature),
       textContent,
       font,
       textX,
@@ -117,24 +142,44 @@ const dynamicFontSketch = (p, parentDiv, movieName, sceneNum) => {
     if (newText != false) {
       console.log(newText);
       if (newText != textContent) {
-        //redo
-        console.log("trying to set new text");
         textContent = newText;
-        sound = setupDynamicFont(
-          p,
-          dynamicFontType,
-          [],
-          textContent,
-          font,
-          textX,
-          textY,
-          textWidth
-        );
-        d3.select("#caption-text").text(textContent);
+        updateSketch();
+        d3.select("#caption-text").property("value", textContent);
         console.log("set up new font");
       }
     }
   };
+
+  function setupListeners() {
+    d3.selectAll('input[name="text-type"]').on("change", function (event) {
+      const selectedValue = this.value;
+      console.log("Selected text type:", selectedValue);
+      dynamicFontType = selectedValue;
+      updateSketch();
+    });
+
+    d3.select("#caption-text").on("keydown", function (event) {
+      if (event.key === "Enter") {
+        const val = d3.select(this).property("value");
+        if (val != textContent) {
+          textContent = val;
+          updateSketch();
+        }
+      }
+    });
+  }
+  function updateSketch() {
+    setupDynamicFont(
+      p,
+      dynamicFontType,
+      [],
+      textContent,
+      font,
+      textX,
+      textY,
+      textWidth
+    );
+  }
 
   function getCaption() {
     if (captions) {

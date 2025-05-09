@@ -1,0 +1,93 @@
+.preview-container.full .bottom-container .section {
+  padding: 20px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 35px;
+  border-right: 1px solid var(--text-color);
+}
+
+.subsection {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.bottom-container .label {
+  font-size: 10px;
+  letter-spacing: 2px;
+  font-weight: bold;
+}
+
+.bottom-container #caption-text {
+  font-size: 12px;
+}
+.bottom-container input[type="radio"] {
+  display: none;
+}
+.bottom-container .radio-group {
+  display: flex;
+  flex-direction: row;
+  gap: 15px;
+}
+
+.bottom-container .radio-group label {
+  font-size: 10px;
+  font-family: "Courier New", Courier, monospace;
+}
+.bottom-container .radio-group label:hover {
+  text-decoration: underline;
+  font-style: italic;
+  color: var(--text-color);
+}
+.radio-group label input:checked + span {
+  font-weight: bold;
+  text-decoration: underline;
+}
+
+.bottom-container .radio-group label:selected {
+  font-size: 12px;
+  text-decoration: underline;
+  font-style: italic;
+  color: var(--text-color);
+}
+
+.toggle {
+  position: relative;
+  width: 40px;
+  height: 20px;
+  border-radius: 10px;
+  transition: background 0.1s, border 0.2s;
+}
+.toggle::after {
+  content: "";
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  transition: transform 0.2s, background 0.1s;
+}
+
+.my-toggle:not(:checked) + .toggle {
+  background: var(--bgColor);
+  border: 1px solid var(--text-color);
+}
+.my-toggle:not(:checked) + .toggle::after {
+  background: var(--text-color);
+  transform: translateX(0);
+}
+.my-toggle:checked + .toggle {
+  background: var(--bgColor);
+  border: 1px solid var(--text-color);
+}
+.my-toggle:checked + .toggle::after {
+  background: var(--text-color);
+  transform: translateX(20px);
+}
+
+.param-container {
+  display: flex;
+  width: 100%;
+  height: fit-content;
+}

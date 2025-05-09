@@ -29,7 +29,11 @@ function makeSingleVideoPlayer(outer_container, movieName, sceneNum) {
   function updateProgressBar() {
     const progress = progressBar.node();
     const percentage = (video.node().currentTime / video.node().duration) * 100;
-    progress.style.background = `linear-gradient(to right, white ${percentage}%, black ${percentage}%)`;
+    progress.style.background = `linear-gradient(to right, ${d3
+      .select("#films-page")
+      .style("--text-color")} ${percentage}%, ${d3
+      .select("#films-page")
+      .style("--bgColor")} ${percentage}%)`;
   }
 
   const playPauseBtn = controls_container

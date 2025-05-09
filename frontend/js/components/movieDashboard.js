@@ -25,7 +25,9 @@ function layoutDashboardAndPreview(
 
   //grow and shrink elements
   dashboard.on("click", () => expandDashboard());
-  previewContainer.on("click", () => expandPreviewContainer(movieName));
+  d3.select(".dshboard.small").on("click", () =>
+    expandPreviewContainer(movieName)
+  );
   if (dashboard_mode) {
     expandDashboard();
   } else {
@@ -96,6 +98,7 @@ function expandPreviewContainer(movieName) {
   //   `url(${metaData[movieName].imgDir}${sceneNum}-005.png)`
   // );
 
+  console.log("expand preview container");
   showSketches(movieName, sceneNum);
 }
 
@@ -125,6 +128,12 @@ function layoutScenePreviews(outer_container, movieName) {
 }
 
 function changeDisplayedVideo(movieName, sceneNum) {
+  console.log("CHANGE VIDEO");
+  console.log(sceneNum, d3.select("#displayed-video").attr("sceneNum"));
+  if (d3.select("#displayed-video").attr("sceneNum") == sceneNum) {
+    console.log("same video", sceneNum);
+    return;
+  }
   const numSamples = data[movieName].numSamples;
   //RESIZE ALL OF THE IMAGES IN THE PREVIEW
   d3.selectAll(".sceneImg").attr("selected", false);
@@ -187,6 +196,7 @@ function changeDisplayedVideo(movieName, sceneNum) {
   layoutPlots(movieName, sceneNum);
 
   //show the sketches
+  console.log("change displayed video");
   showSketches(movieName, sceneNum);
 }
 
@@ -201,13 +211,15 @@ function makeBottomContainer() {
   //label the caption
   const c1 = captionParamContainer.append("div").attr("class", "subsection");
   c1.append("div").attr("class", "label").text("CAPTION");
-  c1.append("div").attr("id", "caption-text").text("caption text");
+  c1.append("input")
+    .attr("id", "caption-text")
+    .property("value", "captiontext");
 
   //select the caption type
-  const pltoContainer2 = container.append("div").attr("class", "section");
-  const c2 = pltoContainer2.append("div").attr("class", "subsection");
+
+  const c2 = captionParamContainer.append("div").attr("class", "subsection");
   c2.append("div").attr("class", "label").text("TEXT TYPE");
-  const options = ["blur", "flow1", "flow2", "strings", "wiggly"];
+  const options = ["flow", "blur", "swirl", "strings", "wiggly"];
   const radioGroup = c2.append("div").attr("class", "radio-group");
   options.forEach((opt, i) => {
     const label = radioGroup.append("label").attr("for", `text-type-${i}`);
@@ -220,12 +232,72 @@ function makeBottomContainer() {
       .property("checked", i === 0);
     label.append("span").text(opt);
   });
-
-  d3.selectAll('input[name="text-type"]').on("change", function (event) {
-    const selectedValue = this.value;
-    console.log("Selected text type:", selectedValue);
-    // …or call your handler:
-    // handleTextTypeChange(selectedValue);
+  const c5 = captionParamContainer.append("div").attr("class", "subsection");
+  c5.append("div").attr("class", "label").text("COLOR MODE");
+  const bgModeRadioGroup = c5.append("div").attr("class", "radio-group");
+  ["simple", "sync with image"].forEach((opt, i) => {
+    const label = bgModeRadioGroup
+      .append("label")
+      .attr("for", `sketch-bgMode-${i}`);
+    label
+      .append("input")
+      .attr("type", "radio")
+      .attr("name", "sketch-bgMode")
+      .attr("id", `sketch-bgMode-${i}`)
+      .attr("value", opt)
+      .property("checked", i === 0);
+    label.append("span").text(opt);
   });
+  const c6 = captionParamContainer.append("div").attr("class", "subsection");
+  c6.append("div").attr("class", "label").text("FADE");
+  c6.append("input")
+    .attr("type", "checkbox")
+    .attr("class", "hidden my-toggle")
+    .attr("id", "fade-mode");
+  c6.append("label").attr("for", "fade-mode").attr("class", "toggle");
+
+  const pltoContainer2 = container.append("div").attr("class", "section");
+  const c4 = pltoContainer2.append("div").attr("class", "subsection");
+  c4.append("div").attr("class", "label ").text("AUDIO INPUT VALUE");
+  const audioRadioGroup = c4.append("div").attr("class", "radio-group");
+  ["mfcc", "chroma"].forEach((opt, i) => {
+    const label = audioRadioGroup
+      .append("label")
+      .attr("for", `audio-feature-${i}`);
+    label
+      .append("input")
+      .attr("type", "radio")
+      .attr("name", "audio-feature")
+      .attr("id", `audio-feature-${i}`)
+      .attr("value", opt)
+      .property("checked", i === 0);
+    label.append("span").text(opt);
+  });
+
+  //toggle dark mode or light mode
+  const c3 = pltoContainer2.append("div").attr("class", "subsection");
+  c3.append("div").attr("class", "label ").text("DARK MODE");
+  c3.append("input")
+    .attr("type", "checkbox")
+    .attr("class", "hidden my-toggle")
+    .attr("id", "light-mode")
+    .on("change", function () {
+      const on = d3.select(this).property("checked");
+      d3.select("body").classed("light-mode", on);
+      if (on) {
+        d3.select("#films-page")
+          .style("--text-color", "black")
+          .style("--bgColor", "#EFEDE3");
+      } else {
+        d3.select("#films-page")
+          .style("--text-color", "#EFEDE3")
+          .style("--bgColor", "black");
+      }
+    });
+  c3.append("label").attr("for", "light-mode").attr("class", "toggle");
+
+  //set up color mode
+
+  //select the feature
 }
 function updateBottomContainer() {}

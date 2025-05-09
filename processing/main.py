@@ -106,6 +106,6 @@ def getData(name, numSamples = 20, youtubeLink = False, captions = False):
 # getData("totoro", youtubeLink="https://www.youtube.com/watch?v=MZgBjQFMPvk", numSamples = 1)
 # getData('Gymnopedie',youtubeLink='https://www.youtube.com/watch?v=S-Xm7s9eGxU', numSamples = 1)
 # # getData('MysteryLove',youtubeLink='https://www.youtube.com/watch?v=y7Hq8hjlzd4', numSamples = 1)g
-getData('interstellarMusic',youtubeLink="https://www.youtube.com/watch?v=8kooIgKESYE", numSamples = 2)
+getData('interstellarMusic',youtubeLink="https://www.youtube.com/watch?v=8kooIgKESYE", numSamples = 10)
 # getData('ghibli',youtubeLink="https://www.youtube.com/watch?v=RZuMZ79erzc", numSamples = 1)
 # getData('totoro',youtubeLink="https://www.youtube.com/watch?v=92a7Hj0ijLs", numSamples = 1)https://www.youtube.com/watch?v=92a7Hj0ijLs
