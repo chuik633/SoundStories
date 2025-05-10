@@ -23,7 +23,7 @@ function showNotes(
     .append("svg")
     .attr("width", plot_width)
     .attr("height", plot_height)
-    .style("background-color", "black");
+    .style("background-color", d3.select("#films-page").style("--bgColor"));
 
   function makeYScale() {
     let y = 0;

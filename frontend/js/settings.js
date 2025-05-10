@@ -54,6 +54,7 @@ function createBackButton(container) {
   const backButton = container
     .append("img")
     .attr("id", "back-btn")
+    .attr("class", "icon")
     .attr("src", "./styles/icons/x.svg");
   backButton.on("click", () => {
     window.history.back();

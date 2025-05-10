@@ -32,7 +32,7 @@ const sketch_template = (p, parentDiv, movieName, sceneNum) => {
     font = p.loadFont("styles/fonts/Jost-Bold.ttf");
   };
 
-  p.setup = function () {
+  // p.setup = function () {
     //instance mode set up DO THIS FOR ALL
     const parentRect = parentDiv.getBoundingClientRect();
     width = parentRect.width;

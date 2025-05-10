@@ -13,7 +13,10 @@ function dynamicPlot(
 ) {
   hover_square = dashboard
     .append("div")
-    .style("border", ".5px solid white")
+    .style(
+      "border",
+      `.5px solid ${d3.select("#films-page").style("--text-color")}`
+    )
     .attr("class", "hidden")
     .style("position", "absolute")
     .style("top", "30px")
@@ -161,7 +164,7 @@ function dynamicPlot(
     .datum(prePrevVals)
 
     .attr("fill", "none")
-    .attr("stroke", "white")
+    .attr("stroke", d3.select("#films-page").style("--text-color"))
     .attr("opacity", 0.3)
     .attr("stroke-width", 0.5)
     .attr(
@@ -179,7 +182,7 @@ function dynamicPlot(
     .datum(prevVals)
     .attr("fill", "none")
     .attr("class", `line-plot-line line-plot-line-${sceneNum - 1}`)
-    .attr("stroke", "white")
+    .attr("stroke", d3.select("#films-page").style("--text-color"))
     .attr("opacity", 0.5)
     .attr("stroke-width", 0.5)
     .attr(
@@ -195,7 +198,7 @@ function dynamicPlot(
     .append("path")
     .datum(currVals)
     .attr("fill", "none")
-    .attr("stroke", "white")
+    .attr("stroke", d3.select("#films-page").style("--text-color"))
     .attr("class", `line-plot-line line-plot-line-${sceneNum}`)
     .attr("stroke-width", 0.5)
     .attr(
@@ -211,7 +214,7 @@ function dynamicPlot(
     .append("path")
     .datum(nextVals)
     .attr("fill", "none")
-    .attr("stroke", "white")
+    .attr("stroke", d3.select("#films-page").style("--text-color"))
     .attr("class", `line-plot-line line-plot-line-${sceneNum + 1}`)
     .attr("opacity", 0.5)
     .attr("stroke-width", 0.8)
@@ -229,7 +232,7 @@ function dynamicPlot(
     .datum(afterNextVals)
 
     .attr("fill", "none")
-    .attr("stroke", "white")
+    .attr("stroke", d3.select("#films-page").style("--text-color"))
     .attr("opacity", 0.3)
     .attr("stroke-width", 0.5)
     .attr(

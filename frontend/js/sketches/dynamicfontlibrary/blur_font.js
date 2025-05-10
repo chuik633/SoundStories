@@ -48,7 +48,8 @@ function drawBlurFont(p, values, inputText, font, x, y, maxWidth) {
     const dirX = Math.min(r * Math.cos(angle), p.width / 2);
     const dirY = Math.min(r * Math.sin(angle), p.height / 2);
 
-    p.stroke("white");
+    let textColor = d3.select("#films-page").style("--text-color");
+    p.stroke(textColor);
     p.strokeWeight(0.8);
     p.line(
       p.width / 2,
@@ -58,14 +59,15 @@ function drawBlurFont(p, values, inputText, font, x, y, maxWidth) {
     );
 
     p.textSize(5);
-    p.fill("white");
+    p.fill(textColor);
     p.noStroke();
     p.text(
       "angle: " + p.round((angle / 2 / Math.PI) * 360),
       centerX + 100 * Math.cos(angle) - 5,
       centerY + 100 * Math.sin(angle)
     );
-    p.stroke("white");
+    p.stroke(textColor);
+
     drawBlurLineSegments(p, maxR, dirX + centerX, dirY + centerY);
   }
 }

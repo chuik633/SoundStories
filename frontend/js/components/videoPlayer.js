@@ -11,6 +11,7 @@ function makeSingleVideoPlayer(outer_container, movieName, sceneNum) {
     .append("video")
     .attr("id", "displayed-video")
     .attr("sceneNum", sceneNum)
+    .attr("movieName", movieName)
     .attr("src", vidPath);
   const progress_container = container
     .append("div")
@@ -39,12 +40,14 @@ function makeSingleVideoPlayer(outer_container, movieName, sceneNum) {
   const playPauseBtn = controls_container
     .append("img")
     .attr("src", "./styles/icons/play.svg")
+    .attr("class", "icon")
     .attr("id", "playPauseBtn");
 
   //   const volumeBtn = controls_container.append("button").attr("id", "volumeBtn");
   const volumeBtn = controls_container
     .append("img")
     .attr("src", "./styles/icons/volume.svg")
+    .attr("class", "icon")
     .attr("id", "volumeBtn");
 
   const volumeBar = controls_container

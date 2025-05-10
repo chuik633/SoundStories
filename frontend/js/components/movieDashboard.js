@@ -24,12 +24,10 @@ function layoutDashboardAndPreview(
   const previewContainer = layoutPreview(container, sceneNum, movieName);
 
   //grow and shrink elements
-  dashboard.on("click", () => expandDashboard());
-  d3.select(".dshboard.small").on("click", () =>
-    expandPreviewContainer(movieName)
-  );
+  // dashboard.on("click", () => expandDashboard());
+
   if (dashboard_mode) {
-    expandDashboard();
+    expandDashboard(movieName);
   } else {
     expandPreviewContainer(movieName);
   }
@@ -46,7 +44,8 @@ function layoutPreview(container, sceneNum, movieName) {
     .append("div")
     .attr("class", "video-wrapper-outer full");
   videoWrapper.append("div").attr("class", "bottom-container visible");
-  makeBottomContainer();
+  makeBottomContainer(sceneNum, movieName);
+
   //place in the background sketch
   const sketch_container = previewContainer
     .append("div")
@@ -58,8 +57,26 @@ function layoutPreview(container, sceneNum, movieName) {
 
 //put motion and transitions into these?
 function expandDashboard() {
+  console.log("expand dashboard function");
+
   //shrink preview container
+  const movieName = d3.select("#displayed-video").attr("movieName");
+  const sceneNum = d3.select("#displayed-video").attr("sceneNum");
   d3.select(".preview-container").attr("class", "preview-container small");
+
+  // the buttons
+
+  d3.select(".dashboard.small").on("click", () => null);
+  console.log(d3.select(".small.preview-container"));
+  d3.select(".small.preview-container")
+    .on("click", () => {
+      console.log("HERE");
+      expandPreviewContainer(movieName);
+    })
+    .style(
+      "background-image",
+      `url(${metaData[movieName].imgDir}${sceneNum}-005.png)`
+    );
   d3.select("#sketches-container").attr("class", "hidden");
   d3.select(".scene-preview-container").attr(
     "class",
@@ -86,24 +103,35 @@ function expandPreviewContainer(movieName) {
   d3.select(".video-wrapper-outer")
     .select(".bottom-container")
     .attr("class", "bottom-container visible");
-  makeBottomContainer();
+
   d3.select(".video-wrapper-outer").attr(
     "class",
     "video-wrapper-outer full visible"
   );
-  const sceneNum = d3.select("#displayed-video").attr("sceneNum");
-  d3.select(".dashboard").attr("class", "dashboard small");
-  // .style(
-  //   "background-image",
-  //   `url(${metaData[movieName].imgDir}${sceneNum}-005.png)`
-  // );
 
+  const sceneNum = d3.select("#displayed-video").attr("sceneNum");
+  d3.select(".dashboard")
+    .attr("class", "dashboard small")
+    .style(
+      "background-image",
+      `url(${metaData[movieName].imgDir}${sceneNum}-005.png)`
+    );
+  makeBottomContainer(sceneNum, movieName);
+
+  // the buttons
   console.log("expand preview container");
+  d3.select(".preview-container").on("click", null);
+  d3.select(".dashboard.small").on("click", () => expandDashboard());
+
   showSketches(movieName, sceneNum);
 }
 
 function layoutDashboard(dashboard, movieName) {
   dashboard.append("div").attr("class", "plots-container");
+  // changeDisplayedVideo(
+  //   movieName,
+  //   d3.select("#displayed-video").attr("sceneNum")
+  // );
   layoutScenePreviews(dashboard, movieName);
 }
 
@@ -112,7 +140,12 @@ function layoutScenePreviews(outer_container, movieName) {
     .append("div")
     .attr("class", "scene-preview-container small");
   // console.log(data);
-  for (const { filename, colors, sceneNum } of data[movieName].imageSceneData) {
+  for (
+    let sceneNum = 0;
+    sceneNum < data[movieName].videoInfo.samples;
+    sceneNum++
+  ) {
+    const filename = `${sceneNum}-001.png`;
     const sceneImg = container
       .append("img")
       .attr("class", `sceneImg sceneImg-${sceneNum}`)
@@ -125,6 +158,19 @@ function layoutScenePreviews(outer_container, movieName) {
       changeDisplayedVideo(movieName, sceneNum);
     });
   }
+  // for (const { filename, colors, sceneNum } of data[movieName].imageSceneData) {
+  //   const sceneImg = container
+  //     .append("img")
+  //     .attr("class", `sceneImg sceneImg-${sceneNum}`)
+  //     .attr("src", metaData[movieName].imgDir + filename)
+  //     .attr("next", false)
+  //     .attr("prev", false)
+  //     .attr("selected", false);
+  //   //TODO change this to make the scene selection
+  //   sceneImg.on("click", () => {
+  //     changeDisplayedVideo(movieName, sceneNum);
+  //   });
+  // }
 }
 
 function changeDisplayedVideo(movieName, sceneNum) {
@@ -200,7 +246,7 @@ function changeDisplayedVideo(movieName, sceneNum) {
   showSketches(movieName, sceneNum);
 }
 
-function makeBottomContainer() {
+function makeBottomContainer(sceneNum, movieName) {
   const container = d3.select(".bottom-container");
   console.log(container);
   container.selectAll("*").remove();
@@ -232,6 +278,7 @@ function makeBottomContainer() {
       .property("checked", i === 0);
     label.append("span").text(opt);
   });
+  //set up color mode
   const c5 = captionParamContainer.append("div").attr("class", "subsection");
   c5.append("div").attr("class", "label").text("COLOR MODE");
   const bgModeRadioGroup = c5.append("div").attr("class", "radio-group");
@@ -256,9 +303,10 @@ function makeBottomContainer() {
     .attr("id", "fade-mode");
   c6.append("label").attr("for", "fade-mode").attr("class", "toggle");
 
+  //select the feature
   const pltoContainer2 = container.append("div").attr("class", "section");
   const c4 = pltoContainer2.append("div").attr("class", "subsection");
-  c4.append("div").attr("class", "label ").text("AUDIO INPUT VALUE");
+  c4.append("div").attr("class", "label ").text("AUDIO INPUT");
   const audioRadioGroup = c4.append("div").attr("class", "radio-group");
   ["mfcc", "chroma"].forEach((opt, i) => {
     const label = audioRadioGroup
@@ -285,10 +333,12 @@ function makeBottomContainer() {
       const on = d3.select(this).property("checked");
       d3.select("body").classed("light-mode", on);
       if (on) {
+        d3.selectAll(".icon").style("filter", "invert(100%");
         d3.select("#films-page")
           .style("--text-color", "black")
           .style("--bgColor", "#EFEDE3");
       } else {
+        d3.selectAll(".icon").style("filter", "none");
         d3.select("#films-page")
           .style("--text-color", "#EFEDE3")
           .style("--bgColor", "black");
@@ -296,8 +346,32 @@ function makeBottomContainer() {
     });
   c3.append("label").attr("for", "light-mode").attr("class", "toggle");
 
-  //set up color mode
+  //create the instrument plot section
+  const plotContainer3 = container
+    .append("div")
+    .attr("class", "section")
+    .style("padding", "0px");
 
-  //select the feature
+  showInstruments(plotContainer3, movieName, sceneNum);
+  // const cPlotW = pltoContainer2.node().getBoundingClientRect().width;
+  // const cPlotH = 100;
+  // const bins = [...Array(12).keys()].map((i) => i + 1);
+  // const mfccSVG = cPLot
+  //   .append("svg")
+  //   .attr("width", cPlotW)
+  //   .attr("height", cPlotH);
+  // const xScale = d3.scaleBand().domain(bins).range([0, cPlotW]);
+  // const yScale = d3.scaleLinear().domain([0, 1]).range([0, cPlotH]);
+  // mfccSVG
+  //   .selectAll(".mfcc-rect")
+  //   .data(bins)
+  //   .enter()
+  //   .append("rect")
+  //   .attr("class", "mfcc-rect")
+  //   .attr("fill", d3.select("#films-page").style("--text-color"))
+  //   .attr("x", (d) => xScale(d))
+  //   .attr("y", (d) => cPlotH - yScale(0.5))
+  //   .attr("width", xScale.bandwidth())
+  //   .attr("height", yScale(0.5));
 }
 function updateBottomContainer() {}

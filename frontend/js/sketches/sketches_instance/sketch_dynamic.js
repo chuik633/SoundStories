@@ -112,9 +112,6 @@ const dynamicFontSketch = (p, parentDiv, movieName, sceneNum) => {
     timestamp = p.round(timestamp);
     // drawChromagram(width / 2, height / 2, 100, 100);
     if (addBeat()) {
-      if (fadeMode) {
-        p.background(bgColor);
-      }
       let colorslist = imageSceneEntry[timestamp]["colors"];
       if (colorMode == "sync with image") {
         bgColor = colorslist[colorslist.length - 1];
@@ -126,7 +123,7 @@ const dynamicFontSketch = (p, parentDiv, movieName, sceneNum) => {
     const audioFeature = d3
       .selectAll('input[name="audio-feature"]:checked')
       .property("value");
-    console.log(audioFeature);
+    // console.log(audioFeature);
     drawDynamicFont(
       p,
       dynamicFontType,
@@ -140,7 +137,7 @@ const dynamicFontSketch = (p, parentDiv, movieName, sceneNum) => {
     let newText = getCaption();
 
     if (newText != false) {
-      console.log(newText);
+      // console.log(newText);
       if (newText != textContent) {
         textContent = newText;
         updateSketch();
