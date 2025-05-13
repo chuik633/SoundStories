@@ -127,11 +127,11 @@ const instrumentSketch = (p, parentDiv, movieName, sceneNum) => {
     for (const c of imageSceneEntry[timestamp]["colors"]) {
       p.fill(...c);
       p.noStroke();
-      p.rect(width - 15, y, 15, size);
+      p.rect(width - 10, y, 30, size);
       y += size;
     }
     p.stroke(textColor);
-    p.line(width - 15, 0, width - 15, height);
+    p.line(width - 10, 0, width - 10, height);
   }
   function addBeat() {
     const numBeats = audioSceneEntry["beat_times"].length;
@@ -336,7 +336,7 @@ const instrumentSketch = (p, parentDiv, movieName, sceneNum) => {
     }
 
     p.noStroke();
-    console.log(lastBeat.c);
+
     // p.fill(...lastBeat.c);
     // p.blendMode(p.OVERLAY);
     // if (lastBeat.c != undefined) {

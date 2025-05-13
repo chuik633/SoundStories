@@ -68,15 +68,14 @@ function expandDashboard() {
 
   d3.select(".dashboard.small").on("click", () => null);
   console.log(d3.select(".small.preview-container"));
-  d3.select(".small.preview-container")
-    .on("click", () => {
-      console.log("HERE");
-      expandPreviewContainer(movieName);
-    })
-    .style(
-      "background-image",
-      `url(${metaData[movieName].imgDir}${sceneNum}-005.png)`
-    );
+  d3.select(".small.preview-container").on("click", () => {
+    console.log("HERE");
+    expandPreviewContainer(movieName);
+  });
+  // .style(
+  //   "background-image",
+  //   `url(${metaData[movieName].imgDir}${sceneNum}-005.png)`
+  // );
   d3.select("#sketches-container").attr("class", "hidden");
   d3.select(".scene-preview-container").attr(
     "class",
@@ -110,12 +109,11 @@ function expandPreviewContainer(movieName) {
   );
 
   const sceneNum = d3.select("#displayed-video").attr("sceneNum");
-  d3.select(".dashboard")
-    .attr("class", "dashboard small")
-    .style(
-      "background-image",
-      `url(${metaData[movieName].imgDir}${sceneNum}-005.png)`
-    );
+  d3.select(".dashboard").attr("class", "dashboard small");
+  // .style(
+  //   "background-image",
+  //   `url(${metaData[movieName].imgDir}${sceneNum}-005.png)`
+  // );
   makeBottomContainer(sceneNum, movieName);
 
   // the buttons
@@ -124,6 +122,7 @@ function expandPreviewContainer(movieName) {
   d3.select(".dashboard.small").on("click", () => expandDashboard());
 
   showSketches(movieName, sceneNum);
+  showInstruments(d3.select("#instrument-plotcontainer"), movieName, sceneNum);
 }
 
 function layoutDashboard(dashboard, movieName) {
@@ -258,6 +257,7 @@ function makeBottomContainer(sceneNum, movieName) {
   const c1 = captionParamContainer.append("div").attr("class", "subsection");
   c1.append("div").attr("class", "label").text("CAPTION");
   c1.append("input")
+    .attr("autocomplete", "off")
     .attr("id", "caption-text")
     .property("value", "captiontext");
 
@@ -350,7 +350,8 @@ function makeBottomContainer(sceneNum, movieName) {
   const plotContainer3 = container
     .append("div")
     .attr("class", "section")
-    .style("padding", "0px");
+    .style("padding", "0px")
+    .attr("id", "instrument-plotcontainer");
 
   showInstruments(plotContainer3, movieName, sceneNum);
   // const cPlotW = pltoContainer2.node().getBoundingClientRect().width;

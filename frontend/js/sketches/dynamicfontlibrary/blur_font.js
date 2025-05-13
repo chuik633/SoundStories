@@ -1,6 +1,6 @@
 let blurFontSegments = [];
 let blurTextColor = "white";
-let blurMaxPull = 1.5;
+let blurMaxPull = 1;
 let blurStepSize = 4;
 let blurNumBins = 12;
 

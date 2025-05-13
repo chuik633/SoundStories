@@ -19,7 +19,7 @@ const dynamicFontSketch = (p, parentDiv, movieName, sceneNum) => {
   const textX = width / 2;
   const textY = height / 2;
   const textWidth = width - 80;
-  let textContent = movieName;
+  let textContent = "INTERSTELLAR";
   let textColor = "white";
   let bgColor = "#000000";
 
@@ -88,6 +88,8 @@ const dynamicFontSketch = (p, parentDiv, movieName, sceneNum) => {
     const colorMode = d3
       .selectAll('input[name="sketch-bgMode"]:checked')
       .property("value");
+
+    const darkMode = d3.select("#light-mode").property("checked");
     if (colorMode == "simple") {
       bgColor = d3.select("#films-page").style("--bgColor");
       textColor = d3.select("#films-page").style("--text-color");
@@ -116,6 +118,20 @@ const dynamicFontSketch = (p, parentDiv, movieName, sceneNum) => {
       if (colorMode == "sync with image") {
         bgColor = colorslist[colorslist.length - 1];
         textColor = colorslist[0];
+
+        if (darkMode) {
+          //background is dark
+          bgColor = colorslist[0];
+          textColor = "white";
+        } else {
+          if (luminance(textColor) < 50) {
+            textColor = colorslist[colorslist.length - 1];
+          }
+          if (luminance(textColor) < 50) {
+            textColor = "white";
+          }
+        }
+
         d3.select("#films-page").style("--bgColor", `rgb(${bgColor})`);
         d3.select("#films-page").style("--text-color", `rgb(${textColor})`);
       }
@@ -268,5 +284,12 @@ const dynamicFontSketch = (p, parentDiv, movieName, sceneNum) => {
     }
 
     p.pop();
+  }
+  function luminance(c) {
+    c = p.color(c);
+    const r = p.red(c);
+    const g = p.green(c);
+    const b = p.blue(c);
+    return 0.299 * r + 0.587 * g + 0.114 * b;
   }
 };
