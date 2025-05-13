@@ -20,9 +20,7 @@ function layoutMenu() {
            
             <a class = 'menu-link' href="#films">Films</a>
             <div class="film-submenu">
-                <a class='menu-link' href="#films/PrincessMononoke">Princess Mononoke</a>
-                <a class='menu-link' href="#films/Space">Space Odyssey</a>
-             
+              
               </div>
 
              <a class = 'menu-link' href="#experiment">TRY IT</a>
@@ -31,6 +29,15 @@ function layoutMenu() {
         </nav>
         <div class='menu-obscure'></div>
         `;
+
+  const filmLinks = d3.select(".film-submenu");
+  for (const movie of movies) {
+    filmLinks
+      .append("a")
+      .attr("class", "menu-link")
+      .attr("href", `#films/${movie}`)
+      .text(movie);
+  }
 }
 layoutMenu();
 
