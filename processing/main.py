@@ -11,7 +11,8 @@ import shutil
 from audio.audioData import getAudioData
 from image.imageData import getImageData
 from captions.captionsData import getCaptionData
-from settings.settings import pathConfig
+# from settings.settings import pathConfig
+
 
 from sceneMetaData import sceneLinks
 
@@ -32,7 +33,7 @@ def clearDirectories(mainDir):
             print('deleted dir', dir_name)
 
 def getData(name, numSamples = 20, youtubeLink = False, captions = False):
-    dataDir = pathConfig["dataPath"]+f"{name}/"
+    dataDir = './data/tmp/'+f"{name}/"
     print(dataDir)
     clearDirectories(dataDir)
     os.makedirs(dataDir, exist_ok=True)

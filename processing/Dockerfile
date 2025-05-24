@@ -1,13 +1,13 @@
 # --- Base Image ---
 # Use an official Python runtime as a parent image
 # Choose a specific version for reproducibility, e.g., python:3.11-slim
-FROM python:3.11-slim
+FROM python:3.13-slim
 
 # --- Set Environment Variables ---
 # Prevents Python from writing pyc files to disc
-ENV PYTHONDONTWRITEBYTECODE 1
+ENV PYTHONDONTWRITEBYTECODE==1
 # Ensures Python output is sent straight to the terminal without buffering
-ENV PYTHONUNBUFFERED 1
+ENV PYTHONUNBUFFERED==1
 
 # --- Install System Dependencies ---
 # Update package list and install ffmpeg and other build essentials
