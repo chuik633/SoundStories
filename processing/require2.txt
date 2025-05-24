@@ -1,0 +1,12 @@
+# Flask framework
+Flask>=2.0
+
+# yt-dlp for downloading video/audio
+yt-dlp
+
+# Gunicorn as a WSGI HTTP server (recommended for production)
+gunicorn>=20.0
+
+# Add any other Python dependencies your Flask app needs
+# e.g., requests
+# numpy
