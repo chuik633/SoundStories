@@ -14,6 +14,7 @@ def to1d(ndarr):
 
 
 def get_pixels(img):
+  img.thumbnail((300, 300)) 
   return list(img.getdata())
 
 

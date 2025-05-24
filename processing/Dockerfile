@@ -13,7 +13,12 @@ ENV PYTHONUNBUFFERED==1
 # Update package list and install ffmpeg and other build essentials
 # Clean up apt cache to reduce image size
 RUN apt-get update && \
-    apt-get install -y --no-install-recommends ffmpeg gcc libc-dev && \
+    apt-get install -y --no-install-recommends \
+      ffmpeg \
+      gcc \
+      libc-dev \
+      nodejs \
+      npm && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
@@ -36,10 +41,15 @@ COPY . .
 # Expose the port the Flask app runs on (default is 5000)
 EXPOSE 5000
 
+
+
 # --- Command to Run the Application ---
 # Command to run the Flask application using gunicorn (recommended for production)
 # You can also use "flask run --host=0.0.0.0" for development
 # Make sure gunicorn is in your requirements.txt if you use it here
-CMD ["gunicorn", "--bind", "0.0.0.0:5000", "app:app"]
+CMD ["gunicorn", "app:app", \
+     "--bind=0.0.0.0:5000", \
+     "--workers", "2", \
+     "--timeout", "300"]
 # If you prefer Flask's built-in server for development (not recommended for production):
 # CMD ["flask", "run", "--host=0.0.0.0", "--port=5000"]

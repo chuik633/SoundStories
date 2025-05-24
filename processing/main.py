@@ -62,7 +62,7 @@ def getData(name, numSamples = 20, youtubeLink = False, captions = False):
 
     #2. splits the video in n_samples videos, and corresponding audio files and images
     
-    command = ['node', './processing/processVideo.js',dataDir, str(numSamples)]
+    command = ['node', './processVideo.js',dataDir, str(numSamples)]
     print(command)
     try:
         result = subprocess.run(command, capture_output=True, text=True, check=True)
