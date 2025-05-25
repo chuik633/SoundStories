@@ -69,7 +69,6 @@ def get_main_colors(imgPath,  color_similarity_threshold = 100):
 
 
 
-
 def getImageData(moviePath, name):
     imgDir = moviePath + 'images/'
     img_files = [f for f in listdir(imgDir)]

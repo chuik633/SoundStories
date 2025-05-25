@@ -3,7 +3,11 @@ from flask import Flask, jsonify, request
 import yt_dlp
 from main import getData
 import subprocess
+from writeData import writeFile
 import os
+from os import listdir
+
+
 
 app = Flask(__name__)
 
@@ -51,9 +55,28 @@ def process_data():
         return jsonify({"error": "missing name"}), 400
     try:
         getData(name, numSamples, youtubeLink, captions)
-        return jsonify({"message": "YAY! we got the data :)"}), 200
+        print('got th data')
+        store_data(name)
+        return jsonify({"message": "YAY! we got the data  and saved it:)"}), 200
     except Exception as e:
         return jsonify({"error": str(e)}), 500
+
+def store_data(movieName):
+    # image files
+    moviePath = './data/tmp/'+movieName+'/'
+    img_files = [f for f in listdir(moviePath+'images/')]
+    for img_file in img_files:
+        imgPath = moviePath + 'images/' + img_file
+        writeFile(imgPath, 'images/'+img_file)
+    # audio files
+    audio_file = [f for f in listdir(moviePath+'audios/')]
+    for audio_file in audio_file:
+        audioPath = moviePath + 'audios/' + audio_file
+        writeFile(audioPath, 'audios/'+audio_file)
+
+    # data files    
+    writeFile(moviePath+'imageSceneData.json', 'imageSceneData.json')
+    writeFile(moviePath+'audioSceneData.json', 'audioSceneData.json')
 
 
 
