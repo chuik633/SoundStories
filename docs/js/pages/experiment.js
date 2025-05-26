@@ -44,16 +44,19 @@ function formManagement() {
         captions: false,
       })
     );
-    fetch("http://172.20.10.10:4000/getData", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        name: name,
-        numSamples: numSamples,
-        youtubeLink: youtubeLink,
-        captions: false,
-      }),
-    })
+    fetch(
+      "https://processing-sound-stories-6194-black-dew-3479.fly.dev/process",
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: name,
+          numSamples: numSamples,
+          youtubeLink: youtubeLink,
+          captions: false,
+        }),
+      }
+    )
       .then((response) => response.json())
       .then((data) => console.log(data))
       .catch((error) => console.error("Error:", error));

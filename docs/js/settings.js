@@ -31,7 +31,7 @@ for (const movieName of movies) {
     mainDir: mainDir,
     imgDir: getUrl(movieName, "images/"),
     audioDir: getUrl(movieName, "audios/"),
-    videoDir: getUrl(movieName, "audios/"),
+    videoDir: getUrl(movieName, "videos/"),
   };
   data[movieName] = {
     imageSceneData: [],
