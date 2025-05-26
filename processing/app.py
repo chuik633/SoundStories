@@ -73,6 +73,11 @@ def store_data(movieName):
     for audio_file in audio_file:
         audioPath = moviePath + 'audios/' + audio_file
         writeFile(audioPath, movieName+'/audios/'+audio_file)
+    # video files
+    video_files = [f for f in listdir(moviePath+'videos/')]
+    for video_file in video_files:
+        videoPath = moviePath + 'videos/' + video_file
+        writeFile(videoPath, movieName+'/videos/'+video_file)
 
     # data files    
     writeFile(moviePath+'imageSceneData.json', movieName+'/imageSceneData.json')
