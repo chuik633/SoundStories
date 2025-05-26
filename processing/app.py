@@ -67,16 +67,17 @@ def store_data(movieName):
     img_files = [f for f in listdir(moviePath+'images/')]
     for img_file in img_files:
         imgPath = moviePath + 'images/' + img_file
-        writeFile(imgPath, 'images/'+img_file)
+        writeFile(imgPath, movieName+'/images/'+img_file)
     # audio files
     audio_file = [f for f in listdir(moviePath+'audios/')]
     for audio_file in audio_file:
         audioPath = moviePath + 'audios/' + audio_file
-        writeFile(audioPath, 'audios/'+audio_file)
+        writeFile(audioPath, movieName+'/audios/'+audio_file)
 
     # data files    
-    writeFile(moviePath+'imageSceneData.json', 'imageSceneData.json')
-    writeFile(moviePath+'audioSceneData.json', 'audioSceneData.json')
+    writeFile(moviePath+'imageSceneData.json', movieName+'/imageSceneData.json')
+    writeFile(moviePath+'audioSceneData.json', movieName+'/audioSceneData.json')
+    writeFile(moviePath+'videoInfo.json', movieName+'/videoInfo.json')
 
 
 

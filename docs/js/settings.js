@@ -1,7 +1,22 @@
-const movies = ["ghibli", "Ponyo", "totoro"];
+const movies = ["Ponyo"];
+const SUPABASE_URL = "https://didoznoxnkzkuqdswwfn.supabase.co";
+const SUPABASE_KEY =
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRpZG96bm94bmt6a3VxZHN3d2ZuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDgxMDgwMDYsImV4cCI6MjA2MzY4NDAwNn0.NNEfP_Wa0CpgxXL8FNB_QxqKyj3s-jjbxMOxPy6KDvU";
+const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+function getUrl(movieName, file) {
+  const {
+    data: { publicUrl },
+    error: urlErr,
+  } = supabaseClient.storage.from("data").getPublicUrl(`${movieName}/${file}`);
 
+  if (urlErr) {
+    console.error("Error getting public URL:", urlErr);
+    return;
+  } else {
+    return publicUrl;
+  }
+}
 const pathConfig = {
-  dataPath: "../data/tmp/",
   audioDataFilename: "audioSceneData.json",
   imageDataFilename: "imageSceneData.json",
   videoDataFilename: "videoInfo.json",
@@ -9,13 +24,14 @@ const pathConfig = {
 
 let metaData = {};
 let data = {};
+
 for (const movieName of movies) {
-  mainDir = pathConfig.dataPath + movieName + "/";
+  mainDir = getUrl(movieName, "");
   metaData[movieName] = {
     mainDir: mainDir,
-    imgDir: mainDir + "images/",
-    audioDir: mainDir + "audios/",
-    videoDir: mainDir + "videos/",
+    imgDir: getUrl(movieName, "images/"),
+    audioDir: getUrl(movieName, "audios/"),
+    videoDir: getUrl(movieName, "audios/"),
   };
   data[movieName] = {
     imageSceneData: [],
@@ -25,18 +41,9 @@ for (const movieName of movies) {
     numSamples: 0,
   };
 }
+console.log(metaData);
 
-// //data
-// let imageSceneData;
-// let audioSceneData;
-// let captionData;
-// let videoInfo;
-// let numSamples;
-// const mainDir = pathConfig.dataPath + movieName + "/";
-// const imgDir = mainDir + "images/";
-// const audioDir = mainDir + "audios/";
-// const videoDir = mainDir + "videos/";
-let allSceneData;
+let allSceneData = [];
 
 const audioUtils = {
   shortStep: 0.02,
