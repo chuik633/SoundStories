@@ -1,76 +1,78 @@
-#experiment-page{
-    display:flex;
-    flex-direction:row;
-    gap:0px;
+#experiment-page {
+  display: flex;
+  flex-direction: row;
+  gap: 0px;
 }
 
-.left-panel, .right-panel{
-     padding: 80px;
-     width:50%;
-     display: flex;
-     flex-direction: column;
-
+.left-panel,
+.right-panel {
+  padding: 80px;
+  width: 50%;
+  display: flex;
+  flex-direction: column;
 }
-.left-panel{
-    background-color: white;
-    gap:40px;
+.left-panel {
+  background-color: white;
+  gap: 40px;
 }
-.left-panel *{
-    color:black;
-}
-
-.right-panel{
-    background-color: black;
-    gap:20px;
-   
-}
-.right-panel *{
-    color:white;
+.left-panel * {
+  color: black;
 }
 
-.right-panel h2{
-    font-size:12px;
+.right-panel {
+  background-color: black;
+  gap: 20px;
+}
+.right-panel * {
+  color: white;
 }
 
-#experiment-sketches-container{
-    display:grid;
-     grid-template-columns: 1fr 1fr;
-     gap:10px;
-
-
-}
-.right-panel .canvas-container{
-    border:1px solid white;
-    width:100%;
-
-    min-height:200px;
-    min-height:200px;
+.right-panel h2 {
+  font-size: 12px;
 }
 
-.input-container{
-    width:100%;
-    display:flex;
-    flex-direction:column;
-    gap:5px;
+#experiment-sketches-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
 }
-.label{
-    font-size:8px;
-    letter-spacing: 1px;
-    font-weight:600;
+.right-panel .canvas-container {
+  border: 1px solid white;
+  width: 100%;
+
+  min-height: 200px;
+  min-height: 200px;
 }
-.input-container input{
-    height:35px;
-    width:100%;
-    border-radius:3px;
-    padding:10px;
-     border: .10px solid black;
-     font-family: 'Courier New', Courier, monospace;
-     font-size:10px;
+
+.input-container {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
 }
-.input-container input:focus-visible,.input-container input:focus, .input-container input:active{
-    border: .5px solid black;
-    background-color: rgba(231, 221, 209, 0.389);
-    outline:none;
+.label {
+  font-size: 8px;
+  letter-spacing: 1px;
+  font-family: "Courier New", Courier, monospace;
+}
+.input-container input {
+  height: 35px;
+  width: 100%;
+  border-radius: 3px;
+  padding: 10px;
+  border: 0.1px solid black;
+  font-family: "Courier New", Courier, monospace;
+  font-size: 10px;
+}
+.input-container input:hover {
+  border: 1px solid black;
+}
+.input-container input:focus-visible,
+.input-container input:focus,
+.input-container input:active {
+  border: 0.5px solid black;
+  background-color: rgba(231, 221, 209, 0.389);
+  outline: none;
 }
 
 .sound-options {
@@ -86,26 +88,46 @@
   border-radius: 5px;
   cursor: pointer;
   user-select: none;
-  font-size:12px;
-  font-weight:100;
-  transition:all .1s ease-in-out;
+  font-size: 12px;
+  font-weight: 100;
+  transition: all 0.1s ease-in-out;
 }
 
 .input-sound-radio:hover {
-    color:white;
+  color: white;
   background-color: rgba(0, 0, 0, 0.839);
 }
 
-#drag-panel{
-    width:3px;
-    height:100%;
-     cursor: ew-resize;
-    background-color:black;
-    /* border:.5px solid white; */
-    transition:all .1s ease-in-out;
+#drag-panel {
+  width: 3px;
+  height: 100%;
+  cursor: ew-resize;
+  background-color: black;
+  /* border:.5px solid white; */
+  transition: all 0.1s ease-in-out;
 }
-#drag-panel:hover{
-    width:10px;
-    border:none;
-    background-color: tomato;
+#drag-panel:hover {
+  width: 10px;
+  border: none;
+  background-color: tomato;
+}
+
+#progress-bar-outer {
+  width: 100%;
+  height: 10px;
+  border: 0.5px solid white;
+  border-radius: 10px;
+  overflow: hidden;
+}
+#progress-bar {
+  height: 100%;
+  background-color: white;
+  transition: width 0.5s ease-in-out;
+  border-top-left-radius: 10px;
+  border-bottom-left-radius: 10px;
+}
+
+#progress-text {
+  font-family: "Courier New", Courier, monospace;
+  font-size: 7px;
 }

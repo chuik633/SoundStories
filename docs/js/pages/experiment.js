@@ -5,7 +5,13 @@ function initExperimentPage() {
     .attr("class", "experiment-container");
 
   let loaded = document.getElementById("experiment-page");
-
+  let output_container = d3.select("#output-container");
+  output_container
+    .append("div")
+    .attr("id", "progress-bar-outer")
+    .append("div")
+    .attr("id", "progress-bar");
+  output_container.append("div").attr("id", "progress-text").text("HERE");
   //floating previews
   if (loaded) {
     console.log("made layout");
@@ -44,22 +50,12 @@ function formManagement() {
         captions: false,
       })
     );
-    fetch(
-      "https://processing-sound-stories-6194-black-dew-3479.fly.dev/process",
-      {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          name: name,
-          numSamples: numSamples,
-          youtubeLink: youtubeLink,
-          captions: false,
-        }),
-      }
-    )
-      .then((response) => response.json())
-      .then((data) => console.log(data))
-      .catch((error) => console.error("Error:", error));
+    startJob({
+      name: name,
+      numSamples: numSamples,
+      youtubeLink: youtubeLink,
+      captions: false,
+    });
   } else {
     return;
   }

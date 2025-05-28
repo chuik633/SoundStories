@@ -7,14 +7,11 @@ import subprocess
 import json
 import shutil
 
-
 from audio.audioData import getAudioData
 from image.imageData import getImageData
 from captions.captionsData import getCaptionData
 # from settings.settings import pathConfig
 
-
-from sceneMetaData import sceneLinks
 
 """
 inputting a movie file, it then:
@@ -25,17 +22,66 @@ inputting a movie file, it then:
 5. gets the caption data
 6. saves a compiled scene data
 """
-def clearDirectories(mainDir):
+def clear_directories(mainDir):
     for dir_name in ['videos', 'images', 'audios']:
         dir_path = os.path.join(mainDir, dir_name)
         if os.path.exists(dir_path) and os.path.isdir(dir_path):
             shutil.rmtree(dir_path)
             print('deleted dir', dir_name)
 
+
+# each step
+def download_video(dataDir, youtubeLink, captions):
+    cmd = [
+       'yt-dlp','-f','bestvideo[height<=720]+bestaudio/best[height<=720]',
+       '--merge-output-format','mp4','-o', dataDir+"video.mp4", youtubeLink
+    ]
+    try:
+        result: subprocess.CompletedProcess = subprocess.run(
+            [
+                'yt-dlp',
+                '-f', 'bestvideo[height<=720]+bestaudio/best[height<=720]',
+                '--merge-output-format', 'mp4',
+                '-o', dataDir + "video.mp4",
+                youtubeLink
+            ],
+            check=True,            # raises CalledProcessError on non-zero exit
+            capture_output=True,
+            text=True
+        )
+        print("Download stdout:", result.stdout)
+        print("Download stderr:", result.stderr)
+        print("Video download completed with exit code", result.returncode)
+        if captions:
+            cmd2 = ["yt-dlp","--skip-download","--write-auto-sub","--sub-lang","en",
+                    "--sub-format","ass","-o",dataDir+"captions.ass", youtubeLink]
+            subprocess.run(cmd2, check=True, capture_output=True, text=True)
+    except subprocess.CalledProcessError as e:
+        print(f"Command `{e.cmd}` failed with exit code {e.returncode}")
+        print("stderr:", e.stderr)
+
+def split_video(dataDir, numSamples):
+    subprocess.run(['node','./processVideo.js', dataDir, str(numSamples)],
+                   check=True, capture_output=True, text=True)
+
+def load_video_info(dataDir):
+    with open(dataDir+"videoInfo.json") as f:
+        return json.load(f)
+
+def process_images(dataDir, name):
+    getImageData(dataDir, name)
+
+def process_audio(dataDir, name):
+    getAudioData(dataDir, name)
+
+def process_captions(name, videoInfo):
+    getCaptionData(name, round(videoInfo['sampleLength']))
+
+# THIS IS OLD
 def getData(name, numSamples = 20, youtubeLink = False, captions = False):
     dataDir = './data/tmp/'+f"{name}/"
     print(dataDir)
-    clearDirectories(dataDir)
+    clear_directories(dataDir)
     os.makedirs(dataDir, exist_ok=True)
 
     #1. if its a youtube link, it downloads it to a video
@@ -52,7 +98,7 @@ def getData(name, numSamples = 20, youtubeLink = False, captions = False):
             result = subprocess.run(command, capture_output=True, text=True, check=True)
 
             if captions:
-                command1 = ["yt-dlp","--skip-download","--write-auto-sub", "--sub-lang", "en","--sub-format", "ass","-o", pathConfig["dataPath" ] + "captions.ass",youtubeLink]
+                command1 = ["yt-dlp","--skip-download","--write-auto-sub", "--sub-lang", "en","--sub-format", "ass","-o", dataDir + "captions.ass",youtubeLink]
                 result1 = subprocess.run(command1, capture_output=True, text=True, check=True)
             # captions = True
 
@@ -61,7 +107,6 @@ def getData(name, numSamples = 20, youtubeLink = False, captions = False):
             return
 
     #2. splits the video in n_samples videos, and corresponding audio files and images
-    
     command = ['node', './processVideo.js',dataDir, str(numSamples)]
     print(command)
     try:
@@ -92,6 +137,7 @@ def getData(name, numSamples = 20, youtubeLink = False, captions = False):
     if captions:
         getCaptionData(name, round(videoInfo['sampleLength']))
 
+# from sceneMetaData import sceneLinks
 # getData('compilation', youtubeLink="https://www.youtube.com/watch?v=c9iCUxuWSwQ", numSamples = 5,captions = False)
 # getData('Space', youtubeLink="https://www.youtube.com/watch?v=f9X1C7pTu-M", numSamples = 10,captions = False)
 # testlink = "https://www.youtube.com/watch?v=T51QSG9VN8w&t=5s"
