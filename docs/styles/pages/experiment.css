@@ -111,7 +111,12 @@
   border: none;
   background-color: tomato;
 }
-
+#output-container {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
 #progress-bar-outer {
   width: 100%;
   height: 10px;
@@ -120,6 +125,7 @@
   overflow: hidden;
 }
 #progress-bar {
+  width: 0%;
   height: 100%;
   background-color: white;
   transition: width 0.5s ease-in-out;
@@ -130,4 +136,32 @@
 #progress-text {
   font-family: "Courier New", Courier, monospace;
   font-size: 7px;
+}
+
+button {
+  background-color: black;
+  border: none;
+  border-radius: 5px;
+
+  color: white !important;
+  width: fit-content;
+  height: fit-content;
+  padding: 10px 20px;
+
+  font-family: Futura;
+  text-transform: uppercase;
+  font-size: 8px;
+  letter-spacing: 2px;
+}
+button:hover {
+  font-weight: 600;
+  background-color: rgb(36, 36, 36);
+}
+
+.youtube-errors {
+  font-size: 7px;
+  font-weight: 900;
+  color: tomato;
+  font-family: "Courier New", Courier, monospace;
+  font-style: italic;
 }

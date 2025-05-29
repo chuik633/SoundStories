@@ -33,8 +33,6 @@ def get_job_status(job_id):
         .execute()
     )
 
-    print("-------- GETTING JOB STATUS ---------")
-    print("Response:", resp)
     try:
         rows = resp.data or []
         if len(rows) == 0:

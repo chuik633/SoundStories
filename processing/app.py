@@ -118,8 +118,10 @@ def background_task(job_id, name, numSamples, youtubeLink, captions):
     
 def store_data(job_id,movieName, report):
     base = f'./data/tmp/{movieName}/'
-    for f in listdir(base + 'images/'):
-        report(job_id,60, 'Uploading images')
+    image_files = listdir(base + 'images/')
+    numImages = len(image_files)
+    for imgNum,f in enumerate(image_files):
+        report(job_id,60 + round(imgNum/numImages*10), f'Uploading images ({imgNum+1}/{numImages})')
         writeFile(base + 'images/' + f, f'{movieName}/images/{f}')
     for f in listdir(base + 'audios/'):
         report(job_id,70, 'Uploading audio')

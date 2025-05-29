@@ -25,22 +25,26 @@ const pathConfig = {
 let metaData = {};
 let data = {};
 
-for (const movieName of movies) {
-  mainDir = getUrl(movieName, "");
-  metaData[movieName] = {
-    mainDir: mainDir,
-    imgDir: getUrl(movieName, "images/"),
-    audioDir: getUrl(movieName, "audios/"),
-    videoDir: getUrl(movieName, "videos/"),
-  };
-  data[movieName] = {
-    imageSceneData: [],
-    audioSceneData: [],
-    captionData: [],
-    videoInfo: [],
-    numSamples: 0,
-  };
+function setupMetaData() {
+  for (const movieName of movies) {
+    mainDir = getUrl(movieName, "");
+    metaData[movieName] = {
+      mainDir: mainDir,
+      imgDir: getUrl(movieName, "images/"),
+      audioDir: getUrl(movieName, "audios/"),
+      videoDir: getUrl(movieName, "videos/"),
+    };
+    data[movieName] = {
+      imageSceneData: [],
+      audioSceneData: [],
+      captionData: [],
+      videoInfo: [],
+      numSamples: 0,
+    };
+  }
 }
+setupMetaData();
+
 console.log(metaData);
 
 let allSceneData = [];

@@ -19,7 +19,7 @@ const dynamicFontSketch = (p, parentDiv, movieName, sceneNum) => {
   const textX = width / 2;
   const textY = height / 2;
   const textWidth = width - 80;
-  let textContent = "INTERSTELLAR";
+  let textContent = movieName;
   let textColor = "white";
   let bgColor = "#000000";
 

@@ -4,23 +4,57 @@ function initExperimentPage() {
     .append("div")
     .attr("class", "experiment-container");
 
-  let loaded = document.getElementById("experiment-page");
+  d3.select("#input-youtubeLink").on("change", () => {
+    console.log("CHANGE");
+    let link = d3.select("#input-youtubeLink").property("value").trim();
+    youtubePreview(link);
+  });
   let output_container = d3.select("#output-container");
+  output_container.selectAll('*').remove()
   output_container
     .append("div")
     .attr("id", "progress-bar-outer")
     .append("div")
     .attr("id", "progress-bar");
-  output_container.append("div").attr("id", "progress-text").text("HERE");
-  //floating previews
-  if (loaded) {
-    console.log("made layout");
-  } else {
-    console.log("not loaded");
-  }
+  output_container.append("div").attr("id", "progress-text");
 
   setupDrag();
   d3.select("#submit-inputs-button").on("click", () => formManagement());
+}
+function youtubePreview(link) {
+  console.log("link", link);
+  d3.select(".youtube-errors").text("");
+  d3.select("#youtube-preview").attr("class", "hidden");
+  const m = link.match(
+    /(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/))([A-Za-z0-9_-]{11})/
+  );
+  if (!m) {
+    d3.select(".youtube-errors").text("Not a valid YouTube URL");
+    console.warn("Not a valid YouTube URL");
+    return;
+  }
+  const videoId = m[1];
+  const testImg = new Image();
+  testImg.onload = () => {
+    preview.attr(
+      "src",
+      `https://www.youtube.com/embed/${videoId}?autoplay=0&controls=1`
+    );
+  };
+  testImg.onerror = () => {
+    console.log("ERROR");
+    d3.select(".youtube-errors").text(
+      "Video not found (thumbnail didn’t load). Won’t update preview."
+    );
+    return;
+  };
+  // this URL returns a 120×90 jpg for valid IDs
+
+  const embedUrl =
+    `https://www.youtube.com/embed/${videoId}` + `?autoplay=0&controls=1&rel=0`;
+  d3.select("#youtube-preview").attr("src", embedUrl).attr("class", "visible");
+  console.log(embedUrl);
+  testImg.src = `https://img.youtube.com/vi/${videoId}/mqdefault.jpg`;
 }
 
 function formManagement() {

@@ -1,9 +1,9 @@
-# fly.toml app configuration file generated for processing-sound-stories-6194-black-dew-3479 on 2025-05-25T20:31:31-07:00
+# fly.toml app configuration file generated for processing-sound-stories-6194-white-waterfall-4148 on 2025-05-28T13:51:35-04:00
 #
 # See https://fly.io/docs/reference/configuration/ for information about how to use this file.
 #
 
-app = 'processing-sound-stories-6194-black-dew-3479'
+app = 'processing-sound-stories-6194-white-waterfall-4148'
 primary_region = 'iad'
 
 [build]

@@ -109,7 +109,7 @@ async function processVideo(mainDir, numSamples) {
 
       //extract the image
       await executeCommand(
-        `ffmpeg -i "${videoSegmentPath}" -vf fps=1 "${path.join(
+        `ffmpeg -i "${videoSegmentPath}" -vf "fps=1/10" "${path.join(
           images,
           `${sampleNum}-%03d.png`
         )}"`
