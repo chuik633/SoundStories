@@ -20,6 +20,8 @@ function drawDynamicFont(p, type, values, inputText, font, x, y, maxWidth) {
     drawBlurFont(p, values, inputText, font, x, y, maxWidth);
   } else if (type == "swirl") {
     drawFlow2Font(p, values, inputText, font, x, y, maxWidth);
+  } else if (type == "annotated-strings") {
+    drawAnnotatedStringsFont(p, values, inputText, font, x, y, maxWidth);
   }
 }
 
@@ -34,5 +36,7 @@ function setupDynamicFont(p, type, values, inputText, font, x, y, maxWidth) {
     setupBlurFont(p, values, inputText, font, x, y, maxWidth);
   } else if (type == "swirl") {
     setupFlow2Font(p, values, inputText, font, x, y, maxWidth);
+  } else if (type == "annotated-strings") {
+    setupAnnotatedStringsFont(p, values, inputText, font, x, y, maxWidth);
   }
 }

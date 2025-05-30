@@ -10,7 +10,14 @@ const dynamicFontSketch = (p, parentDiv, movieName, sceneNum) => {
   let captions = false;
 
   //dynamic font stuff
-  const dynamicFontOptions = ["wiggly", "strings", "flow", "blur", "swirl"];
+  const dynamicFontOptions = [
+    "wiggly",
+    "strings",
+    "flow",
+    "blur",
+    "swirl",
+    "annoated-strings",
+  ];
   let dynamicFontType = d3
     .select('input[name="text-type"]:checked')
     .property("value");

@@ -1,6 +1,9 @@
 function initAboutPage() {
   console.log("INTI ABOUT PAGE");
   console.log(document.querySelectorAll(".writeup h2").length);
+  const parentCont = document.getElementById("howcontainer");
+  new p5((p) => howitworks(p, parentCont));
+
   const scroller = scrollama();
   const page = document.querySelector("#about-page");
   console.log(
@@ -19,7 +22,6 @@ function initAboutPage() {
     .setup({
       step: "#about-page .step", // each heading is a “step”
       offset: "100px",
-      debug: true,
     })
     .onStepEnter(({ element, index }) => {
       console.log("STEP", index);
@@ -49,7 +51,53 @@ function initAboutPage() {
         response.element.classList.remove("is-active");
       }
     });
-
-  // 5) Make sure to recalc on resize
+  initLetterAnimation();
   window.addEventListener("resize", scroller.resize);
+}
+
+function initLetterAnimation() {
+  const scrollerLetter = scrollama();
+  const letterAnimation = lottie.loadAnimation({
+    container: document.getElementById("letter-lottie"),
+    renderer: "svg",
+    loop: false,
+    autoplay: false,
+    path: "./styles/animations/letterAnimation.json",
+  });
+  console.log("INIT LETTER ANIMATION");
+  console.log(letterAnimation);
+  let totalFramesLetter = 0;
+  letterAnimation.addEventListener("data_ready", () => {
+    console.log("animation ready");
+    totalFramesLetter = letterAnimation.getDuration(true);
+    const frameRate = letterAnimation.frameRate || 30;
+    const durationInSeconds = totalFramesLetter / frameRate;
+    console.log(durationInSeconds);
+
+    const pixelsPerSecond = 100;
+    const stepHeight = durationInSeconds * pixelsPerSecond;
+    document.querySelector(
+      "#letter-section .scrolly .stepl"
+    ).style.height = `${stepHeight}px`;
+
+    scrollerLetter
+      .setup({
+        step: "#letter-section .stepl",
+        offset: 0.5,
+        progress: true,
+      })
+      .onStepProgress((response) => {
+        const frame = response.progress * totalFramesLetter;
+        letterAnimation.goToAndStop(frame, true);
+
+        // control annotation
+        const captionEl = document.getElementById("letter-caption");
+        const cappedProgress = Math.min(response.progress / 0.1, 1);
+        const xShift = (1 - cappedProgress) * -100;
+        const opacity = cappedProgress;
+
+        captionEl.style.transform = `translateX(${-50 + xShift}%)`;
+        captionEl.style.opacity = opacity;
+      });
+  });
 }
