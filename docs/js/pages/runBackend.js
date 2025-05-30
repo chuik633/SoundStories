@@ -5,6 +5,7 @@ const url =
 // let url ="https://processing-sound-stories-6194-black-dew-3479.fly.dev/process";
 async function startJob(params) {
   updateProgressUI(0, "Starting...");
+  d3.select("#progress-bar-outer").style("height", "10px");
   const resp = await fetch(url + "/process", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
@@ -21,7 +22,8 @@ async function startJob(params) {
       clearInterval(progressHandler);
     }
     if (progress == 100) {
-      showOutput(params["name"]);
+      showOutput(params["name"], params["numSamples"]);
+      d3.select("#progress-bar-outer").style("height", "0px");
     }
   }, 1000);
 }
@@ -34,24 +36,24 @@ function updateProgressUI(progress, message) {
   text.textContent = message + ` (${progress}%)`;
 }
 
-function showOutput(movieName) {
+async function showOutput(movieName, numSamples) {
   // d3.select("#output-container").selectAll("*")
   console.log("NEW MOVIE", movieName);
   movies.push(movieName);
   // load the data
   setupMetaData();
-  loadData();
-  console.log(allSceneData);
+  await loadData();
 
   //preview all of the images
   metaData[movieName].imgDir;
-  const numSamples = data[movieName].videoInfo.samples;
+  console.log(data[movieName]);
   const imgPrevs = d3
     .select("#output-container")
     .append("div")
     .attr("class", "upload-image-previews");
 
   for (let i = 0; i < numSamples; i++) {
+    console.log("image linek,", metaData[movieName].imgDir + `${i}-001.png`);
     imgPrevs
       .append("img")
       .attr("src", metaData[movieName].imgDir + `${i}-001.png`);
@@ -65,7 +67,9 @@ function showOutput(movieName) {
     .text(movieName);
 
   d3.select("#output-container")
-    .append("a")
-    .attr("href", `#films/${movieName}`)
-    .text("Go to video page");
+    .append("button")
+    .text("Go to video page")
+    .on("click", () => {
+      window.location.hash = `#/films/${movieName}`;
+    });
 }

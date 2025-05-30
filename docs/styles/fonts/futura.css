@@ -1,48 +1,48 @@
 @font-face {
-  font-family: 'Futura';
-  src: url('futura/FuturaCyrillicLight.ttf') format('truetype');
+  font-family: "Futura";
+  src: url("futura/FuturaCyrillicLight.ttf") format("truetype");
   font-weight: 300;
   font-style: normal;
 }
 
 @font-face {
-  font-family: 'Futura';
-  src: url('futura/FuturaCyrillicBook.ttf') format('truetype');
+  font-family: "Futura";
+  src: url("futura/FuturaCyrillicBook.ttf") format("truetype");
   font-weight: 400;
   font-style: normal;
 }
 
 @font-face {
-  font-family: 'Futura';
-  src: url('futura/FuturaCyrillicMedium.ttf') format('truetype');
+  font-family: "Futura";
+  src: url("futura/FuturaCyrillicMedium.ttf") format("truetype");
   font-weight: 500;
   font-style: normal;
 }
 
 @font-face {
-  font-family: 'Futura';
-  src: url('futura/FuturaCyrillicDemi.ttf') format('truetype');
+  font-family: "Futura";
+  src: url("futura/FuturaCyrillicDemi.ttf") format("truetype");
   font-weight: 600;
   font-style: normal;
 }
 
 @font-face {
-  font-family: 'Futura';
-  src: url('futura/FuturaCyrillicBold.ttf') format('truetype');
+  font-family: "Futura";
+  src: url("futura/FuturaCyrillicBold.ttf") format("truetype");
   font-weight: 700;
   font-style: normal;
 }
 
 @font-face {
-  font-family: 'Futura';
-  src: url('futura/FuturaCyrillicExtraBold.ttf') format('truetype');
+  font-family: "Futura";
+  src: url("futura/FuturaCyrillicExtraBold.ttf") format("truetype");
   font-weight: 800;
   font-style: normal;
 }
 
 @font-face {
-  font-family: 'Futura';
-  src: url('futura/FuturaCyrillicHeavy.ttf') format('truetype');
+  font-family: "Futura";
+  src: url("futura/FuturaCyrillicHeavy.ttf") format("truetype");
   font-weight: 900;
   font-style: normal;
 }

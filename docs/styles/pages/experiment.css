@@ -119,10 +119,11 @@
 }
 #progress-bar-outer {
   width: 100%;
-  height: 10px;
+  height: 0px;
   border: 0.5px solid white;
   border-radius: 10px;
   overflow: hidden;
+  transition: height 0.5s ease-in-out;
 }
 #progress-bar {
   width: 0%;
@@ -154,8 +155,7 @@ button {
   letter-spacing: 2px;
 }
 button:hover {
-  font-weight: 600;
-  background-color: rgb(36, 36, 36);
+  background-color: rgba(36, 36, 36, 0.83);
 }
 
 .youtube-errors {
@@ -164,4 +164,21 @@ button:hover {
   color: tomato;
   font-family: "Courier New", Courier, monospace;
   font-style: italic;
+}
+
+.upload-image-previews {
+  display: flex;
+  flex-direction: row;
+  gap: 5px;
+  width: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+
+.upload-image-previews img {
+  flex: 1 1 0;
+  width: 25%;
+  max-width: 100%;
+  height: auto;
+  object-fit: contain;
 }

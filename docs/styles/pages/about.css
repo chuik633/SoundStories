@@ -1,6 +1,141 @@
-#about-page{
-    display: flex;
-    flex-direction:column;
-    padding:100px;
-    gap:10px;
+#about-page {
+  background-color: white;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  width: 100vw;
+  height: fit-content;
+}
+#about-page #header {
+  width: 100%;
+  padding: 50px 100px;
+  padding-top: 10px;
+
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  background-color: black;
+}
+#about-page .row {
+  width: 100%;
+  padding: 20px 100px;
+  position: sticky;
+  height: 100px;
+  top: 0px;
+  z-index: 4;
+  background-color: black;
+  transition: all 0.3s ease-in-out;
+}
+#about-page .scroll1 {
+  position: sticky;
+  top: 0px;
+  height: 50px;
+}
+#about-page .row * {
+  transition: all 0.3s ease-in-out;
+}
+#about-page .scroll1 h1 {
+  font-size: 15px;
+}
+#about-page .scroll1 h5 {
+  font-size: 0px;
+}
+
+#about-page .writeup h2 {
+  text-transform: uppercase;
+  padding-bottom: 10px;
+  padding-top: 15px;
+  position: relative;
+  background-color: white;
+  top: 0px;
+}
+
+#about-page .writeup h2.is-active {
+  text-transform: uppercase;
+  padding-bottom: 10px;
+  padding-top: 15px;
+  position: sticky;
+  background-color: white;
+  top: 100px;
+}
+#about-page .writeup h2.is-active.a2 {
+  text-transform: uppercase;
+  padding-bottom: 10px;
+  padding-top: 15px;
+  position: sticky;
+  background-color: white;
+  top: 50px;
+}
+
+#about-page h3 {
+  font-size: 12px;
+  letter-spacing: 0.2px;
+  font-weight: 600;
+  padding-top: 10px;
+  padding-bottom: 5px;
+  /* text-transform: uppercase; */
+}
+#about-page h4 {
+  letter-spacing: 0.5px;
+  font-size: 9px;
+  font-weight: 300;
+  font-family: "Futura";
+}
+
+#about-page h5 {
+  font-family: "Courier New", Courier, monospace;
+  font-size: 9px;
+  color: rgb(145, 145, 145);
+  font-weight: 100;
+  font-style: italic;
+}
+
+#about-page p {
+  font-family: "Courier New", Courier, monospace;
+  font-size: 10px;
+  max-width: 400px;
+  line-height: 1.5;
+}
+#about-page .writeup {
+  max-width: 800px;
+  padding: 100px;
+  padding-top: 50px;
+  height: 100%;
+  position: relative;
+  background: white;
+}
+#about-page .writeup * {
+  max-width: none;
+  color: black;
+}
+
+#about-page .column {
+  display: flex;
+  flex-direction: column;
+}
+
+#about-page .row {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: flex-end;
+}
+
+.right * {
+  align-items: flex-end;
+  text-align: right;
+}
+#about-page hr {
+  width: 100%;
+  border: 0.5px solid white;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+#about-page img:not(.inline) {
+  margin: 20px !important;
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+  max-height: 30vh;
 }
