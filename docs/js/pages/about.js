@@ -3,7 +3,7 @@ function initAboutPage() {
   console.log(document.querySelectorAll(".writeup h2").length);
   const parentCont = document.getElementById("howcontainer");
   new p5((p) => howitworks(p, parentCont));
-
+  setupPausePlayAnimation();
   const scroller = scrollama();
   const page = document.querySelector("#about-page");
   console.log(

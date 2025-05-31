@@ -192,12 +192,14 @@
 .sticky-container {
   position: sticky;
   top: 0;
-  height: 80vh;
+  height: 70vh;
+  min-height: 500px;
   width: 100vw;
   display: flex;
   flex-direction: column;
   gap: 20px;
 }
+
 .scroll-container {
   display: block;
   height: fit-content;
@@ -239,4 +241,25 @@
 #about-page video::-webkit-media-controls-time-remaining-display {
   color: white !important;
   fill: white !important; /* for SVG icons */
+}
+
+#sketch-section {
+  overflow: hidden;
+}
+
+#howcontainer {
+  position: relative;
+  width: 100vw;
+  height: 500px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+#pause-play-container {
+  width: 30px;
+  height: 30px;
+  position: relative;
+  top: 10px;
+  left: 10px;
+  z-index: 10;
 }

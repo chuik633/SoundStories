@@ -1,6 +1,6 @@
 const howitworks = (p, container) => {
   let width = window.innerWidth;
-  let height = window.innerHeight;
+  let height = window.innerHeight - 200;
 
   const movieName = "Call Me by Your Name";
   let sound;
@@ -19,7 +19,7 @@ const howitworks = (p, container) => {
   const dynamicFontOptions = ["wiggly", "strings", "flow", "blur", "swirl"];
   const dynamicFontType = "annotated-strings";
   const textX = width / 2;
-  const textY = height / 2;
+  const textY = 180;
   const textWidth = width - 80;
   const textContent = ["HOW", "IT", "WORKS"];
   let textColor = "black";
@@ -59,6 +59,7 @@ const howitworks = (p, container) => {
 
     const btn = document.getElementById("pause-play-container");
     btn.addEventListener("click", toggleplaying);
+    toggleplaying();
     p.background(bgColor);
     p.textFont(font);
 

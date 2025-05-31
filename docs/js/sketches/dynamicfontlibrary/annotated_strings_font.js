@@ -1,5 +1,5 @@
 console.log("ANNOTATED");
-let lines = [];
+let lines2 = [];
 let stringsPoints = [];
 let x_threshold = 4;
 let radius = 120;
@@ -9,7 +9,7 @@ let splitText = false;
 function setupAnnotatedStringsFont(p, values, inputText, font, x, y, maxWidth) {
   if (Array.isArray(inputText)) {
     splitText = true;
-    lines = [];
+    lines2 = [];
     stringsPoints = [];
     let fontSize = maxFontSize;
     for (let word of inputText) {
@@ -40,9 +40,9 @@ function setupAnnotatedStringsFont(p, values, inputText, font, x, y, maxWidth) {
         if (showAnnotations) {
           stringsPoints = [...stringsPoints, ...letter_points];
         }
-        //make the lines by x boundary stuff and then save them
+        //make the lines2by x boundary stuff and then save them
         let letterLines = get_shape_lines(letter_points);
-        lines = [...lines, ...letterLines];
+        lines2 = [...lines2, ...letterLines];
 
         startX += fontSize;
       }
@@ -57,7 +57,7 @@ function setupAnnotatedStringsFont(p, values, inputText, font, x, y, maxWidth) {
     let startX = x - textWidth / 2;
 
     //reset it cuz maybe new text
-    lines = [];
+    lines2 = [];
     stringsPoints = [];
 
     for (let i = 0; i < inputText.length; i++) {
@@ -69,9 +69,9 @@ function setupAnnotatedStringsFont(p, values, inputText, font, x, y, maxWidth) {
       if (showAnnotations) {
         stringsPoints = [...stringsPoints, ...letter_points];
       }
-      //make the lines by x boundary stuff and then save them
+      //make the lines2by x boundary stuff and then save them
       let letterLines = get_shape_lines(letter_points);
-      lines = [...lines, ...letterLines];
+      lines2 = [...lines, ...letterLines];
 
       startX += fontSize;
     }
@@ -81,13 +81,13 @@ function setupAnnotatedStringsFont(p, values, inputText, font, x, y, maxWidth) {
 let delta = 1;
 //draw strings based on the values
 function drawAnnotatedStringsFont(p, values, inputText, font, x, y, maxWidth) {
-  if (lines == []) return;
+  if (lines2 == []) return;
   if (showAnnotations) {
     p.noStroke();
     p.background("white");
     p.fill("black");
     drawGrid(p, 20, 20, "grey", 0, 0, p.width, p.height);
-    const lines_per_bin = Math.floor(lines.length / values.length);
+    const lines_per_bin = Math.floor(lines2.length / values.length);
     for (let binNum = 0; binNum < values.length; binNum++) {
       let value = values[binNum];
       let pull = p.map(value, 0, 1, -x_threshold, x_threshold * 4);
@@ -96,7 +96,7 @@ function drawAnnotatedStringsFont(p, values, inputText, font, x, y, maxWidth) {
         i < (binNum + 1) * lines_per_bin;
         i++
       ) {
-        let [x1, y1, x2, y2] = lines[i];
+        let [x1, y1, x2, y2] = lines2[i];
         p.stroke("white");
         p.strokeWeight(0.1);
         p.line(x1, y1, x2, y2);
@@ -110,7 +110,7 @@ function drawAnnotatedStringsFont(p, values, inputText, font, x, y, maxWidth) {
 
   if (showAnnotations) {
     p.noStroke();
-    const lines_per_bin = Math.floor(lines.length / values.length);
+    const lines_per_bin = Math.floor(lines2.length / values.length);
     p.textSize(6);
     // p.clear();
     p.fill("black");
@@ -156,7 +156,7 @@ function drawAnnotatedStringsFont(p, values, inputText, font, x, y, maxWidth) {
         i < (binNum + 1) * lines_per_bin;
         i++
       ) {
-        let [x1, y1, x2, y2] = lines[i];
+        let [x1, y1, x2, y2] = lines2[i];
         p.textSize(4);
         let maxh = 20;
         let h = p.map(value, 0, 1, 0, maxh);
@@ -210,7 +210,7 @@ function drawAnnotatedStringsFont(p, values, inputText, font, x, y, maxWidth) {
     }
   } else {
     p.noStroke();
-    const lines_per_bin = Math.floor(lines.length / values.length);
+    const lines_per_bin = Math.floor(lines2.length / values.length);
     for (let binNum = 0; binNum < values.length; binNum++) {
       let value = values[binNum];
       let pull = p.map(value, 0, 1, -x_threshold, x_threshold * 4);
@@ -219,7 +219,7 @@ function drawAnnotatedStringsFont(p, values, inputText, font, x, y, maxWidth) {
         i < (binNum + 1) * lines_per_bin;
         i++
       ) {
-        let [x1, y1, x2, y2] = lines[i];
+        let [x1, y1, x2, y2] = lines2[i];
         p.stroke("white");
         p.strokeWeight(0.1);
         p.line(x1, y1, x2, y2);
@@ -236,7 +236,7 @@ function get_shape_lines(points) {
   let allX_vals = points.map((p) => p.x);
   let unique_xvals = simplifyList(allX_vals, x_threshold);
 
-  let all_lines = [];
+  let all_lines2 = [];
   for (const x of unique_xvals) {
     let y_line_vals = [];
     for (let point of points) {
@@ -248,7 +248,7 @@ function get_shape_lines(points) {
     }
     // console.log("YLINEVALS", y_line_vals);
     if (y_line_vals.length >= 2) {
-      all_lines.push([
+      all_lines2.push([
         x,
         Math.max(...y_line_vals),
         x,
@@ -256,5 +256,5 @@ function get_shape_lines(points) {
       ]);
     }
   }
-  return all_lines;
+  return all_lines2;
 }
