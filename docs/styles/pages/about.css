@@ -221,7 +221,7 @@
   width: 20px;
   position: relative;
   right: 0px;
-  border-bottom: 1px solid #ccc;
+  /* border-bottom: 1px solid #ccc; */
 }
 
 #about-page video::-webkit-media-controls-enclosure,

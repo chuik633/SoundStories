@@ -2,7 +2,7 @@ const howitworks = (p, container) => {
   let width = window.innerWidth;
   let height = window.innerHeight - 200;
 
-  const movieName = "Call Me by Your Name";
+  const movieName = "test";
   let sound;
   let font;
   let playing = false;
