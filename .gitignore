@@ -1,6 +1,6 @@
 # /vids/
 # /singleVideoProcess/tmp/
-# /processing/.env
+/processing/.env
 
 # # Ignore all .mp4, .png, .jpg, .mp3 files in the repository
 # *.mp4
