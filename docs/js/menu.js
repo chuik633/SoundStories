@@ -16,16 +16,17 @@ function layoutMenu() {
   if (document.querySelector("nav")) return; //dont want to add it twice
   menu_container.innerHTML += `
         <nav>  
-            <a class = 'menu-link' href="#explore">Scenes</a>
-           
+          <a class = 'menu-link' href="#explore" id = 'home-button'></a>
+            <a class = 'menu-link' href="#about">About</a>
+  
             <a class = 'menu-link' href="#films">Films</a>
             <div class="film-submenu">
               
               </div>
 
-             <a class = 'menu-link' href="#experiment">TRY IT</a>
+             <a class = 'menu-link' href="#experiment">EXPERIMENT</a>
 
-            <a class = 'menu-link about-link' href="#about">About</a>
+            
         </nav>
         <div class='menu-obscure'></div>
         `;
@@ -38,6 +39,7 @@ function layoutMenu() {
       .attr("href", `#films/${movie}`)
       .text(movie);
   }
+  setupHomeAnimation();
 }
 layoutMenu();
 
@@ -110,11 +112,15 @@ function loadPage(page, movieName, sceneNum) {
 }
 
 function handleRouteChange() {
+  console.log("route change");
   let hash = window.location.hash.slice(1);
   if (!hash) hash = startingPage;
   console.log("hash", hash);
   const [page, movieName, sceneNum] = hash.split("/");
   loadPage(page, movieName, sceneNum);
+  if (page == "explore") {
+    document.getElementById("menu-btn").click();
+  }
 }
 
 menu_container.addEventListener("click", (e) => {

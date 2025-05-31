@@ -27,12 +27,10 @@ function setupPausePlayAnimation() {
 
   pausePlayContainer.addEventListener("click", () => {
     if (currentState === "paused") {
-      // play: pause → play (0 → 1s)
       pausePlayAnimation.setSpeed(1);
       pausePlayAnimation.playSegments([0, frame_pause_to_play], true);
       currentState = "playing";
     } else {
-      // play: play → pause (1s → 2.11s)
       pausePlayAnimation.setSpeed(1);
       pausePlayAnimation.playSegments(
         [frame_pause_to_play, frame_play_to_pause],
