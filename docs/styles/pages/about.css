@@ -110,7 +110,7 @@
   max-width: 800px;
   padding: 100px;
   padding-top: 50px;
-  height: 100%;
+  height: fit-content;
   position: relative;
   background: white;
 }
