@@ -4,6 +4,8 @@ function layoutDashboardAndPreview(
   sceneNum,
   dashboard_mode
 ) {
+  console.log("laying out dashboard", movieName);
+  console.log(data[movieName]);
   d3.select("#films-page").style("--shrinkSize", `${shrinkSize}px`); //sync it with the css
   d3.select("#films-page").style("--hoverImageSize", `${hoverImageSize}px`);
   d3.select("#films-page").style(
@@ -25,13 +27,14 @@ function layoutDashboardAndPreview(
 
   //grow and shrink elements
   // dashboard.on("click", () => expandDashboard());
-
+  console.log(sceneNum);
+  d3.select("#displayed-video").attr("sceneNum", sceneNum + 1);
+  changeDisplayedVideo(movieName, sceneNum);
   if (dashboard_mode) {
     expandDashboard(movieName);
   } else {
     expandPreviewContainer(movieName);
   }
-  changeDisplayedVideo(movieName, sceneNum);
 }
 
 function layoutPreview(container, sceneNum, movieName) {
@@ -139,11 +142,7 @@ function layoutScenePreviews(outer_container, movieName) {
     .append("div")
     .attr("class", "scene-preview-container small");
   // console.log(data);
-  for (
-    let sceneNum = 0;
-    sceneNum < data[movieName].videoInfo.samples;
-    sceneNum++
-  ) {
+  for (let sceneNum = 0; sceneNum < data[movieName].numSamples; sceneNum++) {
     const filename = `${sceneNum}-001.png`;
     const sceneImg = container
       .append("img")
@@ -174,7 +173,7 @@ function layoutScenePreviews(outer_container, movieName) {
 
 function changeDisplayedVideo(movieName, sceneNum) {
   console.log("CHANGE VIDEO");
-  console.log(sceneNum, d3.select("#displayed-video").attr("sceneNum"));
+
   if (d3.select("#displayed-video").attr("sceneNum") == sceneNum) {
     console.log("same video", sceneNum);
     return;

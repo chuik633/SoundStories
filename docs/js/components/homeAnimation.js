@@ -61,5 +61,12 @@ function setupHomeAnimation() {
     }, 2000);
   });
 
-  window.addEventListener("resize", homeAnimation.resize);
+  window.addEventListener("resize", () => {
+    if (homeAnimation && homeAnimation.isLoaded) {
+      console.log("Resizing animation...");
+      homeAnimation.resize();
+    } else {
+      console.warn("Animation not loaded, skipping resize.");
+    }
+  });
 }

@@ -56,7 +56,10 @@ async function showOutput(movieName, numSamples) {
     console.log("image linek,", metaData[movieName].imgDir + `${i}-001.png`);
     imgPrevs
       .append("img")
-      .attr("src", metaData[movieName].imgDir + `${i}-001.png`);
+      .attr("src", metaData[movieName].imgDir + `${i}-001.png`)
+      .on("click", () => {
+        window.location.hash = `#films/${movieName}/${i}`;
+      });
   }
 
   //create a link to the output
@@ -70,6 +73,6 @@ async function showOutput(movieName, numSamples) {
     .append("button")
     .text("Go to video page")
     .on("click", () => {
-      window.location.hash = `#/films/${movieName}`;
+      window.location.hash = `#films/${movieName}`;
     });
 }

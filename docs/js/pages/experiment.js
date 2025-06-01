@@ -10,7 +10,7 @@ function initExperimentPage() {
     youtubePreview(link);
   });
   let output_container = d3.select("#output-container");
-  output_container.selectAll('*').remove()
+  output_container.selectAll("*").remove();
   output_container
     .append("div")
     .attr("id", "progress-bar-outer")
@@ -24,7 +24,7 @@ function initExperimentPage() {
 function youtubePreview(link) {
   console.log("link", link);
   d3.select(".youtube-errors").text("");
-  d3.select("#youtube-preview").attr("class", "hidden");
+  const preview = d3.select("#youtube-preview").attr("class", "hidden");
   const m = link.match(
     /(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/))([A-Za-z0-9_-]{11})/
   );
@@ -72,7 +72,8 @@ function formManagement() {
     }
   }
   const youtubeLink = checkInput("youtubeLink");
-  const name = checkInput("name");
+  const rawName = checkInput("name");
+  const name = rawName.replace(/\s+/g, "_").toUpperCase();
   const numSamples = checkInput("numSamples");
   if (youtubeLink != false && name != false && numSamples != false) {
     //all true

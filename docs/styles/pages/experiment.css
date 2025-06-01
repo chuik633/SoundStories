@@ -182,3 +182,16 @@ button:hover {
   height: auto;
   object-fit: contain;
 }
+.upload-image-previews img:hover {
+  border: 1px solid white;
+}
+
+#output-container button {
+  background: white;
+  color: black;
+}
+#output-container button:hover {
+  background: inherit;
+  border: 0.5px solid white;
+  color: white;
+}

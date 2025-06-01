@@ -129,3 +129,15 @@ menu_container.addEventListener("click", (e) => {
     menuOpen = false;
   }
 });
+// document.addEventListener("DOMContentLoaded", () => {
+//   console.log("refresh load");
+//   console.log("DATA", data);
+//   if (data == undefined) {
+//     console.log("reloading data");
+//     loadMoviesData().then(() => {
+//       handleRouteChange();
+//     });
+//   } else {
+//     handleRouteChange();
+//   }
+// });

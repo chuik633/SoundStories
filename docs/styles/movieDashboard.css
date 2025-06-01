@@ -128,15 +128,17 @@
 
 .scene-preview-container .sceneImg {
   height: 50px;
+  /* height: 100%; */
   width: var(--prevImageSize);
-  object-fit: fit;
+  object-fit: cover;
   /* border:1px solid white; */
   transition: width 0.4s ease-in-out, height 0.4s ease-in-out;
 }
 
 .scene-preview-container
   .sceneImg[selected="false"][next="false"][prev="false"]:hover {
-  height: var(--hoverImageSize);
+  /* height: var(--hoverImageSize); */
+  object-fit: contain;
 }
 
 .sceneImg[selected="true"] {

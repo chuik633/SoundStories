@@ -1,5 +1,4 @@
 async function loadData() {
-  console.log("movie list");
   // const movies = await listMovies();
 
   for (const movieName of movies) {
@@ -14,10 +13,10 @@ async function loadData() {
     const audioUrl = await getUrl(movieName, pathConfig.audioDataFilename);
     const audioSceneData = await d3.json(audioUrl);
 
-    console.log("video info", videoInfo);
-    console.log(imageSceneData);
-    console.log(audioSceneData);
-    console.log("loaded data");
+    // console.log("video info", videoInfo);
+    // console.log(imageSceneData);
+    // console.log(audioSceneData);
+    // console.log("loaded data");
 
     // captions.json not alwayts there
     let captionData = [];
@@ -37,8 +36,6 @@ async function loadData() {
     };
 
     // flatten into allSceneData
-    console.log(data);
-    console.log(allSceneData);
     data[movieName].imageSceneData.forEach((d, i) => {
       allSceneData.push({
         ...d,
@@ -48,8 +45,8 @@ async function loadData() {
       });
     });
   }
-  console.log("ALL SCENE DATA");
-  console.log(allSceneData);
+  // console.log("ALL SCENE DATA");
+  // console.log(allSceneData);
   return;
 }
 
@@ -69,8 +66,13 @@ async function listMovies() {
   return movies;
 }
 
-window.addEventListener("load", async () => {
-  await loadData(); // only loads once
+window.addEventListener("DOMContentLoaded", async () => {
+  // only loads once
+  console.log("--------------LAOD", data);
+
+  if (data.length == undefined) {
+    await loadData();
+  }
   console.log("DATA LOADED");
   console.log(data);
 
