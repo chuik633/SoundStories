@@ -1,4 +1,4 @@
-const movies = ["PONYO", "SINGSING"];
+let movies = [];
 const SUPABASE_URL = "https://didoznoxnkzkuqdswwfn.supabase.co";
 const SUPABASE_KEY =
   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRpZG96bm94bmt6a3VxZHN3d2ZuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDgxMDgwMDYsImV4cCI6MjA2MzY4NDAwNn0.NNEfP_Wa0CpgxXL8FNB_QxqKyj3s-jjbxMOxPy6KDvU";

@@ -1,7 +1,14 @@
 async function loadData() {
-  // const movies = await listMovies();
+  movies = await listMovies();
+  setupMetaData();
 
+  d3.select(".film-submenu").selectAll("*").remove();
   for (const movieName of movies) {
+    d3.select(".film-submenu")
+      .append("a")
+      .attr("class", "menu-link")
+      .attr("href", `#films/${movieName}`)
+      .text(movieName);
     // create urls using supabase
     console.log("loading data");
     const videoUrl = await getUrl(movieName, pathConfig.videoDataFilename);
@@ -61,7 +68,7 @@ async function listMovies() {
   }
   console.log("OBJECTS", objects);
 
-  const movies = Array.from(new Set(objects.map((o) => o.name.split("/")[0])));
+  movies = Array.from(new Set(objects.map((o) => o.name.split("/")[0])));
   console.log("MOVIES", movies);
   return movies;
 }
