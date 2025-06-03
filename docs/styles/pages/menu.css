@@ -66,7 +66,18 @@
   top: 0px;
   left: 0px;
 }
+.submenu-link {
+  text-decoration: none;
+  font-weight: 800;
+}
+.submenu-link:hover {
+  text-decoration: underline;
+  font-weight: 800;
+}
 
+.menu-link.toggle-submenu:hover {
+  text-decoration: none;
+}
 .film-submenu input[type="radio"] {
   display: none;
 }

@@ -71,3 +71,5 @@ function createBackButton(container) {
     window.history.back();
   });
 }
+
+const imageSR = 10; //1 image taken every 1 seconds

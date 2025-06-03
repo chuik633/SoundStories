@@ -57,7 +57,9 @@ function layoutPreview(container, sceneNum, movieName) {
   makeSingleVideoPlayer(videoWrapper, movieName, sceneNum);
   return previewContainer;
 }
-
+function removeTrailingNumber(url) {
+  return url.replace(/\/\d+$/, "");
+}
 //put motion and transitions into these?
 function expandDashboard() {
   console.log("expand dashboard function");
@@ -65,6 +67,7 @@ function expandDashboard() {
   //shrink preview container
   const movieName = d3.select("#displayed-video").attr("movieName");
   const sceneNum = d3.select("#displayed-video").attr("sceneNum");
+
   d3.select(".preview-container").attr("class", "preview-container small");
 
   // the buttons
@@ -94,6 +97,11 @@ function expandDashboard() {
   d3.select(".dashboard")
     .attr("class", "dashboard full")
     .style("background-image", `none`);
+  console.log("HEHHEHH");
+  if (!window.location.href.endsWith(movieName)) {
+    console.log("dashboard link", removeTrailingNumber(window.location.href));
+    window.location.href = removeTrailingNumber(window.location.href);
+  }
 }
 function expandPreviewContainer(movieName) {
   d3.select(".preview-container").attr("class", "preview-container full");
@@ -112,6 +120,7 @@ function expandPreviewContainer(movieName) {
   );
 
   const sceneNum = d3.select("#displayed-video").attr("sceneNum");
+
   d3.select(".dashboard").attr("class", "dashboard small");
   // .style(
   //   "background-image",
@@ -126,6 +135,14 @@ function expandPreviewContainer(movieName) {
 
   showSketches(movieName, sceneNum);
   showInstruments(d3.select("#instrument-plotcontainer"), movieName, sceneNum);
+  let current = window.location.href;
+  if (current.endsWith(movieName)) {
+    console.log("preview link");
+    window.location.href = current + "/" + sceneNum;
+  } else if (current.endsWith(movieName + "/")) {
+    console.log("preview link2");
+    window.location.href = current + sceneNum;
+  }
 }
 
 function layoutDashboard(dashboard, movieName) {

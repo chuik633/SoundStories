@@ -5,6 +5,7 @@ const instrumentSketch = (p, parentDiv, movieName, sceneNum) => {
   let timestamp = 0;
   let audioIdx;
   let mfcc_ranges = {};
+  let imgIdx = 0;
 
   let beats = [];
   let lastBeat = 0;
@@ -59,6 +60,9 @@ const instrumentSketch = (p, parentDiv, movieName, sceneNum) => {
     audioSceneEntry = audioSceneEntry[sceneNum];
 
     width = parentDiv.getBoundingClientRect().width;
+    if (width < 10) {
+      width = 100;
+    }
     height = parentDiv.getBoundingClientRect().height;
     const canvas = p.createCanvas(width, height);
     canvas.parent(parentDiv);
@@ -76,6 +80,7 @@ const instrumentSketch = (p, parentDiv, movieName, sceneNum) => {
     p.clear();
 
     timestamp = d3.select(syncId).node().currentTime;
+    imgIdx = Math.floor(timestamp / imageSR);
 
     audioIdx = Math.round(timestamp / 0.02);
     timestamp = p.round(timestamp);
@@ -123,8 +128,8 @@ const instrumentSketch = (p, parentDiv, movieName, sceneNum) => {
   }
   function drawColors() {
     let y = 0;
-    let size = height / imageSceneEntry[timestamp]["colors"].length;
-    for (const c of imageSceneEntry[timestamp]["colors"]) {
+    let size = height / imageSceneEntry[imgIdx]["colors"].length;
+    for (const c of imageSceneEntry[imgIdx]["colors"]) {
       p.fill(...c);
       p.noStroke();
       p.rect(width - 10, y, 30, size);
@@ -156,10 +161,10 @@ const instrumentSketch = (p, parentDiv, movieName, sceneNum) => {
         lastBeat = {
           x: beatXScale(beat_time),
           y: 5 + rowNum * beatySize,
-          c: imageSceneEntry[timestamp]["colors"][0],
-          c2: imageSceneEntry[timestamp]["colors"][1],
+          c: imageSceneEntry[imgIdx]["colors"][0],
+          c2: imageSceneEntry[imgIdx]["colors"][1],
         };
-        console.log(lastBeat);
+        // console.log(lastBeat);
 
         beats.push(lastBeat);
         lastBeat["x2"] = p.random(0, width);
@@ -242,8 +247,8 @@ const instrumentSketch = (p, parentDiv, movieName, sceneNum) => {
 
         brush.noFill();
         brush.stroke(
-          imageSceneEntry[timestamp]["colors"][
-            (mfccNum + j) % imageSceneEntry[timestamp]["colors"].length
+          imageSceneEntry[imgIdx]["colors"][
+            (mfccNum + j) % imageSceneEntry[imgIdx]["colors"].length
           ]
         );
 

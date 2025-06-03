@@ -75,16 +75,18 @@ function formManagement() {
   const rawName = checkInput("name");
   const name = rawName.replace(/\s+/g, "_").toUpperCase();
   const numSamples = checkInput("numSamples");
+
   if (youtubeLink != false && name != false && numSamples != false) {
-    //all true
-    console.log(
-      JSON.stringify({
-        name: name,
-        numSamples: numSamples,
-        youtubeLink: youtubeLink,
-        captions: false,
-      })
-    );
+    console.log("toggling buttons");
+    // disable the submit job
+    d3.select("#submit-inputs-button").attr("disabled", true);
+    //display the cancel job
+    d3.select("#cancel-job")
+      .attr("class", "visible")
+      .on("click", () => {
+        cancelJob(name);
+      });
+
     startJob({
       name: name,
       numSamples: numSamples,

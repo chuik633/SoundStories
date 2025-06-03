@@ -9,7 +9,9 @@
 
      <div id="experiment-page" class="page">
         <div class = 'left-panel'>
-          <h2>TRY IT OUT</h2>
+          <div class = 'col'> <h2>TRY IT OUT</h2>
+          <h5>Please only upload smaller videos! (I only have a free database plan right now)</h5></div>
+         
           <div class = 'input-container'>
             <div class="label">youtube link</div>
             <input id="input-youtubeLink" autocomplete="off" type ='text' value =""></input>
@@ -25,7 +27,11 @@
             <div class="label">number of samples</div>
             <input id="input-numSamples" type ='number' value = '1' autocomplete="off"></input>
           </div>
-          <button id="submit-inputs-button">Process Video</button>
+          <div class = 'row'> 
+            <button id="submit-inputs-button">Process Video</button>
+             <button id="cancel-job" class = 'hidden'>Cancel</button>
+          </div>
+         
 
         
 
@@ -33,7 +39,11 @@
         </div>
         <div id="drag-panel"></div>
         <div class = 'right-panel'>
-          <h2>OUTPUT</h2>
+          <div class = 'col'>  
+            <h2>OUTPUT</h2>
+            <h5>This might take awhile... please enjoy the following</h5>
+          </div>
+        
           <div id="output-container">
             
           </div>

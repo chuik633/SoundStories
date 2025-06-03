@@ -19,8 +19,8 @@ function layoutMenu() {
           <a class = 'menu-link' href="#explore" id = 'home-button'></a>
             <a class = 'menu-link' href="#about">About</a>
   
-            <a class = 'menu-link' href="#films">Films</a>
-            <div class="film-submenu">
+            <div class = 'menu-link toggle-submenu' >Films</div>
+            <div class="film-submenu hidden">
               
               </div>
 
@@ -32,16 +32,30 @@ function layoutMenu() {
         `;
 
   const filmLinks = d3.select(".film-submenu");
+  console.log(movies);
   for (const movie of movies) {
     filmLinks
       .append("a")
-      .attr("class", "menu-link")
+      .attr("class", "submenu-link")
       .attr("href", `#films/${movie}`)
       .text(movie);
   }
+  let submenushown = false;
+  d3.select(".toggle-submenu").on("mouseenter", () => {
+    if (submenushown == false) {
+      d3.select(".film-submenu").attr("class", "film-submenu");
+      subMenuAnimation();
+      submenushown = true;
+    }
+  });
+  d3.select(".film-submenu").on("mouseleave", () => {
+    if (submenushown == true) {
+      d3.select(".film-submenu").attr("class", "film-submenu hidden");
+      submenushown = false;
+    }
+  });
   setupHomeAnimation();
 }
-layoutMenu();
 
 //menu toggling
 function showMenu() {
@@ -53,6 +67,15 @@ function showMenu() {
 
 function menuAnimation() {
   gsap.from(".menu-link", {
+    x: -80,
+    opacity: 0,
+    duration: 0.5,
+    stagger: 0.08,
+    ease: "power4.inOUt",
+  });
+}
+function subMenuAnimation() {
+  gsap.from(".submenu-link", {
     x: -80,
     opacity: 0,
     duration: 0.5,
@@ -125,6 +148,10 @@ function handleRouteChange() {
 
 menu_container.addEventListener("click", (e) => {
   if (e.target.classList.contains("menu-link")) {
+    hideMenu();
+    menuOpen = false;
+  }
+  if (e.target.classList.contains("submenu-link")) {
     hideMenu();
     menuOpen = false;
   }

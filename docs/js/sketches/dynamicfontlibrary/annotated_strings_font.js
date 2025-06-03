@@ -1,8 +1,8 @@
 console.log("ANNOTATED");
 let lines2 = [];
-let stringsPoints = [];
-let x_threshold = 4;
-let radius = 120;
+let stringsPoints2 = [];
+let x_threshold2 = 4;
+let radius2 = 120;
 let showAnnotations = true;
 let splitText = false;
 
@@ -10,7 +10,7 @@ function setupAnnotatedStringsFont(p, values, inputText, font, x, y, maxWidth) {
   if (Array.isArray(inputText)) {
     splitText = true;
     lines2 = [];
-    stringsPoints = [];
+    stringsPoints2 = [];
     let fontSize = maxFontSize;
     for (let word of inputText) {
       const lineFontSize = getResizedFontSize(word, maxFontSize, maxWidth);
@@ -19,7 +19,7 @@ function setupAnnotatedStringsFont(p, values, inputText, font, x, y, maxWidth) {
       }
     }
     sampleFac = p.map(fontSize, 10, 100, 0.8, 0.3);
-    radius = 120;
+    radius2 = 120;
 
     let textY = y - (inputText.length * fontSize) / 3 + 80;
     for (const word of inputText) {
@@ -38,7 +38,7 @@ function setupAnnotatedStringsFont(p, values, inputText, font, x, y, maxWidth) {
         );
 
         if (showAnnotations) {
-          stringsPoints = [...stringsPoints, ...letter_points];
+          stringsPoints2 = [...stringsPoints2, ...letter_points];
         }
         //make the lines2by x boundary stuff and then save them
         let letterLines = get_shape_lines(letter_points);
@@ -51,14 +51,14 @@ function setupAnnotatedStringsFont(p, values, inputText, font, x, y, maxWidth) {
   } else {
     const fontSize = getResizedFontSize(inputText, maxFontSize, maxWidth);
     sampleFac = p.map(fontSize, 10, 100, 0.8, 0.3);
-    radius = 120;
+    radius2 = 120;
 
     const textWidth = inputText.length * fontSize;
     let startX = x - textWidth / 2;
 
     //reset it cuz maybe new text
     lines2 = [];
-    stringsPoints = [];
+    stringsPoints2 = [];
 
     for (let i = 0; i < inputText.length; i++) {
       const letter = inputText[i];
@@ -67,7 +67,7 @@ function setupAnnotatedStringsFont(p, values, inputText, font, x, y, maxWidth) {
       });
 
       if (showAnnotations) {
-        stringsPoints = [...stringsPoints, ...letter_points];
+        stringsPoints2 = [...stringsPoints2, ...letter_points];
       }
       //make the lines2by x boundary stuff and then save them
       let letterLines = get_shape_lines(letter_points);
@@ -90,7 +90,7 @@ function drawAnnotatedStringsFont(p, values, inputText, font, x, y, maxWidth) {
     const lines_per_bin = Math.floor(lines2.length / values.length);
     for (let binNum = 0; binNum < values.length; binNum++) {
       let value = values[binNum];
-      let pull = p.map(value, 0, 1, -x_threshold, x_threshold * 4);
+      let pull = p.map(value, 0, 1, -x_threshold2, x_threshold2 * 4);
       for (
         let i = binNum * lines_per_bin;
         i < (binNum + 1) * lines_per_bin;
@@ -121,36 +121,36 @@ function drawAnnotatedStringsFont(p, values, inputText, font, x, y, maxWidth) {
 
     let maxDist = p.min(p.width, p.height) / 2;
 
-    radius = p.map(distToEdge, 0, maxDist, 0, 200);
+    radius2 = p.map(distToEdge, 0, maxDist, 0, 200);
 
-    // radius = p.map(disttodraw, 0, maxdist, 200, 0);
+    // radius2 = p.map(disttodraw, 0, maxdist, 200, 0);
     if (p.mouseIsPressed) {
-      radius += delta;
-      if (radius > 300) {
+      radius2 += delta;
+      if (radius2 > 300) {
         delta = -1;
       }
-      if (radius < 120) {
+      if (radius2 < 120) {
         delta = 1;
       }
     }
 
-    p.ellipse(p.mouseX, p.mouseY, radius, radius);
+    p.ellipse(p.mouseX, p.mouseY, radius2, radius2);
 
     drawGrid(p, 20, 20, "white", 0, 0, p.width, p.height);
     p.textFont("Courier New");
     p.fill("white");
     p.text(`bin_size ${lines_per_bin}`, x - 20, y + 40);
-    p.text(`x_threshold ${x_threshold}`, x - 20, y + 50);
+    p.text(`x_threshold ${x_threshold2}`, x - 20, y + 50);
     p.fill("white");
 
-    for (let point of stringsPoints) {
-      if (p.dist(point.x, point.y, p.mouseX, p.mouseY) < radius) {
+    for (let point of stringsPoints2) {
+      if (p.dist(point.x, point.y, p.mouseX, p.mouseY) < radius2) {
         p.ellipse(point.x, point.y, 1, 1);
       }
     }
     for (let binNum = 0; binNum < values.length; binNum++) {
       let value = values[binNum];
-      let pull = p.map(value, 0, 1, -x_threshold, x_threshold * 4);
+      let pull = p.map(value, 0, 1, -x_threshold2, x_threshold2 * 4);
       for (
         let i = binNum * lines_per_bin;
         i < (binNum + 1) * lines_per_bin;
@@ -186,8 +186,8 @@ function drawAnnotatedStringsFont(p, values, inputText, font, x, y, maxWidth) {
         p.line(x1, y1, x2, y2);
         if (value > 0) {
           p.noStroke();
-          if (Math.abs(x1 - p.mouseX) < x_threshold) {
-            if (Math.abs((y1 + y2) / 2 - p.mouseY) < radius) {
+          if (Math.abs(x1 - p.mouseX) < x_threshold2) {
+            if (Math.abs((y1 + y2) / 2 - p.mouseY) < radius2) {
               drawCurvedLine(p, x1, y1, x2, y2, x1 + pull, (y1 + y2) / 2);
             }
 
@@ -213,7 +213,7 @@ function drawAnnotatedStringsFont(p, values, inputText, font, x, y, maxWidth) {
     const lines_per_bin = Math.floor(lines2.length / values.length);
     for (let binNum = 0; binNum < values.length; binNum++) {
       let value = values[binNum];
-      let pull = p.map(value, 0, 1, -x_threshold, x_threshold * 4);
+      let pull = p.map(value, 0, 1, -x_threshold2, x_threshold2 * 4);
       for (
         let i = binNum * lines_per_bin;
         i < (binNum + 1) * lines_per_bin;
@@ -234,7 +234,7 @@ function drawAnnotatedStringsFont(p, values, inputText, font, x, y, maxWidth) {
 
 function get_shape_lines(points) {
   let allX_vals = points.map((p) => p.x);
-  let unique_xvals = simplifyList(allX_vals, x_threshold);
+  let unique_xvals = simplifyList(allX_vals, x_threshold2);
 
   let all_lines2 = [];
   for (const x of unique_xvals) {
@@ -242,7 +242,7 @@ function get_shape_lines(points) {
     for (let point of points) {
       let [px, py] = [point.x, point.y];
 
-      if (Math.abs(x - px) < x_threshold) {
+      if (Math.abs(x - px) < x_threshold2) {
         y_line_vals.push(py);
       }
     }

@@ -101,7 +101,8 @@ const instrumentSketch = (p, parentDiv, movieName, sceneNum) => {
     if (addBeat()) {
       p.background(bgColor);
       // console.log(imageSceneEntry[timestamp]);
-      let colorslist = imageSceneEntry[timestamp]["colors"];
+      let imgIdx = Math.floor(timestamp / imageSR);
+      let colorslist = imageSceneEntry[imgIdx]["colors"];
       textColor = colorslist[0];
       // textColor = colorslist[colorslist.length - 1];
     }
@@ -143,7 +144,8 @@ const instrumentSketch = (p, parentDiv, movieName, sceneNum) => {
   }
   function drawColors() {
     let x = -width / 2;
-    for (const c of imageSceneEntry[timestamp]["colors"]) {
+    let imgIdx = Math.floor(timestamp / imageSR);
+    for (const c of imageSceneEntry[imgIdx]["colors"]) {
       brush.setHatch("hatch_brush", c);
       brush.hatch(10, 20);
       brush.rect(x, -height / 2, 50, 50);
@@ -151,6 +153,7 @@ const instrumentSketch = (p, parentDiv, movieName, sceneNum) => {
     }
   }
   function addBeat() {
+    let imgIdx = Math.floor(timestamp / imageSR);
     const numBeats = audioSceneEntry["beat_times"].length;
     const beatRows = p.round(numBeats ** 0.5);
     const beatCols = p.round(numBeats / beatRows);
@@ -173,8 +176,8 @@ const instrumentSketch = (p, parentDiv, movieName, sceneNum) => {
         lastBeat = {
           x: beatXScale(beat_time) + 10,
           y: rowNum * beatySize + 10,
-          c: imageSceneEntry[timestamp]["colors"][0],
-          c2: imageSceneEntry[timestamp]["colors"][1],
+          c: imageSceneEntry[imgIdx]["colors"][0],
+          c2: imageSceneEntry[imgIdx]["colors"][1],
         };
 
         beats.push(lastBeat);
@@ -243,6 +246,7 @@ const instrumentSketch = (p, parentDiv, movieName, sceneNum) => {
   }
 
   function drawMFCCS() {
+    let imgIdx = Math.floor(timestamp / imageSR);
     brush.push();
     p.push();
     brush.set("cpencil", textColor, 1);
@@ -267,8 +271,8 @@ const instrumentSketch = (p, parentDiv, movieName, sceneNum) => {
 
         brush.noFill();
         brush.stroke(
-          imageSceneEntry[timestamp]["colors"][
-            (mfccNum + j) % imageSceneEntry[timestamp]["colors"].length
+          imageSceneEntry[imgIdx]["colors"][
+            (mfccNum + j) % imageSceneEntry[imgIdx]["colors"].length
           ]
         );
 
@@ -349,11 +353,12 @@ const instrumentSketch = (p, parentDiv, movieName, sceneNum) => {
     brush.endShape();
   }
   function drawBeats(fill = false) {
+    let imgIdx = Math.floor(timestamp / imageSR);
     p.push();
     // brush.field("waves");
     //draw all beats
 
-    brush.set("HB", imageSceneEntry[timestamp]["colors"][0], 1);
+    brush.set("HB", imageSceneEntry[imgIdx]["colors"][0], 1);
     for (const beat of beats) {
       brush.stroke(beat.c);
 
@@ -363,7 +368,7 @@ const instrumentSketch = (p, parentDiv, movieName, sceneNum) => {
     if (fill) {
       //random fil stuff
       brush.fill(
-        p.random(imageSceneEntry[timestamp]["colors"]),
+        p.random(imageSceneEntry[imgIdx]["colors"]),
         p.random(60, 140)
       );
       brush.bleed(p.random(0.05, 0.4));

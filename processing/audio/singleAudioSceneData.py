@@ -52,7 +52,7 @@ class AudioScene():
 
     def getData(self):
         avgamp, amp = self.getAmplitude()
-        avgenergy, energy = self.getEnergy()
+        # avgenergy, energy = self.getEnergy()
         beats, beat_times = self.getTempo()
 
         self.feature_dict = {name: value for name, value in zip(self.short_feature_names, self.short_features) if name in short_features_selected}
@@ -64,8 +64,8 @@ class AudioScene():
             # 'amplitude':amp,
             'beats':beats,
             'beat_times':beat_times,
-            'energy_avg':avgenergy,
-            'energy':energy[0],
+            # 'energy_avg':avgenergy,
+            # 'energy':energy[0],
             'instruments':self.getInstruments(),
             'emotion': self.getEmotionLabel()
             }

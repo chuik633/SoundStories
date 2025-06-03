@@ -63,72 +63,131 @@ def process_data():
 def job_status(job_id):
     return get_job_status(job_id)
 
+
+@app.route('/cancel/<job_id>/<movieName>')
+def cancel_job(job_id, movieName):
+    report(job_id, -100, 'Job cancelled')
+    print("clearing the directories",str(movieName).upper())
+    clear_supabase_directory(str(movieName).upper(), 'data')
+    return jsonify({'message': "Job cancelled"}, 100)
+
 def background_task(job_id, name, numSamples, youtubeLink, captions):
-    
-    # SETUP FoLDERS
-    report(job_id,0, 'Setting up...')
-    dataDir = f'./data/tmp/{name}/'
-    os.makedirs(dataDir, exist_ok=True)
-    print('clearing directoreis')
-    clear_directories(dataDir)
+    with app.app_context():
+        def check_cancel_job():
+            response = get_job_status(job_id)
+            if isinstance(response, tuple):  # Flask jsonify returns a tuple (response, status_code)
+                response_data = response[0].get_json()  # Convert JSON response to a dictionary
+            else:
+                response_data = response.get_json()  # Directly convert if no tuple
+            print("checking cancel", response_data.get('progress'))
+            if(response_data.get('progress') == -100):
+                print("CANCELING THE JOB")
+                return True
+            # job_status_return= get_job_status(job_id)
+            # print("CHECKING JOB STATUS", job_status_return)
+            # if(job_status_return['progress'] == -100):
+            #     print("CANCELING JOB")
+            #     return True
+            return False
+        # SETUP FoLDERS
+        report(job_id,0, 'Setting up...')
+        dataDir = f'./data/tmp/{name}/'
+        os.makedirs(dataDir, exist_ok=True)
+        print('clearing directoreis')
+        clear_directories(dataDir)
+        if(check_cancel_job()):
+            return
 
-    # DOWNLOAD VIDEO
-    print('downloading video')
-    if youtubeLink:
-        report(job_id,10, 'Downloading youtube video')
-        try:
-            download_video(dataDir, youtubeLink, captions)
-        except Exception as e:
-            print("ERROR DOWNLAODING")
-            report(job_id,0, 'ERROR! Downloading video failed' + e)
-        report(job_id,15, 'Downloaded! Now splitting the video')
+        # DOWNLOAD VIDEO
+        print('downloading video')
+        if youtubeLink:
+            if(check_cancel_job()):
+                return
+            report(job_id,10, 'Downloading youtube video')
+            try:
+                download_video(dataDir, youtubeLink, captions)
+            except Exception as e:
+                print("ERROR DOWNLAODING")
+                if(check_cancel_job()):
+                    return
+                report(job_id,0, 'ERROR! Downloading video failed' + e)
+            if(check_cancel_job()):
+                return
+            report(job_id,15, 'Downloaded! Now splitting the video')
+            
         
-
-    # SPLIT VIDEO
-    print('splitting video')
-    split_video(dataDir, numSamples)
-    report(job_id,20, 'Split!')
-    videoInfo = load_video_info(dataDir)
-
-    # PROCESSING
-    print('processing images')
-    report(job_id,30, 'Processing Images')
-    process_images(dataDir, name)
-
-    print('processing audio')
-    report(job_id,40, 'Processing Audio')
-    process_audio(dataDir, name)
-
-    if captions:
-        print('processing captions')
-        report(job_id,45, 'Processing Captions')
-        process_captions(name, videoInfo['sampleLength'])
-
-    print('storing files')
-    report(job_id,50, 'Storing files')
-    try:
-        print('clearing any duplicates')
-        clear_supabase_directory(name,'data')
-        print('storing data')
-        store_data(job_id,name, report)
-    except Exception as e:
-        report(job_id,0, 'ERROR!', e)
-        return
-    report(job_id,100, 'Completed!')
+        
+        # SPLIT VIDEO
+        print('splitting video')
+        split_video(dataDir, numSamples)
+        if(check_cancel_job()):
+            return
+        report(job_id,20, 'Split!')
+        videoInfo = load_video_info(dataDir)
+      
     
-def store_data(job_id,movieName, report):
+        # PROCESSING
+        print('processing images')
+        if(check_cancel_job()):
+            return
+        report(job_id,30, 'Processing Images')
+        process_images(dataDir, name)
+
+        
+        print('processing audio')
+        if(check_cancel_job()):
+            return
+        report(job_id,40, 'Processing Audio')
+        process_audio(dataDir, name)
+        if(check_cancel_job()):
+            return
+        
+        if captions:
+            print('processing captions')
+            if(check_cancel_job()):
+                return
+            report(job_id,45, 'Processing Captions')
+            process_captions(name, videoInfo['sampleLength'])
+
+        if(check_cancel_job()):
+                return
+        print('storing files')
+        report(job_id,50, 'Storing files')
+        try:
+            print('clearing any duplicates')
+            clear_supabase_directory(name,'data')
+            print('storing data')
+            store_data(job_id,name, report,check_cancel_job)
+        except Exception as e:
+            report(job_id,0, 'ERROR!', e)
+            return
+        if(check_cancel_job()):
+            return
+        report(job_id,100, 'Completed!')
+    
+def store_data(job_id,movieName, report,check_cancel_job):
     base = f'./data/tmp/{movieName}/'
     image_files = listdir(base + 'images/')
     numImages = len(image_files)
+    if(check_cancel_job()):
+            return
     for imgNum,f in enumerate(image_files):
-        report(job_id,60 + round(imgNum/numImages*10), f'Uploading images ({imgNum+1}/{numImages})')
+        val = 60 + round(imgNum/numImages*10)
+        print('val', val)
+        report(job_id,val, f'Uploading images ({imgNum+1}/{numImages})')
         writeFile(base + 'images/' + f, f'{movieName}/images/{f}')
+    if(check_cancel_job()):
+            return
     for f in listdir(base + 'audios/'):
         report(job_id,70, 'Uploading audio')
         writeFile(base + 'audios/' + f, f'{movieName}/audios/{f}')
+    if(check_cancel_job()):
+            return
     for f in listdir(base + 'videos/'):
         report(job_id,80, 'Uploading videos')
         writeFile(base + 'videos/' + f, f'{movieName}/videos/{f}')
+    if(check_cancel_job()):
+            return
     report(job_id,90, 'Uploading JSON data')
     writeFile(base + 'imageSceneData.json', f'{movieName}/imageSceneData.json')
     writeFile(base + 'audioSceneData.json', f'{movieName}/audioSceneData.json')

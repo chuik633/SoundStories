@@ -27,10 +27,6 @@
   color: white;
 }
 
-.right-panel h2 {
-  font-size: 12px;
-}
-
 #experiment-sketches-container {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -155,7 +151,10 @@ button {
   letter-spacing: 2px;
 }
 button:hover {
-  background-color: rgba(36, 36, 36, 0.83);
+  background-color: white;
+  border: 0.5px solid black;
+  color: black !important;
+  /* background-color: rgba(36, 36, 36, 0.83); */
 }
 
 .youtube-errors {
@@ -187,11 +186,38 @@ button:hover {
 }
 
 #output-container button {
-  background: white;
-  color: black;
+  background-color: black !important;
+  border: 0.5px solid white !important;
+  color: white !important;
 }
 #output-container button:hover {
   background: inherit;
-  border: 0.5px solid white;
-  color: white;
+
+  background: white !important;
+  color: black !important;
+}
+
+#experiment-page button:disabled {
+  background: rgba(216, 216, 216, 0.5);
+  color: white !important;
+  cursor: not-allowed;
+}
+#experiment-page button:disabled:hover {
+  background: rgba(216, 216, 216, 0.5);
+  color: white !important;
+  cursor: not-allowed;
+  border: none;
+}
+
+#experiment-page .row {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+}
+
+#experiment-page h5 {
+  font-weight: 100;
+  font-family: "Courier New", Courier, monospace;
+  font-size: 8px;
+  font-style: italic;
 }

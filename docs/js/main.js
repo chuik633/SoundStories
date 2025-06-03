@@ -1,57 +1,59 @@
 async function loadData() {
   movies = await listMovies();
   setupMetaData();
+  let moviesFailed = [];
 
-  d3.select(".film-submenu").selectAll("*").remove();
+  layoutMenu();
   for (const movieName of movies) {
-    d3.select(".film-submenu")
-      .append("a")
-      .attr("class", "menu-link")
-      .attr("href", `#films/${movieName}`)
-      .text(movieName);
     // create urls using supabase
     console.log("loading data");
-    const videoUrl = await getUrl(movieName, pathConfig.videoDataFilename);
-    const videoInfo = await d3.json(videoUrl);
-
-    const imgUrl = await getUrl(movieName, pathConfig.imageDataFilename);
-    const imageSceneData = await d3.json(imgUrl);
-
-    const audioUrl = await getUrl(movieName, pathConfig.audioDataFilename);
-    const audioSceneData = await d3.json(audioUrl);
-
-    // console.log("video info", videoInfo);
-    // console.log(imageSceneData);
-    // console.log(audioSceneData);
-    // console.log("loaded data");
-
-    // captions.json not alwayts there
-    let captionData = [];
     try {
-      const captionUrl = await getUrl(movieName, pathConfig.captionsFilename);
-      captionData = await d3.json(captionUrl);
-    } catch {
-      console.log(`no captions for ${movieName}`);
-    }
+      const videoUrl = await getUrl(movieName, pathConfig.videoDataFilename);
+      const videoInfo = await d3.json(videoUrl);
 
-    data[movieName] = {
-      videoInfo,
-      imageSceneData: imageSceneData.sort((a, b) => a.sceneNum - b.sceneNum),
-      audioSceneData: audioSceneData.sort((a, b) => a.sceneNum - b.sceneNum),
-      captionData,
-      numSamples: +videoInfo.samples,
-    };
+      const imgUrl = await getUrl(movieName, pathConfig.imageDataFilename);
+      const imageSceneData = await d3.json(imgUrl);
 
-    // flatten into allSceneData
-    data[movieName].imageSceneData.forEach((d, i) => {
-      allSceneData.push({
-        ...d,
-        movieName: movieName,
-        imgDir: metaData[movieName].imgDir,
-        audioDir: metaData[movieName].audioDir,
+      const audioUrl = await getUrl(movieName, pathConfig.audioDataFilename);
+      const audioSceneData = await d3.json(audioUrl);
+
+      // console.log("video info", videoInfo);
+      // console.log(imageSceneData);
+      // console.log(audioSceneData);
+      // console.log("loaded data");
+
+      // captions.json not alwayts there
+      let captionData = [];
+      try {
+        const captionUrl = await getUrl(movieName, pathConfig.captionsFilename);
+        captionData = await d3.json(captionUrl);
+      } catch {
+        console.log(`no captions for ${movieName}`);
+      }
+
+      data[movieName] = {
+        videoInfo,
+        imageSceneData: imageSceneData.sort((a, b) => a.sceneNum - b.sceneNum),
+        audioSceneData: audioSceneData.sort((a, b) => a.sceneNum - b.sceneNum),
+        captionData,
+        numSamples: +videoInfo.samples,
+      };
+
+      // flatten into allSceneData
+      data[movieName].imageSceneData.forEach((d, i) => {
+        allSceneData.push({
+          ...d,
+          movieName: movieName,
+          imgDir: metaData[movieName].imgDir,
+          audioDir: metaData[movieName].audioDir,
+        });
       });
-    });
+    } catch {
+      console.log("MISSING FILES FOR:", movieName);
+      moviesFailed.push(movieName);
+    }
   }
+  movies.filter((x) => moviesFailed.indexOf(x) === -1);
   // console.log("ALL SCENE DATA");
   // console.log(allSceneData);
   return;

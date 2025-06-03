@@ -15,7 +15,7 @@ def save_job_status(job_id, message):
     supabase.table("jobs").insert({
         "job_id": job_id,
         "progress": 0,
-        "message": message
+        "message": message, 
     }).execute()
 
 def report(job_id, progress_val, msg):
@@ -24,15 +24,15 @@ def report(job_id, progress_val, msg):
         "message": msg
     }).eq("job_id", job_id).execute()
 
+
 def get_job_status(job_id):
     resp = (
         supabase
         .table("jobs")
-        .select("progress, message, updated_at")
+        .select("progress, message")
         .eq("job_id", job_id)
         .execute()
     )
-
     try:
         rows = resp.data or []
         if len(rows) == 0:
@@ -40,6 +40,7 @@ def get_job_status(job_id):
         job = rows[0]
         return jsonify(job)
     except Exception as e:
+        print("ERROR GETTING JOB STATUS", e)
         return jsonify(error=str(e)), 500
   
 def clear_supabase_directory(mainDir: str, bucket_name: str = "data"):

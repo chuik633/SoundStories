@@ -121,7 +121,8 @@ const dynamicFontSketch = (p, parentDiv, movieName, sceneNum) => {
     timestamp = p.round(timestamp);
     // drawChromagram(width / 2, height / 2, 100, 100);
     if (addBeat()) {
-      let colorslist = imageSceneEntry[timestamp]["colors"];
+      let imgIdx = Math.floor(timestamp / imageSR);
+      let colorslist = imageSceneEntry[imgIdx]["colors"];
       if (colorMode == "sync with image") {
         bgColor = colorslist[colorslist.length - 1];
         textColor = colorslist[0];

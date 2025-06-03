@@ -1,7 +1,7 @@
 let lines = [];
 let stringsPoints = [];
 let x_threshold = 4;
-let showAnnotations = false;
+
 function setupStringsFont(p, values, inputText, font, x, y, maxWidth) {
   const fontSize = getResizedFontSize(inputText, maxFontSize, maxWidth);
   sampleFac = p.map(fontSize, 10, 100, 0.8, 0.3);
@@ -19,9 +19,6 @@ function setupStringsFont(p, values, inputText, font, x, y, maxWidth) {
       sampleFactor: sampleFac,
     });
 
-    if (showAnnotations) {
-      stringsPoints = [...stringsPoints, ...letter_points];
-    }
     //make the lines by x boundary stuff and then save them
     let letterLines = get_shape_lines(letter_points);
     lines = [...lines, ...letterLines];
@@ -33,7 +30,7 @@ function setupStringsFont(p, values, inputText, font, x, y, maxWidth) {
 //draw strings based on the values
 function drawStringsFont(p, values, inputText, font, x, y, maxWidth) {
   if (lines == []) return;
-  if (showAnnotations) {
+  if (false) {
     p.noStroke();
     const lines_per_bin = Math.floor(lines.length / values.length);
     p.textSize(6);

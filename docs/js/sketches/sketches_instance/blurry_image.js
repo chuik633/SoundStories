@@ -119,6 +119,7 @@ const blury_image = (p, parentDiv, movieName, sceneNum) => {
   function syncData() {
     //get current time stamp
     timestamp = d3.select(syncId).node().currentTime;
+    let imgIdx = Math.floor(timestamp / imageSR);
     shortIdx = Math.round(timestamp / audioUtils.shortStep);
 
     //mcc list info
