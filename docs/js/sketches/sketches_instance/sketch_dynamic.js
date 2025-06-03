@@ -47,6 +47,13 @@ const dynamicFontSketch = (p, parentDiv, movieName, sceneNum) => {
   ];
 
   p.preload = () => {
+    console.log("CHECKING CAPTIONS", data[movieName].captionData);
+    if (data[movieName].captionData != []) {
+      captions = true;
+
+      captionSceneEntry = data[movieName].captionData[sceneNum];
+      console.log("CAPTION SCENE ENTRY", captionSceneEntry);
+    }
     // font = p.loadFont("styles/fonts/futura/FuturaCyrillicBold.ttf");
     font = p.loadFont("styles/fonts/Jost-Bold.ttf");
     audioSceneEntry = p.loadJSON(
@@ -55,11 +62,11 @@ const dynamicFontSketch = (p, parentDiv, movieName, sceneNum) => {
     imageSceneEntry = p.loadJSON(
       metaData[movieName].mainDir + pathConfig.imageDataFilename
     );
-    if (movieName == "totoro") {
-      captions = true;
-      let captionpath = metaData[movieName]["mainDir"] + "captions.json";
-      captionSceneEntry = p.loadJSON(captionpath);
-    }
+    // if (movieName == "totoro") {
+    //   captions = true;
+    //   let captionpath = metaData[movieName]["mainDir"] + "captions.json";
+    //   captionSceneEntry = p.loadJSON(captionpath);
+    // }
   };
 
   p.setup = () => {
@@ -71,15 +78,15 @@ const dynamicFontSketch = (p, parentDiv, movieName, sceneNum) => {
     // setup listeners
     setupListeners();
 
-    if (captions) {
-      captionSceneEntry = captionSceneEntry[0];
-    }
-
     const canvas = p.createCanvas(width, height);
     canvas.parent(parentDiv);
     // set up settings
     p.background(bgColor);
     p.textFont(font);
+    console.log("SETTING UP DYNAMIC FONT", captions);
+    if (captions) {
+      captionSceneEntry = data[movieName].captionData[sceneNum];
+    }
 
     updateSketch();
 

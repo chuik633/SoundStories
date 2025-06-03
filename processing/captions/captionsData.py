@@ -78,9 +78,11 @@ def group_captions(events, bin_size):
 
 
 def getCaptionData(name, bin_size = 100):
-    events =parse_captions(f"./tmp/{name}/captions.ass")
+    dataDir = f'./data/tmp/{name}/'
+    print(dataDir+"/video.en.ass")
+    events =parse_captions(dataDir+"video.en.ass")
     bins = group_captions(events,bin_size = bin_size)
 
-    with open(f"./tmp/{name}/captions.json", 'w', encoding='utf-8') as json_file:
+    with open(dataDir+f"captions.json", 'w', encoding='utf-8') as json_file:
         json.dump(bins, json_file, indent=4)
 

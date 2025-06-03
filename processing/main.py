@@ -34,15 +34,20 @@ def clear_directories(mainDir):
 def download_video(dataDir, youtubeLink, captions):
     cmd = [
        'yt-dlp','-f','bestvideo[height<=720]+bestaudio/best[height<=720]',
+       '--cookies-from-browser','chrome',
        '--merge-output-format','mp4','-o', dataDir+"video.mp4", youtubeLink
     ]
     try:
         result: subprocess.CompletedProcess = subprocess.run(
             [
-                'yt-dlp',
-                '-f', 'bestvideo[height<=720]+bestaudio/best[height<=720]',
-                '--merge-output-format', 'mp4',
-                '-o', dataDir + "video.mp4",
+                "yt-dlp",
+                "-f", "bestvideo[height<=720]+bestaudio/best[height<=720]",
+                "--cookies", "./cookies.txt",
+                "--merge-output-format", "mp4",
+                "--write-subs",              # download manual subtitles (if available)
+                "--sub-lang", "en",          # specify the language code (e.g. "en")
+                "--convert-subs", "ass",       # convert subs to .ass
+                "-o", dataDir + "video.mp4",
                 youtubeLink
             ],
             check=True,            # raises CalledProcessError on non-zero exit
@@ -75,7 +80,11 @@ def process_audio(dataDir, name):
     getAudioData(dataDir, name)
 
 def process_captions(name, videoInfo):
-    getCaptionData(name, round(videoInfo['sampleLength']))
+    dataDir = './data/tmp/'+f"{name}/"
+    if os.path.exists(dataDir+'video.en.ass'):
+        print('captions found...processing them')
+        getCaptionData(name, round(videoInfo['sampleLength']))
+    print("no captions found")
 
 # THIS IS OLD
 def getData(name, numSamples = 20, youtubeLink = False, captions = False):
@@ -134,7 +143,7 @@ def getData(name, numSamples = 20, youtubeLink = False, captions = False):
     getAudioData(dataDir,name)
 
     #5. saves captions if there are them
-    if captions:
+    if os.path.exists(dataDir+'video.en.ass'):
         getCaptionData(name, round(videoInfo['sampleLength']))
 
 # from sceneMetaData import sceneLinks

@@ -83,11 +83,7 @@ def background_task(job_id, name, numSamples, youtubeLink, captions):
             if(response_data.get('progress') == -100):
                 print("CANCELING THE JOB")
                 return True
-            # job_status_return= get_job_status(job_id)
-            # print("CHECKING JOB STATUS", job_status_return)
-            # if(job_status_return['progress'] == -100):
-            #     print("CANCELING JOB")
-            #     return True
+
             return False
         # SETUP FoLDERS
         report(job_id,0, 'Setting up...')
@@ -107,7 +103,6 @@ def background_task(job_id, name, numSamples, youtubeLink, captions):
             try:
                 download_video(dataDir, youtubeLink, captions)
             except Exception as e:
-                print("ERROR DOWNLAODING")
                 if(check_cancel_job()):
                     return
                 report(job_id,0, 'ERROR! Downloading video failed' + e)
@@ -142,12 +137,11 @@ def background_task(job_id, name, numSamples, youtubeLink, captions):
         if(check_cancel_job()):
             return
         
-        if captions:
-            print('processing captions')
-            if(check_cancel_job()):
-                return
-            report(job_id,45, 'Processing Captions')
-            process_captions(name, videoInfo['sampleLength'])
+        print('processing captions', videoInfo)
+        if(check_cancel_job()):
+            return
+        report(job_id,45, 'Processing Captions')
+        process_captions(name, videoInfo)
 
         if(check_cancel_job()):
                 return
@@ -192,6 +186,8 @@ def store_data(job_id,movieName, report,check_cancel_job):
     writeFile(base + 'imageSceneData.json', f'{movieName}/imageSceneData.json')
     writeFile(base + 'audioSceneData.json', f'{movieName}/audioSceneData.json')
     writeFile(base + 'videoInfo.json', f'{movieName}/videoInfo.json')
+    if(os.path.exists(base+'captions.json')):
+         writeFile(base + 'captions.json', f'{movieName}/captions.json')
 
 
 

@@ -71,9 +71,9 @@ function drawLetterFromPoints(p, points, val, noiseSize) {
   p.noStroke();
   p.beginShape();
   for (const point of points) {
-    console.log(noiseSize);
+    // console.log(noiseSize);
     let n_zoom = p.map(noiseSize, 1, 100, 0.06, 0.021);
-    console.log("zoom", n_zoom);
+    // console.log("zoom", n_zoom);
     let n_speed =
       p.map(val, 0, 1, 0.001, 0.05) * p.map(noiseSize, 1, 100, 1, 1.5);
     let n =

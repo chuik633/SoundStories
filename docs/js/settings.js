@@ -20,6 +20,7 @@ const pathConfig = {
   audioDataFilename: "audioSceneData.json",
   imageDataFilename: "imageSceneData.json",
   videoDataFilename: "videoInfo.json",
+  captionsFilename: "captions.json",
 };
 
 let metaData = {};

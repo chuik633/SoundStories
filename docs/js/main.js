@@ -6,7 +6,6 @@ async function loadData() {
   layoutMenu();
   for (const movieName of movies) {
     // create urls using supabase
-    console.log("loading data");
     try {
       const videoUrl = await getUrl(movieName, pathConfig.videoDataFilename);
       const videoInfo = await d3.json(videoUrl);
@@ -27,6 +26,9 @@ async function loadData() {
       try {
         const captionUrl = await getUrl(movieName, pathConfig.captionsFilename);
         captionData = await d3.json(captionUrl);
+        if (captionData != []) {
+          console.log("found caption data", movieName, captionUrl);
+        }
       } catch {
         console.log(`no captions for ${movieName}`);
       }
@@ -35,7 +37,7 @@ async function loadData() {
         videoInfo,
         imageSceneData: imageSceneData.sort((a, b) => a.sceneNum - b.sceneNum),
         audioSceneData: audioSceneData.sort((a, b) => a.sceneNum - b.sceneNum),
-        captionData,
+        captionData: captionData,
         numSamples: +videoInfo.samples,
       };
 
