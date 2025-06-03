@@ -7,7 +7,7 @@ body {
   display: flex;
   flex-direction: row;
   gap: 30px;
-  background-color: tan;
+  background-color: black;
   font-family: "Futura";
 }
 

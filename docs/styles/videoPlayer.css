@@ -74,10 +74,13 @@
   z-index: 3;
   position: absolute;
   width: var(--selectedImageSize);
+  height: auto;
+  max-height: var(--selectedImageSize);
   background-color: var(--text-color);
   opacity: 0;
-  visibility: hidden;
+  visibility: hidden !important;
   transition: opacity 0.3s ease-in-out, width 0.3s ease-in-out;
+  /* display: none; */
 }
 
 .video-wrapper-outer.small .video-wrapper {
