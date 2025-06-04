@@ -39,14 +39,22 @@
         </div>
         <div id="drag-panel"></div>
         <div class = 'right-panel'>
-          <div class = 'col'>  
-            <h2>OUTPUT</h2>
-            <h5>This might take awhile... please enjoy the following</h5>
-          </div>
-        
-          <div id="output-container">
+          
+            <div class = 'col'>  
+              <h2 class="output-item hidden">OUTPUT</h2>
+              <h5 class="output-item hidden">This might take awhile... please don't refresh. Also watch this to see whats happening in the backend right now!</h5>
+            </div>
+            <div class="output-item hidden">
+                <video  autoplay  muted loop width="100%" height="auto" preload="metadata">
+                  <source src="./styles/animations/processing.mp4" type="video/mp4" />
+                </video>
+            </div >
+            <div id="output-container">
+              
+              
+            </div>
             
-          </div>
+        </div>
         </div>
 
     </div>

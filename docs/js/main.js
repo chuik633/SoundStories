@@ -38,7 +38,7 @@ async function loadData() {
         imageSceneData: imageSceneData.sort((a, b) => a.sceneNum - b.sceneNum),
         audioSceneData: audioSceneData.sort((a, b) => a.sceneNum - b.sceneNum),
         captionData: captionData,
-        numSamples: +videoInfo.samples,
+        numSamples: videoInfo.samples,
       };
 
       // flatten into allSceneData

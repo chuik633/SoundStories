@@ -38,15 +38,17 @@ def download_video(dataDir, youtubeLink, captions):
        '--merge-output-format','mp4','-o', dataDir+"video.mp4", youtubeLink
     ]
     try:
+        print( "YOUTUBE", os.getenv("YT_USERNAME"))
         result: subprocess.CompletedProcess = subprocess.run(
             [
                 "yt-dlp",
                 "-f", "bestvideo[height<=720]+bestaudio/best[height<=720]",
-                "--cookies", "./cookies.txt",
+                "--username", os.getenv("YT_USERNAME"),
+                "--password", os.getenv("YT_PASSWORD"),
                 "--merge-output-format", "mp4",
-                "--write-subs",              # download manual subtitles (if available)
-                "--sub-lang", "en",          # specify the language code (e.g. "en")
-                "--convert-subs", "ass",       # convert subs to .ass
+                "--write-subs",
+                "--sub-lang", "en",
+                "--convert-subs", "ass",
                 "-o", dataDir + "video.mp4",
                 youtubeLink
             ],

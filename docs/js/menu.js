@@ -34,11 +34,19 @@ function layoutMenu() {
   const filmLinks = d3.select(".film-submenu");
   console.log(movies);
   for (const movie of movies) {
-    filmLinks
-      .append("a")
-      .attr("class", "submenu-link")
-      .attr("href", `#films/${movie}`)
-      .text(movie);
+    if (data[movie].numSamples == 1) {
+      filmLinks
+        .append("a")
+        .attr("class", "submenu-link")
+        .attr("href", `#films/${movie}/0`)
+        .text(movie);
+    } else {
+      filmLinks
+        .append("a")
+        .attr("class", "submenu-link")
+        .attr("href", `#films/${movie}`)
+        .text(movie);
+    }
   }
   let submenushown = false;
   d3.select(".toggle-submenu").on("mouseenter", () => {

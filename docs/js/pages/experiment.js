@@ -80,6 +80,7 @@ function formManagement() {
     console.log("toggling buttons");
     // disable the submit job
     d3.select("#submit-inputs-button").attr("disabled", true);
+    d3.selectAll(".output-item").attr("class", "output-item");
     //display the cancel job
     d3.select("#cancel-job")
       .attr("class", "visible")
