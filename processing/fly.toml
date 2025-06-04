@@ -1,9 +1,9 @@
-# fly.toml app configuration file generated for processing-sound-stories-6194-black-glade-983 on 2025-06-03T10:07:21-04:00
+# fly.toml app configuration file generated for processing-sound-stories-6194-dry-forest-1409 on 2025-06-04T10:07:43-04:00
 #
 # See https://fly.io/docs/reference/configuration/ for information about how to use this file.
 #
 
-app = 'processing-sound-stories-6194-black-glade-983'
+app = 'processing-sound-stories-6194-dry-forest-1409'
 primary_region = 'iad'
 
 [build]
