@@ -52,6 +52,33 @@
   background-color: var(--text-color);
   /* filter: blur(3px) brightness(1.5) contrast(0.6); */
 }
+.preview-container.small:hover p {
+  color: var(--bgColor);
+}
+.preview-container.small p {
+  padding: 10px;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  font-weight: 400;
+  align-content: center;
+  width: 100%;
+  text-align: center;
+}
+#expand-dash-text {
+  pointer-events: none;
+  position: fixed;
+  top: 10px;
+  left: 0px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  text-align: center;
+  justify-content: center;
+  padding: 10px;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  font-weight: 400;
+}
 
 .preview-container.small #sketches-container {
   position: absolute;
@@ -92,14 +119,14 @@
   background-size: cover;
   transform: scale(1.5);
   opacity: 0.5;
-  filter: blur(10px) brightness(1.5) contrast(0.6);
+  /* filter: blur(10px) brightness(1.5) contrast(0.6); */
 
   width: 100vw;
   height: var(--shrinkSize);
 }
 .dashboard.small:hover {
-  /* background-color: rgb(37, 37, 37); */
-  opacity: 0.2;
+  opacity: 0.51;
+  background-color: white;
 }
 .dashboard.small * {
   visibility: hidden;

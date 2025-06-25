@@ -18,7 +18,11 @@ function layoutDashboardAndPreview(
     .append("div")
     .attr("class", "dashboard full")
     .attr("id", `dashboard-${movieName}`);
-  dashboard.append("h2").text(" ");
+  container
+    .append("p")
+    .text("expand dashboard")
+    .attr("class", "hidden")
+    .attr("id", "expand-dash-text");
   dashboard.append("div").attr("class", "plots-container");
   layoutScenePreviews(container, movieName);
 
@@ -41,7 +45,7 @@ function layoutPreview(container, sceneNum, movieName) {
   const previewContainer = container
     .append("div")
     .attr("class", "preview-container full");
-
+  previewContainer.append("p").text("Watch Clip");
   //the video player
   const videoWrapper = previewContainer
     .append("div")
@@ -54,6 +58,7 @@ function layoutPreview(container, sceneNum, movieName) {
     .append("div")
     .attr("id", "sketches-container")
     .attr("class", "hidden");
+  d3.select("p#expand-dash-text").attr("class", "visible");
   makeSingleVideoPlayer(videoWrapper, movieName, sceneNum);
   return previewContainer;
 }
@@ -69,11 +74,11 @@ function expandDashboard() {
   const sceneNum = d3.select("#displayed-video").attr("sceneNum");
 
   d3.select(".preview-container").attr("class", "preview-container small");
-
+  d3.select("p#expand-dash-text").attr("class", "hidden");
   // the buttons
 
   d3.select(".dashboard.small").on("click", () => null);
-  console.log(d3.select(".small.preview-container"));
+
   d3.select(".small.preview-container").on("click", () => {
     console.log("HERE");
     expandPreviewContainer(movieName);
@@ -122,6 +127,7 @@ function expandPreviewContainer(movieName) {
   const sceneNum = d3.select("#displayed-video").attr("sceneNum");
 
   d3.select(".dashboard").attr("class", "dashboard small");
+
   // .style(
   //   "background-image",
   //   `url(${metaData[movieName].imgDir}${sceneNum}-005.png)`
@@ -160,7 +166,7 @@ function layoutScenePreviews(outer_container, movieName) {
     .attr("class", "scene-preview-container small");
   // console.log(data);
   for (let sceneNum = 0; sceneNum < data[movieName].numSamples; sceneNum++) {
-    const filename = `${sceneNum}-001.png`;
+    const filename = `${sceneNum}-001.jpg`;
     const sceneImg = container
       .append("img")
       .attr("class", `sceneImg sceneImg-${sceneNum}`)
@@ -350,6 +356,7 @@ function makeBottomContainer(sceneNum, movieName) {
       d3.select("body").classed("light-mode", on);
       if (on) {
         d3.selectAll(".icon").style("filter", "invert(100%");
+        d3.select("#menu-btn").style("filter", "none");
         d3.select("#films-page")
           .style("--text-color", "black")
           .style("--bgColor", "#EFEDE3");

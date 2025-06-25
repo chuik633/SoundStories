@@ -210,7 +210,7 @@ const dynamicFontSketch = (p, parentDiv, movieName, sceneNum) => {
   }
 
   function getCaption() {
-    if (captions) {
+    if (captions && captionSceneEntry) {
       for (const captionE of captionSceneEntry) {
         // console.log(captionE, timestamp);
         if (

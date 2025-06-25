@@ -9,7 +9,7 @@ const sketch_wobbly_font = (p, parentDiv, movieName, sceneNum) => {
 
   //data variables
   let movie = "";
-  const img_path = `${metaData[movieName].imgDir}${sceneNum}.png`;
+  const img_path = `${metaData[movieName].imgDir}${sceneNum}.jpg`;
   const imgEntry = data[movieName].imageSceneData[sceneNum];
   const audioEntry = data[movieName].audioSceneData[sceneNum];
   const captionSceneEntry = data[movieName].captionData[sceneNum];
