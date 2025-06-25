@@ -34,7 +34,7 @@ function layoutMenu() {
   const filmLinks = d3.select(".film-submenu");
   console.log(movies);
   for (const movie of movies) {
-    if (data[movie].numSamples == 1) {
+    if (data[movie].numSamples <= 1) {
       filmLinks
         .append("a")
         .attr("class", "submenu-link")
@@ -44,7 +44,7 @@ function layoutMenu() {
       filmLinks
         .append("a")
         .attr("class", "submenu-link")
-        .attr("href", `#films/${movie}`)
+        .attr("href", `#films/${movie}/0`)
         .text(movie);
     }
   }

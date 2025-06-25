@@ -2,6 +2,7 @@
 # /singleVideoProcess/tmp/
 /processing/.env
 /processing/cookies.txt
+/yt-oauth-setup/
 
 # # Ignore all .mp4, .png, .jpg, .mp3 files in the repository
 # *.mp4

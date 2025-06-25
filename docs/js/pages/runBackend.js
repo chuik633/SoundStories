@@ -1,6 +1,5 @@
-// const url = "http://localhost:5001";
-const url =
-  "https://processing-sound-stories-6194-green-wildflower-8866.fly.dev";
+const url = "http://localhost:5001";
+// const url = "https://processing-sound-stories-6194-bold-snowflake-1640.fly.dev";
 let job_id_val;
 
 async function startJob(params) {
@@ -13,7 +12,6 @@ async function startJob(params) {
   });
   const { job_id } = await resp.json();
   job_id_val = job_id;
-  console.log("JOB ID", job_id_val, job_id, crypto.randomUUID());
 
   // poll to get the status
   const progressHandler = setInterval(async () => {
@@ -84,10 +82,10 @@ async function showOutput(movieName, numSamples) {
     .attr("class", "upload-image-previews");
 
   for (let i = 0; i < numSamples; i++) {
-    console.log("image linek,", metaData[movieName].imgDir + `${i}-001.png`);
+    console.log("image linek,", metaData[movieName].imgDir + `${i}-001.jpg`);
     imgPrevs
       .append("img")
-      .attr("src", metaData[movieName].imgDir + `${i}-001.png`)
+      .attr("src", metaData[movieName].imgDir + `${i}-001.jpg`)
       .on("click", () => {
         window.location.hash = `#films/${movieName}/${i}`;
       });

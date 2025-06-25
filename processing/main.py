@@ -4,8 +4,10 @@ import os
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
 import subprocess
+import requests
 import json
 import shutil
+import os, tempfile, subprocess
 
 from audio.audioData import getAudioData
 from image.imageData import getImageData
@@ -32,19 +34,19 @@ def clear_directories(mainDir):
 
 # each step
 def download_video(dataDir, youtubeLink, captions):
-    cmd = [
-       'yt-dlp','-f','bestvideo[height<=720]+bestaudio/best[height<=720]',
-       '--cookies-from-browser','chrome',
-       '--merge-output-format','mp4','-o', dataDir+"video.mp4", youtubeLink
-    ]
+    # access_token = get_access_token()
+    
+    # yt_cookies =os.getenv("YT_COOKIES", "")
+    # if not yt_cookies:
+    #     raise RuntimeError("YT_COOKIES not set")
     try:
-        print( "YOUTUBE", os.getenv("YT_USERNAME"))
+        print( "YOUTUBE", os.getenv("YT_OAUTH_CLIENT_ID"))
         result: subprocess.CompletedProcess = subprocess.run(
             [
                 "yt-dlp",
                 "-f", "bestvideo[height<=720]+bestaudio/best[height<=720]",
-                "--username", os.getenv("YT_USERNAME"),
-                "--password", os.getenv("YT_PASSWORD"),
+               
+                "--cookies", 'cookies.txt',
                 "--merge-output-format", "mp4",
                 "--write-subs",
                 "--sub-lang", "en",
@@ -87,6 +89,28 @@ def process_captions(name, videoInfo):
         print('captions found...processing them')
         getCaptionData(name, round(videoInfo['sampleLength']))
     print("no captions found")
+
+def get_access_token():
+    """
+    Exchange the stored refresh token for a new YouTube access token.
+    Requires these env vars to be set (via fly secrets):
+      - YT_OAUTH_CLIENT_ID
+      - YT_OAUTH_CLIENT_SECRET
+      - YT_OAUTH_REFRESH
+    """
+    token_url = "https://oauth2.googleapis.com/token"
+    payload = {
+        "client_id":     os.getenv("YT_OAUTH_CLIENT_ID"),
+        "client_secret": os.getenv("YT_OAUTH_CLIENT_SECRET"),
+        "refresh_token": os.getenv("YT_OAUTH_REFRESH"),
+        "grant_type":    "refresh_token"
+    }
+    # POST to Google’s OAuth2 token endpoint
+    resp = requests.post(token_url, data=payload)
+    resp.raise_for_status()
+    data = resp.json()
+    return data["access_token"]
+
 
 # THIS IS OLD
 def getData(name, numSamples = 20, youtubeLink = False, captions = False):
