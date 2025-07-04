@@ -3,7 +3,7 @@ const menu_container = document.getElementById("menu-container");
 const menu_button = document.getElementById("menu-btn");
 const menuIcon = document.querySelector("#menu-btn img");
 let menuOpen = false;
-const startingPage = "explore";
+const startingPage = "about";
 
 // menu creation
 const routes = {

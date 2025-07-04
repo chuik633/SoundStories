@@ -11,6 +11,14 @@ body {
   font-family: "Futura";
 }
 
+.loading {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  font-family: "Courier New", Courier, monospace;
+  letter-spacing: 1px;
+}
+
 .page {
   position: absolute;
   width: 100vw;

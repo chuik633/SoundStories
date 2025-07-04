@@ -36,17 +36,10 @@ function setupHomeAnimation() {
   homeContainer.addEventListener("mouseleave", () => {
     if (isAnimating) return;
     homeAnimation.goToAndStop(endFrame, true);
-    // const current = Math.round(homeAnimation.currentFrame);
-    // if (current === doorFrame) {
-    //   isAnimating = true;
-    //   homeAnimation.playSegments([doorFrame, endFrame], true);
-    //   audio.currentTime = 0;
-    //   audio.play().catch((err) => console.warn("Audio play() failed:", err));
-    // }
   });
 
   homeAnimation.addEventListener("complete", () => {
-    audio.pause();
+    // audio.pause();
     isAnimating = false;
   });
 
@@ -55,10 +48,10 @@ function setupHomeAnimation() {
     isAnimating = true;
     homeAnimation.playSegments([startFrame, endFrame], true);
     audio.currentTime = 0;
-    audio.play().catch((err) => console.warn("Audio play() failed:", err));
-    setTimeout(() => {
-      audio.pause();
-    }, 2000);
+    // audio.play().catch((err) => console.warn("Audio play() failed:", err));
+    // setTimeout(() => {
+    //   audio.pause();
+    // }, 2000);
   });
 
   window.addEventListener("resize", () => {
