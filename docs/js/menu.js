@@ -9,7 +9,6 @@ const startingPage = "explore";
 const routes = {
   about: "pages/about.html",
   explore: "pages/explore.html",
-  experiment: "pages/experiment.html",
   films: "pages/films.html",
 };
 function layoutMenu() {
@@ -23,8 +22,6 @@ function layoutMenu() {
             <div class="film-submenu hidden">
               
               </div>
-
-             <a class = 'menu-link' href="#experiment">EXPERIMENT</a>
 
             
         </nav>
@@ -121,8 +118,6 @@ function runPageScripts(page, movieName, sceneNum) {
     } else {
       initFilmsPage("princessSmall", 0);
     }
-  } else if (page == "experiment") {
-    initExperimentPage();
   }
 }
 function loadPage(page, movieName, sceneNum) {

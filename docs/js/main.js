@@ -5,26 +5,19 @@ async function loadData() {
 
   layoutMenu();
   for (const movieName of movies) {
-    // create urls using supabase
     try {
-      const videoUrl = await getUrl(movieName, pathConfig.videoDataFilename);
+      const videoUrl = getUrl(movieName, pathConfig.videoDataFilename);
       const videoInfo = await d3.json(videoUrl);
 
-      const imgUrl = await getUrl(movieName, pathConfig.imageDataFilename);
+      const imgUrl = getUrl(movieName, pathConfig.imageDataFilename);
       const imageSceneData = await d3.json(imgUrl);
 
-      const audioUrl = await getUrl(movieName, pathConfig.audioDataFilename);
+      const audioUrl = getUrl(movieName, pathConfig.audioDataFilename);
       const audioSceneData = await d3.json(audioUrl);
 
-      // console.log("video info", videoInfo);
-      // console.log(imageSceneData);
-      // console.log(audioSceneData);
-      // console.log("loaded data");
-
-      // captions.json not alwayts there
       let captionData = [];
       try {
-        const captionUrl = await getUrl(movieName, pathConfig.captionsFilename);
+        const captionUrl = getUrl(movieName, pathConfig.captionsFilename);
         captionData = await d3.json(captionUrl);
         if (captionData != []) {
           console.log("found caption data", movieName, captionUrl);
@@ -41,7 +34,6 @@ async function loadData() {
         numSamples: videoInfo.samples,
       };
 
-      // flatten into allSceneData
       data[movieName].imageSceneData.forEach((d, i) => {
         allSceneData.push({
           ...d,
@@ -55,31 +47,20 @@ async function loadData() {
       moviesFailed.push(movieName);
     }
   }
-  movies.filter((x) => moviesFailed.indexOf(x) === -1);
-  // console.log("ALL SCENE DATA");
-  // console.log(allSceneData);
+  movies = movies.filter((x) => moviesFailed.indexOf(x) === -1);
   return;
 }
 
 async function listMovies() {
-  const { data: objects, error } = await supabaseClient.storage
-    .from("data")
-    .list("", { limit: 1000 });
-
-  if (error) {
-    console.log("ERROR", error);
-    throw error;
-  }
-  console.log("OBJECTS", objects);
-
-  movies = Array.from(new Set(objects.map((o) => o.name.split("/")[0])));
+  // List available movies from local data directory
+  // Add movie folder names here as you add more data
+  movies = ["test"];
   console.log("MOVIES", movies);
   return movies;
 }
 
 window.addEventListener("DOMContentLoaded", async () => {
-  // only loads once
-  console.log("--------------LAOD", data);
+  console.log("--------------LOAD", data);
 
   if (data.length == undefined) {
     await loadData();

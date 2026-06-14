@@ -112,9 +112,8 @@ def get_access_token():
     return data["access_token"]
 
 
-# THIS IS OLD
 def getData(name, numSamples = 20, youtubeLink = False, captions = False):
-    dataDir = './data/tmp/'+f"{name}/"
+    dataDir = os.path.join(os.path.dirname(__file__), '..', 'docs', 'data', name) + '/'
     print(dataDir)
     clear_directories(dataDir)
     os.makedirs(dataDir, exist_ok=True)
@@ -172,22 +171,9 @@ def getData(name, numSamples = 20, youtubeLink = False, captions = False):
     if os.path.exists(dataDir+'video.en.ass'):
         getCaptionData(name, round(videoInfo['sampleLength']))
 
-# from sceneMetaData import sceneLinks
-# getData('compilation', youtubeLink="https://www.youtube.com/watch?v=c9iCUxuWSwQ", numSamples = 5,captions = False)
-# getData('Space', youtubeLink="https://www.youtube.com/watch?v=f9X1C7pTu-M", numSamples = 10,captions = False)
-# testlink = "https://www.youtube.com/watch?v=T51QSG9VN8w&t=5s"
-# getData('Everything', numSamples = 10, captions = False)
-# command1 = ["yt-dlp","--skip-download","--write-auto-sub", "--sub-lang", "en","--sub-format", "ass","-o", "captions.ass",testlink]
-# result1 = subprocess.run(command1, capture_output=True, text=True, check=True)
-# print(result1.stdout)
-# for movieName in sceneLinks.keys():
-#     url = sceneLinks[movieName]["url"]
-#     numSamples = sceneLinks[movieName]["numSamples"]
-#     getData(movieName, numSamples, youtubeLink=url, captions = False)
-# getData("Up", youtubeLink="https://www.youtube.com/watch?v=2rn-vMbFglI", numSamples = 1)
-# getData("totoro", youtubeLink="https://www.youtube.com/watch?v=MZgBjQFMPvk", numSamples = 1)
-# getData('Gymnopedie',youtubeLink='https://www.youtube.com/watch?v=S-Xm7s9eGxU', numSamples = 1)
-# # getData('MysteryLove',youtubeLink='https://www.youtube.com/watch?v=y7Hq8hjlzd4', numSamples = 1)g
-# getData('interstellarMusic2',youtubeLink="https://www.youtube.com/watch?v=8kooIgKESYE", numSamples = 1)
-# getData('ghibli',youtubeLink="https://www.youtube.com/watch?v=RZuMZ79erzc", numSamples = 1)
-# getData('totoro',youtubeLink="https://www.youtube.com/watch?v=92a7Hj0ijLs", numSamples = 1)https://www.youtube.com/watch?v=92a7Hj0ijLs
+from sceneMetaData import sceneLinks
+
+for movieName in sceneLinks.keys():
+    url = sceneLinks[movieName]["url"]
+    numSamples = sceneLinks[movieName]["numSamples"]
+    getData(movieName, numSamples, youtubeLink=url, captions=False)
